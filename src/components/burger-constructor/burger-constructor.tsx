@@ -1,36 +1,48 @@
 import React from 'react';
-import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-constructor.module.css'
+import IngredientType from '../burger-ingredients/ingredient-type';
 
-export class BurgerConstructor extends React.Component {
+export class BurgerConsructor extends React.Component {
+
   render() {
-    class State extends React.Component {
-      state ={
-        type: {
-          white: 'primary',
-          grey: 'secondary',
-          red: 'error',
-          green: 'success'
+
+    class Block extends React.Component {
+        render() {
+          return (
+            <div className={ styles.block }>
+                {this.props.children}
+            </div>
+          );
         }
-      }
     }
-    
-    class Header extends React.Component {
+
+    class Constructor extends React.Component {
       render() {
         return (
-          <header className={ styles.header }>
-            {this.props.children}
-          </header>
+          <div className={ styles.construct }>
+              {this.props.children}
+          </div>
         );
       }
     }
-    
-    
+
+    class Info extends React.Component {
+      render() {
+        return (
+          <div className={ styles.info }>
+              {this.props.children}
+          </div>
+        );
+    }
+
+  }
     
     return (
       <>
-      <Header>
-      </Header>
+        <Block>
+          <Constructor />
+          <Info />
+        </Block>
       </>
     );
   }

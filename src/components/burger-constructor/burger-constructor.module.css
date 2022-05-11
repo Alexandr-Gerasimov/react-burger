@@ -1,0 +1,20 @@
+.block {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin-top: 40px;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.construct {
+    width: 600px;
+    height: 696px;
+    border: 2px solid #4C4CFF;
+}
+
+.info {
+    width: 568px;
+    height: 64px;
+    margin-top: 20px;
+}

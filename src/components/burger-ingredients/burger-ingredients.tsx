@@ -1,32 +1,10 @@
-import React, { useState} from 'react';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import React from 'react';
 import styles from './burger-ingredients.module.css'
-import { Components } from '../../utils/data'
-
-function BurgerComponents() {
-    const [arr, setArr] = React.useState(Components)
-
-    return (
-        <div className="App">
-        </div>
-    );
-}
-
+import IngredientType from '../burger-ingredients/ingredient-type';
 
 export class BurgerIngredients extends React.Component {
+
   render() {
-    class State extends React.Component {
-      state ={
-        type: {
-          white: 'primary',
-          grey: 'secondary',
-          red: 'error',
-          green: 'success'
-        }
-      }
-    }
-    
-    console.log(Components)
 
     class Block extends React.Component {
         render() {
@@ -64,80 +42,8 @@ export class BurgerIngredients extends React.Component {
         render() {
           return (
             <div className={ styles.section }>
-                {this.props.children}
+                <IngredientType/>
             </div>
-          );
-        }
-    }
-
-    class Puns extends React.Component {
-        render() {
-          return (
-            <>
-                <h2 className={ styles.headline }>Булки</h2>
-                <ul className={ styles.list }>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                </ul>
-            </>
-          );
-        }
-    }
-
-    class Sauses extends React.Component {
-        render() {
-          return (
-            <>
-                <h2 className={ styles.headline }>Булки</h2>
-                <ul className={ styles.list }>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                    <li className={ styles.position }>
-                        <img className={ styles.positionImage } />
-                        <div className={ styles.positionPrice } >
-                            <p className={ styles.positionNumber } >20</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                        <p className={ styles.positionText }>Какая-нибудь булка</p>
-                    </li>
-                </ul>
-            </>
           );
         }
     }
@@ -147,12 +53,12 @@ export class BurgerIngredients extends React.Component {
         <Block>
             <Title />
             <Button />
-            <Ingredients>
-                <Puns />
-                <Sauses />
-            </Ingredients>
+            <Ingredients />
         </Block>
       </>
     );
   }
 }
+
+
+

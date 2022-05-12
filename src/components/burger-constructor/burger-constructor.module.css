@@ -18,3 +18,89 @@
     height: 64px;
     margin-top: 20px;
 }
+
+.list {
+    width: 568px;
+    margin: 20px 16px;
+    padding: 0;
+    align-items: center;
+    justify-items: center;
+}
+
+.position {
+    width: 568px;
+    height: 80px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.positionTop {
+    width: 568px;
+    height: 80px;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.ingredient {
+    display: flex;
+    width: 536px;
+    height: 80px;
+    background: #1C1C21;
+    border-radius: 40px;
+    align-items: center;
+}   
+
+.ingredientTop {
+    display: flex;
+    width: 536px;
+    height: 80px;
+    background: #1C1C21;
+    border-radius: 88px 88px 40px 40px;
+    align-items: center;
+}
+
+.ingredientBottom {
+    display: flex;
+    width: 536px;
+    height: 80px;
+    background: #1C1C21;
+    border-radius: 40px 40px 88px 88px;
+    align-items: center;
+}
+
+.positionImage {
+    width: 80px;
+    height: 40px;
+    margin-left: 24px;
+    margin-right: 20px;
+    border: none;
+}
+
+.positionText {
+    max-width: 254px;
+    height: 48px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin-right: 20px;
+    text-align: left;
+}
+
+.positionNumber {
+    margin: 0;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 24px;
+    margin-right: 8px;
+}
+
+.positionPrice {
+    display: flex;
+    margin-right: 23px;
+}

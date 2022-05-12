@@ -59,7 +59,7 @@ export class AppHeader extends React.Component {
       render() {
         return (
             <button className={ styles.button } type='button'>
-              <BurgerIcon type='secondary'/>
+              <BurgerIcon type='secondary' />
               <p className={ styles.text }>Конструктор</p>
             </button>
         );

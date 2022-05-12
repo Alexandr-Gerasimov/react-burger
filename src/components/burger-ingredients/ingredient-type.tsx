@@ -3,6 +3,7 @@ import { ArrowDownIcon, BurgerIcon, CurrencyIcon } from '@ya.praktikum/react-dev
 import styles from './burger-ingredients.module.css'
 import { components } from '../../utils/data'
 import { arrayTypeAnnotation } from '@babel/types';
+import { ChoseBun } from '../burger-constructor/burger-component'
 
 export default function IngredientType() {
     const [arr, setArr] = useState(components)
@@ -55,9 +56,12 @@ export default function IngredientType() {
 }
 
 function Puns(props) {
+    const handleClick = () => {
+        ChoseBun(props)
+    }
     return (
         <>
-        <li className={ styles.position }>
+        <li className={ styles.position } onClick ={ handleClick }>
             <img src={props.set.image} className={ styles.positionImage } />
             <div className={ styles.positionPrice } >
                 <p className={ styles.positionNumber } >{props.set.price}</p>

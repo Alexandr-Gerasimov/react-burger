@@ -1,69 +1,67 @@
-  .header {
-    background-color: #1C1C21;
-    width: calc(100vw - 80px);
-    height: 88px;
-    margin: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .logo {
-    height: 42px;
-    width: 290px;
-    background-position: center;
-  }
-  
-  .nav {
-    display: flex;
-    flex-direction: row;
-    margin-left: 320px;
-  }
-  
-  .button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    padding: 20px;
-    margin-right: 8px;
-    border: none;
-    background: none;
-    color: #8585AD;
-  }
-  
-  .button:active {
-    color: #F2F2F3;
-  }
-  
-  .text {
-    margin-left: 9px;
-    font-family: 'Jet Brains Mono';
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-  }
-  
-  .private {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    margin-right: 320px;
-    height: 56px;
-    border: none;
-    background: none;
-    color: #8585AD;
-  }
-  
-  .private:active {
-    color: #F2F2F3;
-  }
-  
-  
-  .button:last-child {
-    margin-right: 0;
-  }
-  
+.header {
+  background-color: #1c1c21;
+  width: calc(100vw - 80px);
+  height: 88px;
+  margin: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.logo {
+  height: 42px;
+  width: 290px;
+  background-position: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  margin-left: 320px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 20px;
+  margin-right: 8px;
+  border: none;
+  background: none;
+  color: #8585ad;
+}
+
+.button:active {
+  color: #f2f2f3;
+}
+
+.text {
+  margin-left: 9px;
+  font-family: "Jet Brains Mono";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.private {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-right: 320px;
+  height: 56px;
+  border: none;
+  background: none;
+  color: #8585ad;
+}
+
+.private:active {
+  color: #f2f2f3;
+}
+
+.button:last-child {
+  margin-right: 0;
+}

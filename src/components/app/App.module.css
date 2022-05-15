@@ -4,7 +4,7 @@
   width: 100vw;
   min-height: 100vh;
   display: flex;
-  font-family: 'Jet Brains Mono', Arial, sans-serif;
+  font-family: "Jet Brains Mono", Arial, sans-serif;
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);

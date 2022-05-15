@@ -5,18 +5,48 @@
     margin-top: 40px;
     margin-left: 40px;
     align-items: center;
+    
 }
 
 .construct {
     width: 600px;
     height: 696px;
     border: 2px solid #4C4CFF;
+    overflow: auto;
+}
+
+.construct::-webkit-scrollbar {
+    width: 12px;               /* ширина scrollbar */
+}
+
+.construct::-webkit-scrollbar-track {
+    background: #2F2F37;        /* цвет дорожки */
+}
+
+.construct::-webkit-scrollbar-thumb {
+    background-color: #8585AD;    /* цвет плашки */
 }
 
 .info {
     width: 568px;
     height: 64px;
     margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.total {
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 36px;
+    margin-right: 9px;
 }
 
 .list {
@@ -60,6 +90,7 @@
     display: flex;
     width: 536px;
     height: 80px;
+    justify-content: space-between;
     background: #1C1C21;
     border-radius: 88px 88px 40px 40px;
     align-items: center;

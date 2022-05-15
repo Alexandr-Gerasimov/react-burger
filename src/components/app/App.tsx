@@ -1,21 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './App.module.css';
 import { AppHeader } from '../app-header/app-header'
-import { BurgerIngredients } from '../burger-ingredients/burger-ingredients';
-import { BurgerConsructor } from '../burger-constructor/burger-constructor';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { components } from '../../utils/data'
 
-export class App extends React.Component {
-  render() {
-    return (
-      <>
+
+const App = () => {
+  return (
+    <>
       <div className={ styles.App }>
         <AppHeader />
           <main className={ styles.main }>
-            <BurgerIngredients />
-            <BurgerConsructor />
+            <BurgerIngredients components={components}/>
+            <BurgerConstructor components={components}/>
           </main>
       </div>
       </>
-    );
-  }
+  );
 }
+
+export default App;

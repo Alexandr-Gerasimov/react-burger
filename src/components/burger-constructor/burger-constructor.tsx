@@ -1,11 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './burger-constructor.module.css'
-import IngredientType from '../burger-ingredients/ingredient-type';
-import { LockIcon, DragIcon, ArrowDownIcon, BurgerIcon, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ConstructorElement, Button, DragIcon, DeleteIcon, ArrowDownIcon, BurgerIcon, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ingredientPropType } from '../../utils/prop-types'
+import PropTypes from 'prop-types';
 
-export class BurgerConsructor extends React.Component {
+export default function BurgerConstructor({components}) {
 
-  render() {
+  const bun = components.filter((components) => components.type !== "bun")
+
+  const bunType = bun.map((components) => {
+      return (
+          <React.Fragment key={components._id}>
+              <li className={ styles.position }>
+                  <DragIcon type="primary" />
+                  <div className={ styles.ingredient }>
+                    <ConstructorElement
+                      key={components._id}
+                      isLocked={false}
+                      text={components.name}
+                      price={components.price}
+                      thumbnail={components.image}
+                    />
+                  </div>
+                </li>
+              
+          </React.Fragment>
+      );
+  })
 
     class Block extends React.Component {
         render() {
@@ -17,72 +38,17 @@ export class BurgerConsructor extends React.Component {
         }
     }
 
-    class BunTop extends  React.Component {
-      render() {
-        return (
-          <div className={ styles.positionTop }>
-            <div className={ styles.ingredientTop }>
-              <img className={ styles.positionImage } />
-              <p className={ styles.positionText } >какой-то ингредиент какой-то ингредиент</p>
-              <div  className={ styles.positionPrice }>
-                <p className={ styles.positionNumber } >20</p>
-                <CurrencyIcon type="primary" />
-              </div>
-              <LockIcon type="secondary" />
-            </div>
-          </div>
-        )
-      }        
-    }
-
-    class BunBottom extends  React.Component {
-      render() {
-        return (
-          <div className={ styles.positionTop }>
-            <div className={ styles.ingredientBottom }>
-              <img className={ styles.positionImage } />
-              <p className={ styles.positionText } >какой-то ингредиент какой-то ингредиент</p>
-              <div  className={ styles.positionPrice }>
-                <p className={ styles.positionNumber } >20</p>
-                <CurrencyIcon type="primary" />
-              </div>
-              <LockIcon type="secondary" />
-            </div>
-          </div>
-        )
-      }        
-    }
-
-    class Constructor extends React.Component {
-      render() {
-        return (
-          <div className={ styles.construct }>
-              <ul className={ styles.list }>
-                <BunTop />
-                <li className={ styles.position }>
-                  <DragIcon type="primary" />
-                  <div className={ styles.ingredient }>
-                    <img className={ styles.positionImage } />
-                    <p className={ styles.positionText } >какой-то ингредиент какой-то ингредиент</p>
-                    <div  className={ styles.positionPrice }>
-                      <p className={ styles.positionNumber } >20</p>
-                      <CurrencyIcon type="primary" />
-                    </div>
-                    <LockIcon type="secondary" />
-                  </div>
-                </li>
-                <BunBottom />
-              </ul>
-          </div>
-        );
-      }
-    }
-
     class Info extends React.Component {
       render() {
         return (
           <div className={ styles.info }>
-              {this.props.children}
+              <div className={ styles.price }>
+                <p className={ styles.total}>610</p>
+                <CurrencyIcon type="primary" />
+              </div>
+              <Button type="primary" size="large">
+                Оформить заказ
+              </Button>
           </div>
         );
     }
@@ -92,10 +58,35 @@ export class BurgerConsructor extends React.Component {
     return (
       <>
         <Block>
-          <Constructor />
+          <div className={ styles.construct }>
+              <ul className={ styles.list }>
+              <div className={ styles.positionTop }>
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text="Краторная булка N-200i (верх)"
+                  price={components.price}
+                  thumbnail={components.image}
+                />
+              </div>
+              {bunType}
+              <div className={ styles.positionTop }>
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text="Краторная булка N-200i (низ)"
+                  price={components.price}
+                  thumbnail={components.image}
+                />
+              </div>
+              </ul>
+          </div>
           <Info />
         </Block>
       </>
     );
-  }
 }
+
+BurgerConstructor.PropType = {
+  components: PropTypes.arrayOf(ingredientPropType).isRequired,
+};

@@ -1,46 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./burger-ingredients.module.css";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import Ingredient from "../ingredient/ingredient";
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 
-export default function BurgerIngredients({ components }) {
-  const [arr, setArr] = useState(components);
-
-  const bun = arr.filter((obj) => obj.type === "bun");
-  const sauce = arr.filter((obj) => obj.type === "sauce");
-  const main = arr.filter((obj) => obj.type === "main");
-
-  const BunType = bun.map((obj) => {
-    return (
-      <React.Fragment key={obj._id}>
-        <Puns set={obj} />
-      </React.Fragment>
-    );
-  });
-
-  const SauceType = sauce.map((obj) => {
-    return (
-      <React.Fragment key={obj._id}>
-        <Puns set={obj} />
-      </React.Fragment>
-    );
-  });
-
-  const MainType = main.map((obj) => {
-    return (
-      <React.Fragment key={obj._id}>
-        <Puns set={obj} />
-      </React.Fragment>
-    );
-  });
-
+export default function BurgerIngredients({ components, onClick }) {
   const Block = (props) => {
-    return <div className={styles.block}>{props.children}</div>;
-  };
-
-  const Title = () => {
-    return <h1 className={styles.title}>Соберите бургер</h1>;
+    return (
+      <div className={styles.block}>
+        <h1 className={styles.title}>Соберите бургер</h1>
+        {props.children}
+      </div>
+    );
   };
 
   const Button = () => {
@@ -57,11 +28,41 @@ export default function BurgerIngredients({ components }) {
     return (
       <div className={styles.section}>
         <h2 className={styles.headline}>Булки</h2>
-        <ul className={styles.list}>{BunType}</ul>
+        <ul className={styles.list}>
+          {components
+            .filter((obj) => obj.type === "bun")
+            .map((obj) => {
+              return (
+                <React.Fragment key={obj._id}>
+                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                </React.Fragment>
+              );
+            })}
+        </ul>
         <h2 className={styles.headline}>Соусы</h2>
-        <ul className={styles.list}>{SauceType}</ul>
+        <ul className={styles.list}>
+          {components
+            .filter((obj) => obj.type === "sauce")
+            .map((obj) => {
+              return (
+                <React.Fragment key={obj._id}>
+                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                </React.Fragment>
+              );
+            })}
+        </ul>
         <h2 className={styles.headline}>Начинки</h2>
-        <ul className={styles.list}>{MainType}</ul>
+        <ul className={styles.list}>
+          {components
+            .filter((obj) => obj.type === "main")
+            .map((obj) => {
+              return (
+                <React.Fragment key={obj._id}>
+                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                </React.Fragment>
+              );
+            })}
+        </ul>
       </div>
     );
   };
@@ -69,7 +70,6 @@ export default function BurgerIngredients({ components }) {
   return (
     <>
       <Block>
-        <Title />
         <Button />
         <Ingredients />
       </Block>
@@ -77,25 +77,7 @@ export default function BurgerIngredients({ components }) {
   );
 }
 
-function Puns(props) {
-  return (
-    <>
-      <li className={styles.position}>
-        <img src={props.set.image} className={styles.positionImage} />
-        <div className={styles.positionPrice}>
-          <p className={styles.positionNumber}>{props.set.price}</p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className={styles.positionText}>{props.set.name}</p>
-      </li>
-    </>
-  );
-}
-
 BurgerIngredients.PropType = {
   components: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
-
-Puns.PropType = {
-  components: PropTypes.arrayOf(ingredientPropType).isRequired,
+  onClick: PropTypes.func.isRequired
 };

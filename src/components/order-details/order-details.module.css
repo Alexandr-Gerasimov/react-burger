@@ -1,0 +1,48 @@
+.orderDetails {
+  width: 720px;
+  height: 718px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+.orderTitle {
+  font-family: "Iceland";
+  margin-top: 120px;
+  margin-bottom: 32px;
+  font-weight: 400;
+  font-size: 144px;
+  line-height: 120px;
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.orderMainText {
+  margin: 0;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.orderImage {
+  width: 120px;
+  height: 120px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.orderText {
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.orderMessage {
+  margin-top: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585ad;
+}

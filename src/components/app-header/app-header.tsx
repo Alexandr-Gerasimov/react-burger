@@ -19,7 +19,16 @@ export default function AppHeader() {
   };
 
   const Menu = (props) => {
-    return <nav className={styles.nav}>{props.children}</nav>;
+    return <nav className={styles.nav}>
+      <button className={styles.button} type="button">
+        <BurgerIcon type="secondary" />
+        <p className={styles.text}>Конструктор</p>
+      </button>
+      <button className={styles.button} type="button">
+        <ListIcon type="secondary" />
+        <p className={styles.text}>Лента заказов</p>
+      </button>
+      </nav>;
   };
 
   const MenuItem = () => {
@@ -31,31 +40,10 @@ export default function AppHeader() {
     );
   };
 
-  const ButtonConst = () => {
-    return (
-      <button className={styles.button} type="button">
-        <BurgerIcon type="secondary" />
-        <p className={styles.text}>Конструктор</p>
-      </button>
-    );
-  };
-
-  const ButtonOrder = () => {
-    return (
-      <button className={styles.button} type="button">
-        <ListIcon type="secondary" />
-        <p className={styles.text}>Лента заказов</p>
-      </button>
-    );
-  };
-
   return (
     <>
       <Header>
-        <Menu>
-          <ButtonConst />
-          <ButtonOrder />
-        </Menu>
+        <Menu />
         <Logotype />
         <MenuItem />
       </Header>
@@ -63,6 +51,3 @@ export default function AppHeader() {
   );
 }
 
-AppHeader.PropType = {
-  components: PropTypes.arrayOf(ingredientPropType).isRequired,
-};

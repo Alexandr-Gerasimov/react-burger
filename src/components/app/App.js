@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -6,15 +6,16 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
 import OrderDetails from "../order-details/order-details";
+import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
 
 const App = () => {
+  const [ingredients, setIngredients] = useState([])
   const [components, setComponents] = useState([]);
   const [ingredientsDetails, setIngredientsDetails] = useState(false);
   const [orderDetails, setOrderDetails] = useState(false);
   const [component, setComponent] = useState({});
-
   const config = {
-    baseUrl: "https://norma.nomoreparties.space/api/ingredients",
+    baseUrl: "https://norma.nomoreparties.space/api",
     headers: {
       "Content-Type": "application/json",
     },
@@ -29,22 +30,53 @@ const App = () => {
   };
 
   const getIngredients = () => {
-    fetch(`${config.baseUrl}`, {
+    fetch(`${config.baseUrl}/ingredients`, {
       headers: config.headers,
     })
       .then(getResponseData)
-      .then((response) => setComponents(response.data))
+      .then((response) => {
+        setIngredients(response.data)
+        setComponents(response.data)
+      })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const [modalData, setModalData] = useState({
+    name: "",
+    order: {
+      number: ""
+    },
+    success: true
+  });
+
+  const ingredientsId = ingredients.map(ingredient => ingredient._id)
+
+  const postOrderNumber = (ingredientsId) => {
+    fetch(`${config.baseUrl}/orders`, {
+      method: 'POST',
+      headers: config.headers,
+      body: JSON.stringify({
+        "ingredients": ingredientsId
+      })
+    })
+    .then(getResponseData)
+    .then((data) => {
+      setModalData(data)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 
   const componentClick = (component) => {
     setComponent(component);
     setIngredientsDetails(true);
   };
 
-  const orderButtonClick = () => {
+  const orderButtonClick = (ingredientsId) => {
+    postOrderNumber(ingredientsId)
     setOrderDetails(true);
   };
 
@@ -69,11 +101,10 @@ const App = () => {
       <div className={styles.App}>
         <AppHeader />
         <main className={styles.main}>
-          <BurgerIngredients components={components} onClick={componentClick} />
-          <BurgerConstructor
-            components={components}
-            onClick={orderButtonClick}
-          />
+          <BurgerIngredientsContext.Provider value={ingredients}>
+          <BurgerIngredients onClick={componentClick} />
+          <BurgerConstructor ingredientsId={ingredientsId} onClick={orderButtonClick} />
+          </BurgerIngredientsContext.Provider>
         </main>
         {ingredientsDetails && (
           <Modal
@@ -85,7 +116,7 @@ const App = () => {
         )}
         {orderDetails && (
           <Modal onClick={closeOrderModal} onKeyDown={escCloseOrderModal}>
-            <OrderDetails />
+            <OrderDetails orderNumber={modalData}/>
           </Modal>
         )}
       </div>

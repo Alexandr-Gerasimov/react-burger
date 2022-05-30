@@ -1,0 +1,71 @@
+.block {
+  width: 600px;
+  height: 912px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: #fff;
+}
+
+.button {
+  width: 200px;
+  height: 56px;
+  border: none;
+  box-shadow: inset 0px -1px 0px #2f2f37;
+  background: none;
+  color: #8585ad;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.button:active {
+  color: #fff;
+  box-shadow: inset 0px -2px 0px #4c4cff;
+}
+
+.section {
+  width: 600px;
+  height: 756px;
+  display: block;
+  overflow: auto;
+}
+
+.section::-webkit-scrollbar {
+  width: 12px; /* ширина scrollbar */
+}
+
+.section::-webkit-scrollbar-track {
+  background: #2f2f37; /* цвет дорожки */
+}
+
+.section::-webkit-scrollbar-thumb {
+  background-color: #8585ad; /* цвет плашки */
+}
+
+.headline {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: left;
+  margin: 0;
+  padding-top: 40px;
+  padding-bottom: 24px;
+}
+
+.list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 16px;
+  align-items: center;
+  justify-items: center;
+}

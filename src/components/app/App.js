@@ -9,7 +9,7 @@ import OrderDetails from "../order-details/order-details";
 import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState([])
+  const [ingredients, setIngredients] = useState([]);
   const [components, setComponents] = useState([]);
   const [ingredientsDetails, setIngredientsDetails] = useState(false);
   const [orderDetails, setOrderDetails] = useState(false);
@@ -35,8 +35,8 @@ const App = () => {
     })
       .then(getResponseData)
       .then((response) => {
-        setIngredients(response.data)
-        setComponents(response.data)
+        setIngredients(response.data);
+        setComponents(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -46,29 +46,29 @@ const App = () => {
   const [modalData, setModalData] = useState({
     name: "",
     order: {
-      number: ""
+      number: "",
     },
-    success: true
+    success: true,
   });
 
-  const ingredientsId = ingredients.map(ingredient => ingredient._id)
+  const ingredientsId = ingredients.map((ingredient) => ingredient._id);
 
   const postOrderNumber = (ingredientsId) => {
     fetch(`${config.baseUrl}/orders`, {
-      method: 'POST',
+      method: "POST",
       headers: config.headers,
       body: JSON.stringify({
-        "ingredients": ingredientsId
+        ingredients: ingredientsId,
+      }),
+    })
+      .then(getResponseData)
+      .then((data) => {
+        setModalData(data);
       })
-    })
-    .then(getResponseData)
-    .then((data) => {
-      setModalData(data)
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const componentClick = (component) => {
     setComponent(component);
@@ -76,7 +76,7 @@ const App = () => {
   };
 
   const orderButtonClick = (ingredientsId) => {
-    postOrderNumber(ingredientsId)
+    postOrderNumber(ingredientsId);
     setOrderDetails(true);
   };
 
@@ -88,39 +88,29 @@ const App = () => {
     setOrderDetails(false);
   };
 
-  const escCloseIngredientModal = (event) => {
-    event.key === "Escape" && closeIngredientModal();
-  };
-
-  const escCloseOrderModal = (event) => {
-    event.key === "Escape" && closeOrderModal();
-  };
-
   return (
-    <>
-      <div className={styles.App}>
-        <AppHeader />
-        <main className={styles.main}>
-          <BurgerIngredientsContext.Provider value={ingredients}>
+    <div className={styles.App}>
+      <AppHeader />
+      <main className={styles.main}>
+        <BurgerIngredientsContext.Provider value={ingredients}>
           <BurgerIngredients onClick={componentClick} />
-          <BurgerConstructor ingredientsId={ingredientsId} onClick={orderButtonClick} />
-          </BurgerIngredientsContext.Provider>
-        </main>
-        {ingredientsDetails && (
-          <Modal
-            onClick={closeIngredientModal}
-            onKeyDown={escCloseIngredientModal}
-          >
-            <IngredientDetails component={component} />
-          </Modal>
-        )}
-        {orderDetails && (
-          <Modal onClick={closeOrderModal} onKeyDown={escCloseOrderModal}>
-            <OrderDetails orderNumber={modalData}/>
-          </Modal>
-        )}
-      </div>
-    </>
+          <BurgerConstructor
+            ingredientsId={ingredientsId}
+            onClick={orderButtonClick}
+          />
+        </BurgerIngredientsContext.Provider>
+      </main>
+      {ingredientsDetails && (
+        <Modal onClick={closeIngredientModal} onKeyDown={closeIngredientModal}>
+          <IngredientDetails component={component} />
+        </Modal>
+      )}
+      {orderDetails && (
+        <Modal onClick={closeOrderModal} onKeyDown={closeOrderModal}>
+          <OrderDetails orderNumber={modalData} />
+        </Modal>
+      )}
+    </div>
   );
 };
 

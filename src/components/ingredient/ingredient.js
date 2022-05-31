@@ -4,7 +4,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 
-export default function Ingredient({set, onClick}) {
+export default function Ingredient({ set, onClick }) {
   return (
     <>
       <li className={styles.position} onClick={onClick}>
@@ -21,5 +21,5 @@ export default function Ingredient({set, onClick}) {
 
 Ingredient.PropType = {
   set: PropTypes.arrayOf(ingredientPropType).isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };

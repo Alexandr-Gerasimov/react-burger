@@ -12,8 +12,8 @@ import { BurgerIngredientsContext } from "../../context/burger-ingredients-conte
 
 export default function BurgerConstructor({ onClick }) {
   const ingredients = useContext(BurgerIngredientsContext);
-  
-  const ingredientsId = ingredients.map(ingredient => ingredient._id)
+
+  const ingredientsId = ingredients.map((ingredient) => ingredient._id);
 
   const Block = (props) => {
     return <div className={styles.block}>{props.children}</div>;
@@ -26,8 +26,6 @@ export default function BurgerConstructor({ onClick }) {
     );
   }, [ingredients]);
 
-
-
   const Info = () => {
     return (
       <div className={styles.info}>
@@ -35,7 +33,11 @@ export default function BurgerConstructor({ onClick }) {
           <p className={styles.total}>{price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large" onClick={() => onClick(ingredientsId)}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => onClick(ingredientsId)}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -45,90 +47,82 @@ export default function BurgerConstructor({ onClick }) {
   const TopBun = () => {
     return (
       <>
-      {ingredients
-        .filter(
-          (components) => components.name === "Краторная булка N-200i"
-        )
-        .map((components) => {
-          return (
-            <div className={styles.positionTop} key={components._id}>
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text="Краторная булка N-200i (верх)"
-                price={components.price}
-                thumbnail={components.image}
-              />
-            </div>
-          );
-        })}
+        {ingredients
+          .filter((components) => components.name === "Краторная булка N-200i")
+          .map((components) => {
+            return (
+              <div className={styles.positionTop} key={components._id}>
+                <ConstructorElement
+                  type="top"
+                  isLocked={true}
+                  text="Краторная булка N-200i (верх)"
+                  price={components.price}
+                  thumbnail={components.image}
+                />
+              </div>
+            );
+          })}
       </>
-    )
-  }
+    );
+  };
 
   const Filling = () => {
     return (
       <ul className={styles.list}>
-            {ingredients
-              .filter(
-                (components) => components.type !== 'bun'
-              )
-              .map((components) => {
-                return (
-                  <React.Fragment key={components._id}>
-                    <li className={styles.position}>
-                      <DragIcon type="primary" />
-                      <div className={styles.ingredient}>
-                        <ConstructorElement
-                          isLocked={false}
-                          text={components.name}
-                          price={components.price}
-                          thumbnail={components.image}
-                        />
-                      </div>
-                    </li>
-                  </React.Fragment>
-                );
-              })}
-          </ul>
-    )
-  }
+        {ingredients
+          .filter((components) => components.type !== "bun")
+          .map((components) => {
+            return (
+              <React.Fragment key={components._id}>
+                <li className={styles.position}>
+                  <DragIcon type="primary" />
+                  <div className={styles.ingredient}>
+                    <ConstructorElement
+                      isLocked={false}
+                      text={components.name}
+                      price={components.price}
+                      thumbnail={components.image}
+                    />
+                  </div>
+                </li>
+              </React.Fragment>
+            );
+          })}
+      </ul>
+    );
+  };
 
   const BottomBun = () => {
     return (
       <>
-      {ingredients
-        .filter(
-          (components) => components.name === "Краторная булка N-200i"
-        )
-        .map((components) => {
-          return (
-            <div className={styles.positionTop} key={components._id}>
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text="Краторная булка N-200i (низ)"
-                price={components.price}
-                thumbnail={components.image}
-              />
-            </div>
-          );
-        })}
+        {ingredients
+          .filter((components) => components.name === "Краторная булка N-200i")
+          .map((components) => {
+            return (
+              <div className={styles.positionTop} key={components._id}>
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text="Краторная булка N-200i (низ)"
+                  price={components.price}
+                  thumbnail={components.image}
+                />
+              </div>
+            );
+          })}
       </>
-    )
-  }
+    );
+  };
 
   return (
-    <>
-      <Block>
-        <div className={styles.construct}>
-          <TopBun />
-          <Filling />
-          <BottomBun />
-        </div>
-        <Info />
-      </Block>
-    </>
+    <Block>
+      <div className={styles.construct}>
+        <TopBun />
+        <Filling />
+        <BottomBun />
+      </div>
+      <Info />
+    </Block>
   );
 }
 

@@ -2,6 +2,7 @@
   text-align: center;
   background-color: #000;
   width: 100vw;
+  min-width: 1280px;
   min-height: 100vh;
   display: flex;
   font-family: "Jet Brains Mono", Arial, sans-serif;

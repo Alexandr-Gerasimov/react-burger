@@ -5,7 +5,11 @@ const IngredientDetails = ({ component }) => {
   return (
     <div className={styles.ingredientDetails}>
       <h1 className={styles.ingredientTitle}>Детали ингредиента</h1>
-      <img className={styles.ingredientImage} src={component.image} alt={component.name} />
+      <img
+        className={styles.ingredientImage}
+        src={component.image}
+        alt={component.name}
+      />
       <p className={styles.ingredientName}>{component.name}</p>
       <ul className={styles.ingredientEnergyValue}>
         <li className={styles.ingredientEnergyValueType}>

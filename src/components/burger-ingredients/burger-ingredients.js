@@ -5,8 +5,6 @@ import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
 
-
-
 export default function BurgerIngredients({ onClick }) {
   const ingredients = useContext(BurgerIngredientsContext);
   const Block = (props) => {
@@ -17,14 +15,13 @@ export default function BurgerIngredients({ onClick }) {
       </div>
     );
   };
-  
+
   return (
-    <>
-      <Block>
-        <button className={styles.button}>Булки</button>
-        <button className={styles.button}>Соусы</button>
-        <button className={styles.button}>Начинки</button>
-        <div className={styles.section}>
+    <Block>
+      <button className={styles.button}>Булки</button>
+      <button className={styles.button}>Соусы</button>
+      <button className={styles.button}>Начинки</button>
+      <div className={styles.section}>
         <h2 className={styles.headline}>Булки</h2>
         <ul className={styles.list}>
           {ingredients
@@ -32,7 +29,7 @@ export default function BurgerIngredients({ onClick }) {
             .map((obj) => {
               return (
                 <React.Fragment key={obj._id}>
-                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                  <Ingredient set={obj} onClick={() => onClick(obj)} />
                 </React.Fragment>
               );
             })}
@@ -44,7 +41,7 @@ export default function BurgerIngredients({ onClick }) {
             .map((obj) => {
               return (
                 <React.Fragment key={obj._id}>
-                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                  <Ingredient set={obj} onClick={() => onClick(obj)} />
                 </React.Fragment>
               );
             })}
@@ -56,18 +53,16 @@ export default function BurgerIngredients({ onClick }) {
             .map((obj) => {
               return (
                 <React.Fragment key={obj._id}>
-                  <Ingredient set={obj} onClick={() => onClick(obj)}/>
+                  <Ingredient set={obj} onClick={() => onClick(obj)} />
                 </React.Fragment>
               );
             })}
         </ul>
-        </div>
-      </Block>
-    </>
+      </div>
+    </Block>
   );
 }
 
 BurgerIngredients.PropType = {
-  components: PropTypes.arrayOf(ingredientPropType).isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };

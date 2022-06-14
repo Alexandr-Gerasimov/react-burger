@@ -1,6 +1,7 @@
 .header {
   background-color: #1c1c21;
   width: calc(100vw - 80px);
+  max-width: 1920px;
   height: 88px;
   margin: 40px;
   display: flex;

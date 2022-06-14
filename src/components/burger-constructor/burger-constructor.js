@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -9,9 +9,20 @@ import {
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
+import { useDispatch, useSelector } from 'react-redux';
+import { getConstructorItems } from "../../services/actions"
+import { useDrop } from "react-dnd";
+import { ADD_ITEM } from "../../services/actions";
 
 export default function BurgerConstructor({ onClick }) {
-  const ingredients = useContext(BurgerIngredientsContext);
+  const ingredients = useSelector(store => store.fillings.constructorBuns);
+  const constructorFillings = useSelector(store => store.fillings.constructorFillings);
+  const currentTab = useSelector(store => store.fillings.currentTab);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getConstructorItems())
+  }, [])
 
   const ingredientsId = ingredients.map((ingredient) => ingredient._id);
 
@@ -44,9 +55,73 @@ export default function BurgerConstructor({ onClick }) {
     );
   };
 
-  const TopBun = () => {
+  const EmptyTopBun = (ingredients) => {
+    if(ingredients === []) {
+      return (
+        <>
+          <p className={styles.topBun}>Выберите булку</p>
+        </>
+      )
+    } else {
+      return (
+        <>
+        </>
+      )
+    }
+  }
+
+  const EmptyBottomBun = (ingredients) => {
+    if(ingredients === []) {
+      return (
+        <>
+          <p className={styles.bottomBun}></p>
+        </>
+      )
+    } else {
+      return (
+        <>
+        </>
+      )
+    }
+  }
+
+  const EmptyFillings = (constructorFillings) => {
+    if(constructorFillings === []) {
+      return (
+        <>
+          <p className={styles.filling}>Выберите ингредиент</p>
+        </>
+      )
+    } else {
+      return (
+        <>
+        </>
+      )
+    }
+  }
+
+  const TopBun = ({ingredientType}) => {
+    const [{ isHover }, dropTarget] = useDrop({
+      accept: ingredientType === 'bun' ? 'postponed' : 'items',
+      collect: monitor => ({
+        isHover: monitor.isOver()
+      }),
+      drop(ingredientId) {
+        if(currentTab === 'bun') {
+          moveIngredient(ingredientId)
+        }
+      }
+    });
+    const moveIngredient = (ingredients) => {
+      dispatch({
+        type: ADD_ITEM,
+        ...ingredients
+      });
+    }
     return (
       <>
+      <EmptyTopBun />
+      <div ref={dropTarget}></div>
         {ingredients
           .filter((components) => components.name === "Краторная булка N-200i")
           .map((components) => {
@@ -68,8 +143,10 @@ export default function BurgerConstructor({ onClick }) {
 
   const Filling = () => {
     return (
+      <>
+      <EmptyFillings />
       <ul className={styles.list}>
-        {ingredients
+        {constructorFillings
           .filter((components) => components.type !== "bun")
           .map((components) => {
             return (
@@ -89,12 +166,14 @@ export default function BurgerConstructor({ onClick }) {
             );
           })}
       </ul>
+      </>
     );
   };
 
   const BottomBun = () => {
     return (
       <>
+        <EmptyBottomBun />
         {ingredients
           .filter((components) => components.name === "Краторная булка N-200i")
           .map((components) => {
@@ -117,7 +196,7 @@ export default function BurgerConstructor({ onClick }) {
   return (
     <Block>
       <div className={styles.construct}>
-        <TopBun />
+        <TopBun ingredientType='bun'/>
         <Filling />
         <BottomBun />
       </div>
@@ -129,4 +208,4 @@ export default function BurgerConstructor({ onClick }) {
 BurgerConstructor.PropType = {
   components: PropTypes.arrayOf(ingredientPropType).isRequired,
   onClick: PropTypes.func.isRequired,
-};
+}

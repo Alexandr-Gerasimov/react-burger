@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
@@ -7,109 +9,70 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
 import OrderDetails from "../order-details/order-details";
 import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllItems } from "../../services/actions";
+import {
+  closeIngredientModals,
+  onIngredientClick,
+  closeOrderModal,
+  postOrderNumber,
+} from "../../services/actions";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState([]);
-  const [components, setComponents] = useState([]);
-  const [ingredientsDetails, setIngredientsDetails] = useState(false);
-  const [orderDetails, setOrderDetails] = useState(false);
-  const [component, setComponent] = useState({});
-  const config = {
-    baseUrl: "https://norma.nomoreparties.space/api",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  useEffect(() => {
-    getIngredients();
-  }, []);
-
-  const getResponseData = (res) => {
-    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-  };
-
-  const getIngredients = () => {
-    fetch(`${config.baseUrl}/ingredients`, {
-      headers: config.headers,
-    })
-      .then(getResponseData)
-      .then((response) => {
-        setIngredients(response.data);
-        setComponents(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const [modalData, setModalData] = useState({
-    name: "",
-    order: {
-      number: "",
-    },
-    success: true,
-  });
+  const ingredients = useSelector((store) => store.fillings.ingredients);
+  const ingredientsModal = useSelector(
+    (state) => state.fillings.ingredientsModal
+  );
+  const ingredient = useSelector((store) => store.fillings.ingredient);
+  const orderDetails = useSelector((store) => store.fillings.orderDetails);
+  const orderDetailsModal = useSelector(
+    (store) => store.fillings.orderDetailsModal
+  );
+  const dispatch = useDispatch();
 
   const ingredientsId = ingredients.map((ingredient) => ingredient._id);
 
-  const postOrderNumber = (ingredientsId) => {
-    fetch(`${config.baseUrl}/orders`, {
-      method: "POST",
-      headers: config.headers,
-      body: JSON.stringify({
-        ingredients: ingredientsId,
-      }),
-    })
-      .then(getResponseData)
-      .then((data) => {
-        setModalData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const componentClick = (component) => {
-    setComponent(component);
-    setIngredientsDetails(true);
+    dispatch(onIngredientClick(component));
   };
 
-  const orderButtonClick = (ingredientsId) => {
-    postOrderNumber(ingredientsId);
-    setOrderDetails(true);
+  const orderButtonClick = () => {
+    dispatch(postOrderNumber(ingredientsId));
   };
 
   const closeIngredientModal = () => {
-    setIngredientsDetails(false);
+    dispatch(closeIngredientModals());
   };
 
-  const closeOrderModal = () => {
-    setOrderDetails(false);
+  const closeOrderModals = () => {
+    dispatch(closeOrderModal());
   };
 
   return (
     <div className={styles.App}>
-      <AppHeader />
-      <main className={styles.main}>
-        <BurgerIngredientsContext.Provider value={ingredients}>
+      <DndProvider backend={HTML5Backend}>
+        <AppHeader />
+        <main className={styles.main}>
           <BurgerIngredients onClick={componentClick} />
           <BurgerConstructor
             ingredientsId={ingredientsId}
             onClick={orderButtonClick}
           />
-        </BurgerIngredientsContext.Provider>
-      </main>
-      {ingredientsDetails && (
-        <Modal onClick={closeIngredientModal} onKeyDown={closeIngredientModal}>
-          <IngredientDetails component={component} />
-        </Modal>
-      )}
-      {orderDetails && (
-        <Modal onClick={closeOrderModal} onKeyDown={closeOrderModal}>
-          <OrderDetails orderNumber={modalData} />
-        </Modal>
-      )}
+        </main>
+        {ingredientsModal && (
+          <Modal
+            onClick={closeIngredientModal}
+            onKeyDown={closeIngredientModal}
+          >
+            <IngredientDetails component={ingredient} />
+          </Modal>
+        )}
+        {orderDetailsModal && (
+          <Modal onClick={closeOrderModals} onKeyDown={closeOrderModals}>
+            <OrderDetails orderNumber={orderDetails} />
+          </Modal>
+        )}
+      </DndProvider>
     </div>
   );
 };

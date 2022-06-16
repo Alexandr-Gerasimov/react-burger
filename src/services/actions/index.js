@@ -17,6 +17,7 @@ export const ORDER_DETAILS_CLOSED = "ORDER_DETAILS_CLOSED";
 export const TAB_SWITCH = 'TAB_SWITCH';
 
 export const ADD_ITEM = 'ADD_ITEM';
+export const DELETE_ITEM = 'DELETE_ITEM';
 
 const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
@@ -49,25 +50,6 @@ export function getAllItems() {
       type: GET_INGREDIENT_LIST_FAILED,
       payload: false,
     });
-  };
-}
-
-export function getConstructorItems() {
-  return function (dispatch) {
-    fetch(`${config.baseUrl}/ingredients`, {
-      headers: config.headers,
-    })
-      .then(getResponseData)
-      .then((res) => {
-        dispatch({
-          type: CONSTRUCTOR_BUNS,
-          payload: res.data,
-        });
-        dispatch({
-          type: CONSTRUCTOR_FILLINGS,
-          payload: res.data,
-        });
-      });
   };
 }
 

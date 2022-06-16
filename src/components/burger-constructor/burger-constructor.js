@@ -5,40 +5,106 @@ import {
   Button,
   DragIcon,
   CurrencyIcon,
+  DeleteIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
-import { useDispatch, useSelector } from 'react-redux';
-import { getConstructorItems } from "../../services/actions"
+import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import { ADD_ITEM } from "../../services/actions";
+import { ADD_ITEM, DELETE_ITEM } from "../../services/actions";
+
 
 export default function BurgerConstructor({ onClick }) {
-  const ingredients = useSelector(store => store.fillings.constructorBuns);
-  const constructorFillings = useSelector(store => store.fillings.constructorFillings);
-  const currentTab = useSelector(store => store.fillings.currentTab);
+  const ingredients = useSelector((store) => store.fillings.ingredients);
+  
+  const constructorBuns = useSelector(
+    (store) => store.fillings.constructorBuns
+  );
+  const constructorFillings = useSelector(
+    (store) => store.fillings.constructorFillings
+  );
+
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getConstructorItems())
-  }, [])
-
   const ingredientsId = ingredients.map((ingredient) => ingredient._id);
 
-  const Block = (props) => {
-    return <div className={styles.block}>{props.children}</div>;
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "bun",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(set) {
+      moveIngredient(set.set);
+    },
+  });
+
+  const moveIngredient = (set) => {
+    dispatch({
+      type: ADD_ITEM,
+      payload: set,
+    });
+  };
+
+  const onDelete = (id) => {
+    console.log(id)
+    dispatch({
+      type: DELETE_ITEM,
+      id,
+    });
   };
 
   const price = useMemo(() => {
     return (
-      (ingredients.bun ? ingredients.bun.price * 2 : 0) +
-      ingredients.reduce((s, v) => s + v.price, 0)
+      (constructorBuns === null ? 0 : constructorBuns.price * 2) +
+      constructorFillings.reduce((s, v) => s + v.price, 0)
     );
-  }, [ingredients]);
+  }, [constructorBuns, constructorFillings]);
 
-  const Info = () => {
-    return (
+  return (
+    <div className={styles.block}>
+      <div className={styles.construct} ref={dropTarget}>
+        {constructorBuns === null ? <div>Выберите булку</div> : <div className={styles.positionTop} key={constructorBuns._id}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${constructorBuns.name} (верх)`}
+            price={constructorBuns.price}
+            thumbnail={constructorBuns.image}
+          />
+        </div>}
+        <ul className={styles.list}>
+          {constructorFillings === null ? <div>Выберите булку</div> : 
+          constructorFillings
+            .filter((components) => components.type !== "bun")
+            .map((components) => {
+              return (
+                <React.Fragment key={components._id}>
+                  <li className={styles.position}>
+                    <DragIcon type="primary" />
+                    <div className={styles.ingredient}>
+                      <ConstructorElement
+                        isLocked={false}
+                        text={components.name}
+                        price={components.price}
+                        thumbnail={components.image}
+                        handleClose={() => onDelete(components.id)}
+                      />
+                    </div>
+                  </li>
+                </React.Fragment>
+              );
+            })}
+        </ul>
+        {constructorBuns === null ? <div>Выберите булку</div> : <div className={styles.positionTop} key={constructorBuns._id}>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${constructorBuns.name} (низ)`}
+            price={constructorBuns.price}
+            thumbnail={constructorBuns.image}
+          />
+        </div>}
+      </div>
       <div className={styles.info}>
         <div className={styles.price}>
           <p className={styles.total}>{price}</p>
@@ -52,160 +118,11 @@ export default function BurgerConstructor({ onClick }) {
           Оформить заказ
         </Button>
       </div>
-    );
-  };
-
-  const EmptyTopBun = (ingredients) => {
-    if(ingredients === []) {
-      return (
-        <>
-          <p className={styles.topBun}>Выберите булку</p>
-        </>
-      )
-    } else {
-      return (
-        <>
-        </>
-      )
-    }
-  }
-
-  const EmptyBottomBun = (ingredients) => {
-    if(ingredients === []) {
-      return (
-        <>
-          <p className={styles.bottomBun}></p>
-        </>
-      )
-    } else {
-      return (
-        <>
-        </>
-      )
-    }
-  }
-
-  const EmptyFillings = (constructorFillings) => {
-    if(constructorFillings === []) {
-      return (
-        <>
-          <p className={styles.filling}>Выберите ингредиент</p>
-        </>
-      )
-    } else {
-      return (
-        <>
-        </>
-      )
-    }
-  }
-
-  const TopBun = ({ingredientType}) => {
-    const [{ isHover }, dropTarget] = useDrop({
-      accept: ingredientType === 'bun' ? 'postponed' : 'items',
-      collect: monitor => ({
-        isHover: monitor.isOver()
-      }),
-      drop(ingredientId) {
-        if(currentTab === 'bun') {
-          moveIngredient(ingredientId)
-        }
-      }
-    });
-    const moveIngredient = (ingredients) => {
-      dispatch({
-        type: ADD_ITEM,
-        ...ingredients
-      });
-    }
-    return (
-      <>
-      <EmptyTopBun />
-      <div ref={dropTarget}></div>
-        {ingredients
-          .filter((components) => components.name === "Краторная булка N-200i")
-          .map((components) => {
-            return (
-              <div className={styles.positionTop} key={components._id}>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text="Краторная булка N-200i (верх)"
-                  price={components.price}
-                  thumbnail={components.image}
-                />
-              </div>
-            );
-          })}
-      </>
-    );
-  };
-
-  const Filling = () => {
-    return (
-      <>
-      <EmptyFillings />
-      <ul className={styles.list}>
-        {constructorFillings
-          .filter((components) => components.type !== "bun")
-          .map((components) => {
-            return (
-              <React.Fragment key={components._id}>
-                <li className={styles.position}>
-                  <DragIcon type="primary" />
-                  <div className={styles.ingredient}>
-                    <ConstructorElement
-                      isLocked={false}
-                      text={components.name}
-                      price={components.price}
-                      thumbnail={components.image}
-                    />
-                  </div>
-                </li>
-              </React.Fragment>
-            );
-          })}
-      </ul>
-      </>
-    );
-  };
-
-  const BottomBun = () => {
-    return (
-      <>
-        <EmptyBottomBun />
-        {ingredients
-          .filter((components) => components.name === "Краторная булка N-200i")
-          .map((components) => {
-            return (
-              <div className={styles.positionTop} key={components._id}>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text="Краторная булка N-200i (низ)"
-                  price={components.price}
-                  thumbnail={components.image}
-                />
-              </div>
-            );
-          })}
-      </>
-    );
-  };
-
-  return (
-    <Block>
-      <div className={styles.construct}>
-        <TopBun ingredientType='bun'/>
-        <Filling />
-        <BottomBun />
-      </div>
-      <Info />
-    </Block>
+    </div>
   );
 }
 
 BurgerConstructor.PropType = {
   components: PropTypes.arrayOf(ingredientPropType).isRequired,
   onClick: PropTypes.func.isRequired,
-}
+};

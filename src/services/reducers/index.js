@@ -14,7 +14,10 @@ import {
   ORDER_DETAILS_OPENED,
   ORDER_DETAILS_CLOSED,
   TAB_SWITCH,
-  ADD_ITEM
+  ADD_ITEM,
+  DELETE_ITEM,
+  INGREDIENT_QUANTITY,
+  INGREDIENT_COUNTER,
 } from "../actions";
 
 const initialState = {
@@ -22,9 +25,12 @@ const initialState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
 
+  ingredientQuantity: null,
+  ingredientCounter: "undefined",
+
   currentTab: "buns",
 
-  constructorBuns: [],
+  constructorBuns: null,
   constructorFillings: [],
 
   ingredientsModal: false,
@@ -55,16 +61,6 @@ export const ingredientReducer = (state = initialState, action) => {
         ...state,
         ingredientsRequest: false,
         ingredientsFailed: true,
-      };
-    case CONSTRUCTOR_BUNS:
-      return {
-        ...state,
-        constructorBuns: action.payload,
-      };
-    case CONSTRUCTOR_FILLINGS:
-      return {
-        ...state,
-        constructorFillings: action.payload,
       };
     case INGREDIENT_DESCRIPTION_OPENED:
       return {
@@ -113,10 +109,34 @@ export const ingredientReducer = (state = initialState, action) => {
       };
     }
     case ADD_ITEM: {
+      if (action.payload.type === 'bun') {
+        return {
+          ...state,
+          constructorBuns: action.payload,
+          constructorFillings: [ ...state.constructorFillings ],
+          ingredients: [...state.ingredients].map(item =>
+            item.id === action.payload.id ? { ...item, __v: ++item.__v } : item
+          )
+        }
+      } else {
+        return {
+          ...state,
+          constructorBuns: state.constructorBuns,
+          constructorFillings: [ ...state.constructorFillings, action.payload ],
+          ingredients: [...state.ingredients].map(item =>
+            item.id === action.payload.id ? { ...item, __v: ++item.__v } : item
+          )
+        }
+      }
+    }
+    case DELETE_ITEM: {
       return {
         ...state,
-        ingredients: [...state.ingredients, ...state.postponed.filter(ingredient => ingredient.id === action.id)]
-      };
+        constructorFillings: [...state.constructorFillings].filter(item => item.id !== action.id),
+        ingredients: [...state.ingredients].map(item =>
+          item.id === action.id ? { ...item, __v: --item.__v } : item
+        )
+      }
     }
     default: {
       return state;

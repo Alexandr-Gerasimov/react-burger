@@ -19,6 +19,8 @@ export const TAB_SWITCH = 'TAB_SWITCH';
 export const ADD_ITEM = 'ADD_ITEM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 
+export const REFRESH_FILLINGS = 'REFRESH_FILLINGS';
+
 const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
   headers: {

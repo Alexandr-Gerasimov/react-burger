@@ -36,7 +36,7 @@
 }
 
 .list {
-  height: 464px;
+  max-height: 464px;
   margin: 0;
   padding: 0;
   align-items: center;
@@ -108,10 +108,37 @@
 }
 
 .filling {
+  margin-left: 33px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
+  width: 536px;
   background: #1C1C21;
   border-radius: 40px;
+}
+
+.emptyTop {
+  margin-top: 20px;
+  margin-left: 33px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 536px;
+  background: #1C1C21;
+  border-radius: 88px 88px 40px 40px;
+}
+
+.emptyBottom {
+  margin-left: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 536px;
+  background: #1C1C21;
+  border-radius: 40px 40px 88px 88px; 
 }

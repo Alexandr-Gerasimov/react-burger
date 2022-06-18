@@ -10,7 +10,6 @@ import { useDrag } from "react-dnd";
 
 export const Ingredient = ({ set, onClick, id }) => {
   const ingredientCount = set.__v;
-console.log(ingredientCount)
   const [{ opacity }, dragRef] = useDrag({
     type: "bun",
     item: { set },

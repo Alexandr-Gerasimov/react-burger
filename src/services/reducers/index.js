@@ -18,6 +18,7 @@ import {
   DELETE_ITEM,
   INGREDIENT_QUANTITY,
   INGREDIENT_COUNTER,
+  REFRESH_FILLINGS,
 } from "../actions";
 
 const initialState = {
@@ -109,34 +110,48 @@ export const ingredientReducer = (state = initialState, action) => {
       };
     }
     case ADD_ITEM: {
-      if (action.payload.type === 'bun') {
+      if (action.payload.type === "bun") {
         return {
           ...state,
           constructorBuns: action.payload,
-          constructorFillings: [ ...state.constructorFillings ],
-          ingredients: [...state.ingredients].map(item =>
-            item.id === action.payload.id ? { ...item, __v: ++item.__v } : item
-          )
-        }
+          constructorFillings: [...state.constructorFillings],
+          ingredients: [...state.ingredients].map((item) =>
+            item.id === action.payload.id ? { ...item, __v: 1 } : item
+          ),
+        };
       } else {
         return {
           ...state,
           constructorBuns: state.constructorBuns,
-          constructorFillings: [ ...state.constructorFillings, action.payload ],
-          ingredients: [...state.ingredients].map(item =>
+          constructorFillings: [...state.constructorFillings, action.payload],
+          ingredients: [...state.ingredients].map((item) =>
             item.id === action.payload.id ? { ...item, __v: ++item.__v } : item
-          )
-        }
+          ),
+        };
       }
     }
     case DELETE_ITEM: {
       return {
         ...state,
-        constructorFillings: [...state.constructorFillings].filter(item => item.id !== action.id),
-        ingredients: [...state.ingredients].map(item =>
-          item.id === action.id ? { ...item, __v: --item.__v } : item
-        )
-      }
+        constructorFillings: [...state.constructorFillings].filter(
+          (item) => item.id !== action.payload.id
+        ),
+        ingredients: [...state.ingredients].map((item) =>
+          item._id === action.payload._id ? { ...item, __v: --item.__v } : item
+        ),
+      };
+    }
+    case REFRESH_FILLINGS: {
+      const constructorFillings = [...state.constructorFillings];
+      constructorFillings.splice(
+        action.to,
+        0,
+        constructorFillings.splice(action.from, 1)[0]
+      );
+      return {
+        ...state,
+        constructorFillings,
+      };
     }
     default: {
       return state;

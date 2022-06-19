@@ -36,8 +36,8 @@
 }
 
 .list {
-  height: 464px;
-  margin: 0px;
+  max-height: 464px;
+  margin: 0;
   padding: 0;
   align-items: center;
   justify-items: center;
@@ -91,52 +91,70 @@
   align-items: center;
 }
 
-.ingredientTop {
+.topBun {
   display: flex;
-  width: 536px;
+  justify-content: center;
+  align-items: center;
   height: 80px;
-  justify-content: space-between;
-  background: #1c1c21;
+  background: #1C1C21;
   border-radius: 88px 88px 40px 40px;
-  align-items: center;
 }
 
-.ingredientBottom {
-  display: flex;
-  width: 536px;
+.bottomBun {
+  display: block;
   height: 80px;
-  background: #1c1c21;
-  border-radius: 40px 40px 88px 88px;
-  align-items: center;
+  background: #1C1C21;
+  border-radius: 40px 40px 88px 88px; 
 }
 
-.positionImage {
-  width: 80px;
-  height: 40px;
-  margin-left: 24px;
-  margin-right: 20px;
-  border: none;
-}
-
-.positionText {
-  max-width: 254px;
-  height: 48px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  margin-right: 20px;
-  text-align: left;
-}
-
-.positionNumber {
-  margin: 0;
-  font-weight: 400;
-  font-size: 28px;
-  line-height: 24px;
-  margin-right: 8px;
-}
-
-.positionPrice {
+.filling {
+  margin-left: 33px;
+  margin-bottom: 20px;
   display: flex;
-  margin-right: 23px;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 536px;
+  background: #1C1C21;
+  border-radius: 40px;
+}
+
+.emptyTop {
+  margin-top: 20px;
+  margin-left: 33px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 536px;
+  background: #1C1C21;
+  border-radius: 88px 88px 40px 40px;
+}
+
+.emptyBottom {
+  margin-left: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 536px;
+  background: #1C1C21;
+  border-radius: 40px 40px 88px 88px; 
+}
+
+.unactiveButton {
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+font-size: 16px;
+line-height: 1.5;
+font-weight: normal;
+
+width: 215px;
+height: 64px;
+
+background: #2f2f37;
+border-radius: 64px;
 }

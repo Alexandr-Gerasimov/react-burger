@@ -1,22 +1,14 @@
-import React, { useState, useContext, useMemo, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { nanoid } from "nanoid";
 import InView from "@mpth/react-in-view";
 import styles from "./burger-ingredients.module.css";
-import { Ingredient } from "../ingredient/ingredient";
-import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllItems } from "../../services/actions";
-import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
-import { Loader } from "../../ui/loader/loader";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsCategory } from "../ingredients-category/ingredients-category";
 
 export default function BurgerIngredients({ onClick }) {
-  //const ingredients = useContext(BurgerIngredientsContext);
-  const ingredients = useSelector((store) => store.fillings.ingredients);
-  const itemsRequest = useSelector((state) => state.fillings.itemsRequest);
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("bun");
 
@@ -34,10 +26,6 @@ export default function BurgerIngredients({ onClick }) {
     }
   }, [inViewBuns, inViewFilling, inViewSauces]);
 
-  //const bunsRef = useRef(null);
-  //const saucesRef = useRef(null);
-  //const mainsRef = useRef(null);
-
   const onTabClick = (tab) => {
     setCurrentTab(tab);
     console.log(tab);
@@ -49,17 +37,12 @@ export default function BurgerIngredients({ onClick }) {
     dispatch(getAllItems());
   }, []);
 
-
   return (
     <div className={styles.block}>
       <h1 className={styles.title}>Соберите бургер</h1>
       <div className={styles.button_block}>
         <a href="#bun" className={styles.button}>
-          <Tab
-            value="bun"
-            active={currentTab === "bun"}
-            onClick={onTabClick}
-          >
+          <Tab value="bun" active={currentTab === "bun"} onClick={onTabClick}>
             Булки
           </Tab>
         </a>
@@ -73,11 +56,7 @@ export default function BurgerIngredients({ onClick }) {
           </Tab>
         </a>
         <a href="#main" className={styles.button}>
-          <Tab
-            value="main"
-            active={currentTab === "main"}
-            onClick={onTabClick}
-          >
+          <Tab value="main" active={currentTab === "main"} onClick={onTabClick}>
             Начинки
           </Tab>
         </a>
@@ -86,21 +65,21 @@ export default function BurgerIngredients({ onClick }) {
         <div className={styles.section}>
           <IngredientsCategory
             title="Булки"
-            id='bun'
+            id="bun"
             ingredientType="bun"
             ref={bunsRef}
             onClick={onClick}
           />
           <IngredientsCategory
             title="Соусы"
-            id='sauce'
+            id="sauce"
             ingredientType="sauce"
             ref={saucesRef}
             onClick={onClick}
           />
           <IngredientsCategory
             title="Начинки"
-            id='main'
+            id="main"
             ingredientType="main"
             ref={mainsRef}
             onClick={onClick}

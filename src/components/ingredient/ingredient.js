@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from "./ingredient.module.css";
 import {
   CurrencyIcon,
@@ -8,7 +7,7 @@ import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
 
-export const Ingredient = ({ set, onClick, id }) => {
+export const Ingredient = ({ set, onClick }) => {
   const ingredientCount = set.__v;
   const [{ opacity }, dragRef] = useDrag({
     type: "bun",

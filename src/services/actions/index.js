@@ -2,9 +2,6 @@ export const GET_INGREDIENT_LIST_REQUEST = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS = "GET_INGREDIENT_LIST_SUCCESS";
 export const GET_INGREDIENT_LIST_FAILED = "GET_INGREDIENT_LIST_FAILED";
 
-export const CONSTRUCTOR_BUNS = "CONSTRUCTOR_BUNS";
-export const CONSTRUCTOR_FILLINGS = "CONSTRUCTOR_FILLINGS";
-
 export const INGREDIENT_DESCRIPTION_OPENED = "INGREDIENT_DESCRIPTION_OPENED";
 export const INGREDIENT_DESCRIPTION_CLOSED = "INGREDIENT_DESCRIPTION_CLOSED";
 
@@ -14,12 +11,14 @@ export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
 export const ORDER_DETAILS_OPENED = "ORDER_DETAILS_OPENED";
 export const ORDER_DETAILS_CLOSED = "ORDER_DETAILS_CLOSED";
 
-export const TAB_SWITCH = 'TAB_SWITCH';
+export const TAB_SWITCH = "TAB_SWITCH";
 
-export const ADD_ITEM = 'ADD_ITEM';
-export const DELETE_ITEM = 'DELETE_ITEM';
+export const ADD_ITEM = "ADD_ITEM";
+export const DELETE_ITEM = "DELETE_ITEM";
 
-export const REFRESH_FILLINGS = 'REFRESH_FILLINGS';
+export const REFRESH_FILLINGS = "REFRESH_FILLINGS";
+export const NEW_ORDER = "NEW_ORDER";
+
 
 const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
@@ -84,9 +83,12 @@ export function postOrderNumber(ingredientsId) {
           payload: data,
         });
         dispatch({
-            type: ORDER_DETAILS_OPENED,
-            payload: true,
-          });
+          type: ORDER_DETAILS_OPENED,
+          payload: true,
+        });
+        dispatch({
+          type: NEW_ORDER,
+        });
       });
     dispatch({
       type: GET_ORDER_NUMBER_FAILED,
@@ -96,11 +98,9 @@ export function postOrderNumber(ingredientsId) {
 }
 
 export const closeOrderModal = () => ({
-    type: ORDER_DETAILS_CLOSED,
-  });
-  
-  export const openOrderModal = () => ({
-    type: ORDER_DETAILS_OPENED
-  });
+  type: ORDER_DETAILS_CLOSED,
+});
 
-  
+export const openOrderModal = () => ({
+  type: ORDER_DETAILS_OPENED,
+});

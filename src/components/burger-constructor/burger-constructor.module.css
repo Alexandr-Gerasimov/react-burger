@@ -142,3 +142,19 @@
   background: #1C1C21;
   border-radius: 40px 40px 88px 88px; 
 }
+
+.unactiveButton {
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+font-size: 16px;
+line-height: 1.5;
+font-weight: normal;
+
+width: 215px;
+height: 64px;
+
+background: #2f2f37;
+border-radius: 64px;
+}

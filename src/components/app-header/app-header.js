@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BurgerIcon,
   ListIcon,
@@ -6,8 +5,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
 import burgerLogo from "../../images/logo.svg";
-import { ingredientPropType } from "../../utils/prop-types";
-import PropTypes from "prop-types";
 
 export default function AppHeader() {
   const Header = (props) => {
@@ -18,17 +15,19 @@ export default function AppHeader() {
     return <img src={burgerLogo} className={styles.logo} />;
   };
 
-  const Menu = (props) => {
-    return <nav className={styles.nav}>
-      <button className={styles.button} type="button">
-        <BurgerIcon type="secondary" />
-        <p className={styles.text}>Конструктор</p>
-      </button>
-      <button className={styles.button} type="button">
-        <ListIcon type="secondary" />
-        <p className={styles.text}>Лента заказов</p>
-      </button>
-      </nav>;
+  const Menu = () => {
+    return (
+      <nav className={styles.nav}>
+        <button className={styles.button} type="button">
+          <BurgerIcon type="secondary" />
+          <p className={styles.text}>Конструктор</p>
+        </button>
+        <button className={styles.button} type="button">
+          <ListIcon type="secondary" />
+          <p className={styles.text}>Лента заказов</p>
+        </button>
+      </nav>
+    );
   };
 
   const MenuItem = () => {
@@ -50,4 +49,3 @@ export default function AppHeader() {
     </>
   );
 }
-

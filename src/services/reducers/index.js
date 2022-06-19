@@ -1,11 +1,8 @@
 import { combineReducers } from "redux";
-import React, { useState, useEffect } from "react";
 import {
   GET_INGREDIENT_LIST_REQUEST,
   GET_INGREDIENT_LIST_SUCCESS,
   GET_INGREDIENT_LIST_FAILED,
-  CONSTRUCTOR_BUNS,
-  CONSTRUCTOR_FILLINGS,
   INGREDIENT_DESCRIPTION_OPENED,
   INGREDIENT_DESCRIPTION_CLOSED,
   GET_ORDER_NUMBER_REQUEST,
@@ -16,9 +13,8 @@ import {
   TAB_SWITCH,
   ADD_ITEM,
   DELETE_ITEM,
-  INGREDIENT_QUANTITY,
-  INGREDIENT_COUNTER,
   REFRESH_FILLINGS,
+  NEW_ORDER,
 } from "../actions";
 
 const initialState = {
@@ -116,7 +112,7 @@ export const ingredientReducer = (state = initialState, action) => {
           constructorBuns: action.payload,
           constructorFillings: [...state.constructorFillings],
           ingredients: [...state.ingredients].map((item) =>
-            item.id === action.payload.id ? { ...item, __v: 1 } : item
+            item._id === action.payload._id ? { ...item, __v: 1 } : item
           ),
         };
       } else {
@@ -125,7 +121,9 @@ export const ingredientReducer = (state = initialState, action) => {
           constructorBuns: state.constructorBuns,
           constructorFillings: [...state.constructorFillings, action.payload],
           ingredients: [...state.ingredients].map((item) =>
-            item.id === action.payload.id ? { ...item, __v: ++item.__v } : item
+            item._id === action.payload._id
+              ? { ...item, __v: ++item.__v }
+              : item
           ),
         };
       }
@@ -152,6 +150,16 @@ export const ingredientReducer = (state = initialState, action) => {
         ...state,
         constructorFillings,
       };
+    }
+    case NEW_ORDER: {
+      return {
+        ...state,
+        constructorBuns: null,
+        constructorFillings: [],
+        ingredients: [...state.ingredients].map((item) =>
+        item.__v !== null ? { ...item, __v: 0 } : item
+      ),
+      }
     }
     default: {
       return state;

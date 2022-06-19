@@ -1,22 +1,13 @@
-import React, { useContext, useMemo, useRef, useCallback } from "react";
+import React, { useRef } from "react";
 import styles from "./burger-constructor.module.css";
-import update from "immutability-helper";
 import {
   ConstructorElement,
-  Button,
   DragIcon,
-  CurrencyIcon,
-  DeleteIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ingredientPropType } from "../../utils/prop-types";
-import PropTypes from "prop-types";
-import { BurgerIngredientsContext } from "../../context/burger-ingredients-context";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop, useDrag } from "react-dnd";
-import { ADD_ITEM, DELETE_ITEM } from "../../services/actions";
 
 export const ConstructorCard = ({ components, index, moveCard, onDelete }) => {
-const id = components.id
+  const id = components.id;
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "fillings",
@@ -31,8 +22,6 @@ const id = components.id
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      console.log(dragIndex)
-      console.log(hoverIndex)
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -64,7 +53,7 @@ const id = components.id
   drag(drop(ref));
 
   return (
-    <React.Fragment key={(components._id)}>
+    <React.Fragment>
       <li ref={ref} className={styles.position} data-handler-id={handlerId}>
         <DragIcon type="primary" />
         <div className={styles.ingredient}>

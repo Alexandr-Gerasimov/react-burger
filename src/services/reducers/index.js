@@ -16,6 +16,7 @@ import {
   REFRESH_FILLINGS,
   NEW_ORDER,
 } from "../actions";
+import { profileReducer } from "./profile";
 
 const initialState = {
   ingredients: [],
@@ -169,4 +170,5 @@ export const ingredientReducer = (state = initialState, action) => {
 
 export const rootReducer = combineReducers({
   fillings: ingredientReducer,
+  profile: profileReducer,
 });

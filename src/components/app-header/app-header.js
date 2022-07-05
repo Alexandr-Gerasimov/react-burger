@@ -1,3 +1,4 @@
+import { Redirect, Link, NavLink } from "react-router-dom";
 import {
   BurgerIcon,
   ListIcon,
@@ -20,11 +21,11 @@ export default function AppHeader() {
       <nav className={styles.nav}>
         <button className={styles.button} type="button">
           <BurgerIcon type="secondary" />
-          <p className={styles.text}>Конструктор</p>
+          <NavLink to="/" activeClassName={styles.activeText} className={styles.text} exact={true}>Конструктор</NavLink>
         </button>
         <button className={styles.button} type="button">
           <ListIcon type="secondary" />
-          <p className={styles.text}>Лента заказов</p>
+          <NavLink to="/orders" activeClassName={styles.activeText} className={styles.text}>Лента заказов</NavLink>
         </button>
       </nav>
     );
@@ -34,7 +35,7 @@ export default function AppHeader() {
     return (
       <button className={styles.private} type="button">
         <ProfileIcon type="secondary" />
-        <p className={styles.text}>Личный кабинет</p>
+        <NavLink to="/profile" activeClassName={styles.activeText} className={styles.text}>Личный кабинет</NavLink>
       </button>
     );
   };

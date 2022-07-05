@@ -38,11 +38,27 @@
 }
 
 .text {
+  text-decoration: none;
   margin-left: 9px;
   font-family: "Jet Brains Mono";
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+  color: #8585AD
+}
+
+.activeText {
+  text-decoration: none;
+  margin-left: 9px;
+  font-family: "Jet Brains Mono";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff
+}
+
+.text:active {
+  color: #fff
 }
 
 .private {

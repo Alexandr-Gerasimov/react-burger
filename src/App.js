@@ -17,14 +17,11 @@ import { useAuth } from "./services/auth";
 export default function App() {
   const auth = useAuth();
 
-  const init = async () => {
-    await auth.getUser();
-  };
 
   const dispatch = useDispatch()
   useEffect(() => {
     if (getCookie("token")) {
-      init()
+      auth.getUser()
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => {

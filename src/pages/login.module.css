@@ -73,6 +73,8 @@
   line-height: 30px;
   color: #8585ad;
   align-items: center;
+  border: none;
+  background-color: #131316;
 }
 
 .activeNav {
@@ -112,4 +114,19 @@
 
 .navForm div {
   width: fill;
+}
+
+.profileButtons {
+  display: flex;
+  justify-content: right;
+}
+
+.cancelButton {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4C4CFF;
+  border: none;
+  background-color: #131316;
+  margin-right: 28px;
 }

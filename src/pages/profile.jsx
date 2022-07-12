@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Redirect, Link, NavLink } from "react-router-dom";
+import { Redirect, Link, NavLink, useHistory } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
@@ -7,13 +7,35 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getUserRequest } from "../services/api";
+import { useAuth } from "../services/auth";
+import { getCookie } from "../services/utils";
+
 export function ProfilePage() {
-  const [reg, setValue] = React.useState({ name: "", email: "", password: "" });
+  const auth = useAuth();
+  const [reg, setValue] = React.useState({ name: auth.user.name, email: auth.user.email, password: auth.password });
   const inputRef = React.useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
-  };
+  const history = useHistory();
+  
+  console.log(auth)
+  console.log(getCookie("token"))
+
+  const logout = useCallback(
+    () => {
+      auth.signOut().then(() => {
+        history.replace({ pathname: '/login' });
+      });
+    },
+    [auth, history]
+  );
+
+  console.log(reg.name)
+
+  const cancelChanges = (e) => {
+    setValue({ name: auth.user.name, email: auth.user.email, password: auth.password });
+  }
+
+  const refreshUs = auth.refreshUser(reg.name, reg.email)
 
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
@@ -25,7 +47,7 @@ export function ProfilePage() {
         <nav className={styles.navMenu}>
           <NavLink to='/profile' activeClassName={styles.activeNav} className={styles.nav} exact>Профиль</NavLink>
           <NavLink to='/profile/orders' activeClassName={styles.activeNav} className={styles.nav}>История заказов</NavLink>
-          <NavLink to='/' className={styles.nav}>Выход</NavLink>
+          <button onClick={logout} className={styles.nav}>Выход</button>
           <p className={styles.caption}>В этом разделе вы можете изменить свои персональные данные</p>
         </nav>
         <div className={styles.redAccount}>
@@ -63,6 +85,10 @@ export function ProfilePage() {
               ref={inputRef}
               size={"default"}
             />
+            <div className={styles.profileButtons}>
+            <button className={styles.cancelButton} onClick={cancelChanges}>Отмена</button>
+            <Button onSubmit={refreshUs}>Сохранить</Button>
+            </div>
           </form>
         </div>
       </div>

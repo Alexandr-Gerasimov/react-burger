@@ -14,6 +14,7 @@ import {
   GET_USER_PROFILE_FAILED,
 } from "../services/actions/profile";
 import { newUserRequest } from "../services/api";
+import { setCookie } from "../services/utils";
 
 export function RegisterPage() {
   const [reg, setValue] = React.useState({ name: "", email: "", password: "" });
@@ -30,7 +31,18 @@ export function RegisterPage() {
 
   const postEmail = async (name, email, password) => {
     return await newUserRequest(name, email, password)
-      .then((res) => res.json())
+    .then(res => {
+      let authToken;
+      res.headers.forEach(header => {
+        if (header.indexOf('Bearer') === 0) {
+        authToken = header.split('Bearer')[1];
+      }
+    })
+      if (authToken) {
+        setCookie('token', authToken)
+      }
+      return res.json()
+    })
       .then((data) => newUser(data));
   };
 
@@ -47,7 +59,7 @@ export function RegisterPage() {
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
-  
+
   return (
     <div className={styles.wrapper}>
       <AppHeader />

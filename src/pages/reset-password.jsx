@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
@@ -8,35 +8,69 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetPasswordRequest } from "../services/api";
+import { useAuth } from "../services/auth";
+import { useSelector } from "react-redux";
 
-export function ResetPage() {
+export function ResetPage() { 
+  const auth = useAuth();
   const [form, setValue] = useState({ password: '', code: '' });
+  const [success, setSuccess] = React.useState()
   const inputRef = React.useRef(null);
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0);
-    alert("Icon Click Callback");
+  const emailSending = useSelector((store) => store.profile.emailSending);
+
+  console.log(emailSending)
+
+  const init = async () => {
+    return await auth.getUser();
   };
-  console.log(form.password)
+
+  useEffect(() => {
+    init()
+  }, []);
+
+  if (!emailSending) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/",
+        }}
+      />
+    );
+  }
+
+  if (auth.user) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/",
+        }}
+      />
+    );
+  }
+  
   const getResponseData = (res) => {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   };
 
-  const resetPassword = async (password) => {
-    return await resetPasswordRequest(password)
+  const resetPassword = async (password, token) => {
+    return await resetPasswordRequest(password, token)
       .then(getResponseData)
       .then(res => {
-        if (res.success === true) {
-            return (
-              <Redirect
-                to={{
-                  path: "/reset-password"
-                }}
-              />
-            );
+        if (res.success) {
+          return setSuccess(true)
           }
-        console.log(res.success)
-      });
+      })
   };
+
+  if (success) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/login"
+        }}
+      />
+    );
+  }
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -53,13 +87,13 @@ export function ResetPage() {
             placeholder={"Введите код из письма"}
             onChange={onChange}
             value={form.code}
-            name={"name"}
+            name={"code"}
             error={false}
             ref={inputRef}
             size={"default"}
           />
         </form>
-        <Button type="primary" size="medium" onClick={() => resetPassword(form.password)}>
+        <Button type="primary" size="medium" onClick={() => resetPassword(form.password, form.code)}>
           Сохранить
         </Button>
         <p>

@@ -13,42 +13,65 @@ import { getCookie } from "../services/utils";
 
 export function ProfilePage() {
   const auth = useAuth();
-  const [reg, setValue] = React.useState({ name: auth.user.name, email: auth.user.email, password: auth.password });
+  const [reg, setValue] = React.useState({
+    name: auth.user.name,
+    email: auth.user.email,
+    password: auth.password,
+  });
+  const [click, setClick] = React.useState(false)
   const inputRef = React.useRef(null);
   const history = useHistory();
-  
-  console.log(auth)
-  console.log(getCookie("token"))
 
-  const logout = useCallback(
-    () => {
-      auth.signOut().then(() => {
-        history.replace({ pathname: '/login' });
-      });
-    },
-    [auth, history]
-  );
+  console.log(auth.getUser);
 
-  console.log(reg.name)
+  const logout = useCallback(() => {
+    auth.signOut().then(() => {
+      history.replace({ pathname: "/login" });
+    });
+  }, [auth, history]);
+
+  console.log(reg.name);
 
   const cancelChanges = (e) => {
-    setValue({ name: auth.user.name, email: auth.user.email, password: auth.password });
-  }
+    e.preventDefault();
+    setValue({ name: auth.user.name, email: auth.user.email });
+  };
 
-  const refreshUs = auth.refreshUser(reg.name, reg.email)
+  const refreshUs = (name, email) => {
+    return auth.refreshUser(name, email);
+  };
 
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
+
+
   return (
     <div className={styles.wrapper}>
       <AppHeader />
       <div className={styles.account}>
         <nav className={styles.navMenu}>
-          <NavLink to='/profile' activeClassName={styles.activeNav} className={styles.nav} exact>Профиль</NavLink>
-          <NavLink to='/profile/orders' activeClassName={styles.activeNav} className={styles.nav}>История заказов</NavLink>
-          <button onClick={logout} className={styles.nav}>Выход</button>
-          <p className={styles.caption}>В этом разделе вы можете изменить свои персональные данные</p>
+          <NavLink
+            to="/profile"
+            activeClassName={styles.activeNav}
+            className={styles.nav}
+            exact
+          >
+            Профиль
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            activeClassName={styles.activeNav}
+            className={styles.nav}
+          >
+            История заказов
+          </NavLink>
+          <button onClick={logout} className={styles.nav}>
+            Выход
+          </button>
+          <p className={styles.caption}>
+            В этом разделе вы можете изменить свои персональные данные
+          </p>
         </nav>
         <div className={styles.redAccount}>
           <form className={styles.navForm}>
@@ -86,8 +109,12 @@ export function ProfilePage() {
               size={"default"}
             />
             <div className={styles.profileButtons}>
-            <button className={styles.cancelButton} onClick={cancelChanges}>Отмена</button>
-            <Button onSubmit={refreshUs}>Сохранить</Button>
+              <button className={styles.cancelButton} onClick={cancelChanges}>
+                Отмена
+              </button>
+              <Button onSubmit={refreshUs(reg.name, reg.email)}>
+                Сохранить
+              </Button>
             </div>
           </form>
         </div>

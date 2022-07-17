@@ -2,6 +2,7 @@ import styles from "./ingredient-details.module.css";
 import { ingredientPropType } from "../../utils/prop-types";
 
 const IngredientDetails = ({ component }) => {
+  console.log(component)
   return (
     <div className={styles.ingredientDetails}>
       <h1 className={styles.ingredientTitle}>Детали ингредиента</h1>

@@ -1,9 +1,9 @@
 import {
-  GET_USER_PROFILE_REQUEST,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_FAILED,
   LOG_USER_PROFILE_SUCCESS,
   AUTH_CHECKED,
+  EMAIL_SENDING,
 } from "../actions/profile";
 
 const initialState = {
@@ -13,7 +13,8 @@ const initialState = {
   refreshToken: "",
   registrationFailed: false,
 
-  isAuthChecked: false
+  isAuthChecked: false,
+  emailSending: false
 };
 
 console.log(initialState);
@@ -47,6 +48,12 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthChecked: action.payload,
+      }
+    case EMAIL_SENDING:
+      console.log(action.payload)
+      return{
+        ...state,
+        emailSending: action.payload,
       }
     default: {
       return state;

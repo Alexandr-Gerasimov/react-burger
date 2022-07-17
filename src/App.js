@@ -8,6 +8,7 @@ import { ProfilePage } from "./pages/profile";
 import { ProfileOrdersPage } from "./pages/orders";
 import { ProvideAuth } from "./services/auth";
 import { ProtectedRoute } from "./services/protected-route";
+import IngredientDetails from "./components/ingredient-details/ingredietn-details"
 import { AUTH_CHECKED } from "./services/actions/profile";
 import { getCookie } from "./services/utils";
 import { useEffect } from "react";
@@ -17,11 +18,14 @@ import { useAuth } from "./services/auth";
 export default function App() {
   const auth = useAuth();
 
+  const init = async () => {
+    return await auth.getUser();
+  };
 
   const dispatch = useDispatch()
   useEffect(() => {
     if (getCookie("token")) {
-      auth.getUser()
+      init()
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => {
@@ -57,7 +61,9 @@ export default function App() {
           <ProtectedRoute path="/profile/orders" exact={true}>
             <ProfileOrdersPage />
           </ProtectedRoute>
-          <Route path={`/ingredients/:id`} exact={true}></Route>
+          <Route path={`/ingredients/:id`} exact={true}>
+            <IngredientDetails />
+          </Route>
           <Route></Route>
         </Switch>
       </Router>

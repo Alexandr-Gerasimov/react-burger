@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
@@ -9,14 +9,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-  GET_USER_PROFILE_REQUEST,
   GET_USER_PROFILE_SUCCESS,
-  GET_USER_PROFILE_FAILED,
 } from "../services/actions/profile";
 import { newUserRequest } from "../services/api";
 import { setCookie } from "../services/utils";
+import { useAuth } from "../services/auth";
 
 export function RegisterPage() {
+  const auth = useAuth();
   const [reg, setValue] = React.useState({ name: "", email: "", password: "" });
   const inputRef = React.useRef(null);
   const registrationSuccess = useSelector((store) => store.profile.registrationSuccess);
@@ -28,6 +28,14 @@ export function RegisterPage() {
       data,
     });
   };
+
+  const init = async () => {
+    return await auth.getUser();
+  };
+
+  useEffect(() => {
+    init()
+  }, []);
 
   const postEmail = async (name, email, password) => {
     return await newUserRequest(name, email, password)
@@ -46,11 +54,11 @@ export function RegisterPage() {
       .then((data) => newUser(data));
   };
 
-  if (registrationSuccess) {
+  if (auth.user) {
     return (
       <Redirect
         to={{
-          path: "/",
+          pathname: "/",
         }}
       />
     );

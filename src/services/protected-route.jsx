@@ -11,11 +11,13 @@ export function ProtectedRoute({ children, ...rest }) {
     setUserLoaded(true);
   };
 
-  console.log(isUserLoaded)
-
   useEffect(() => {
     init();
   }, []);
+
+  if (!isUserLoaded) {
+    return null;
+  }
 
   return (
     <Route

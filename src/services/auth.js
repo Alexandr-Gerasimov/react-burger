@@ -21,13 +21,10 @@ export function useProvideAuth() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
 
-  console.log(user);
-
   const getUser = async () => {
     return await getUserRequest()
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.success) {
           setUser(data.user);
         } else {
@@ -41,7 +38,6 @@ export function useProvideAuth() {
     return await patchUserRequest(name, email)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         return data.success;
       });
   };
@@ -50,7 +46,6 @@ export function useProvideAuth() {
     const data = await loginRequest(form)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
           data,

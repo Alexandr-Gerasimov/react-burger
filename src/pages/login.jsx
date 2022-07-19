@@ -30,7 +30,7 @@ export function LoginPage() {
     return (
       <Redirect
         to={{
-          path: "/",
+          pathname: "/",
         }}
       />
     );

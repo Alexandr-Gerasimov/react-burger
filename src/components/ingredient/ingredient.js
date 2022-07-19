@@ -6,6 +6,7 @@ import {
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
+import { setCookie } from "../../services/utils";
 
 export const Ingredient = ({ set, onClick }) => {
   const ingredientCount = set.__v;
@@ -16,6 +17,7 @@ export const Ingredient = ({ set, onClick }) => {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
+
 
   return (
     <>

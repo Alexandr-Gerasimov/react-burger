@@ -3,6 +3,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export function ProtectedRoute({ children, ...rest }) {
+  console.log(children)
   let { getUser, ...auth } = useAuth();
   const [isUserLoaded, setUserLoaded] = useState(false);
 

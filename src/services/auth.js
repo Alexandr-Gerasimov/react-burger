@@ -4,12 +4,12 @@ import React from "react";
 import { loginRequest, getUserRequest, logoutRequest, resetPasswordRequest, patchUserRequest, refreshRequest } from "./api";
 import { useDispatch } from "react-redux";
 import { GET_USER_PROFILE_SUCCESS } from "./actions/profile";
+import { Redirect, useHistory, useLocation } from "react-router-dom"
 
 const AuthContext = createContext(undefined);
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
-
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
@@ -20,8 +20,13 @@ export function useAuth() {
 export function useProvideAuth() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
+  const location = useLocation();
+  const background = location.state?.background;
+  const history = useHistory();
+  console.log(location)
+  console.log(background)
+  console.log(history)
 
-  console.log(user);
 
   const getUser = async () => {
     return await getUserRequest()
@@ -31,7 +36,29 @@ export function useProvideAuth() {
         if (data.success) {
           setUser(data.user);
         } else {
-          refreshRequest(getCookie("refreshToken"))
+          refreshRequest((getCookie("refreshToken")))
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data)
+              dispatch({
+                type: GET_USER_PROFILE_SUCCESS,
+                data,
+              });
+              let authToken;
+              authToken = data.accessToken.split("Bearer ")[1];
+              if (authToken) {
+                setCookie("token", authToken);
+                setCookie("refreshToken", data.refreshToken)
+              }
+              if (data.success) {
+                  setUser(data.user)
+                  return (
+                    <Redirect
+                      to={history.goBack()}
+                    />
+                  );
+                }
+            });
         }
         return data.success;
       });
@@ -41,7 +68,6 @@ export function useProvideAuth() {
     return await patchUserRequest(name, email)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         return data.success;
       });
   };
@@ -50,7 +76,6 @@ export function useProvideAuth() {
     const data = await loginRequest(form)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
           data,
@@ -70,11 +95,8 @@ export function useProvideAuth() {
   };
 
   const signOut = async () => {
-    // Отправляем запрос на сервер
     await logoutRequest();
-    // Удаляем пользователя из хранилища
     setUser(null);
-    // Удаляем куку token
     deleteCookie("token");
   };
 

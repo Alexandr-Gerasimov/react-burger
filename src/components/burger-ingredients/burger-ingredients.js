@@ -33,9 +33,6 @@ export default function BurgerIngredients({ onClick }) {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    dispatch(getAllItems());
-  }, []);
 
   return (
     <div className={styles.block}>

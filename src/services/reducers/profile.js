@@ -16,7 +16,6 @@ const initialState = {
   isAuthChecked: false
 };
 
-console.log(initialState);
 
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {

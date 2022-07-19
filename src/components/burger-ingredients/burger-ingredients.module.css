@@ -70,3 +70,8 @@
   align-items: center;
   justify-items: center;
 }
+
+.link {
+  text-decoration: none;
+  color: #fff;
+}

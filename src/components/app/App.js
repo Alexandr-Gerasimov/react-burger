@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./App.module.css";
@@ -9,7 +16,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   closeIngredientModals,
   onIngredientClick,
@@ -17,13 +24,19 @@ import {
   postOrderNumber,
 } from "../../services/actions";
 import { Loader } from "../../ui/loader/loader";
+import { useAuth } from "../../services/auth";
+import { setCookie } from "../../services/utils";
 
 const App = () => {
   const ingredients = useSelector((store) => store.fillings.ingredients);
   const ingredientsModal = useSelector(
     (state) => state.fillings.ingredientsModal
   );
+  const auth = useAuth();
+
   const ingredient = useSelector((store) => store.fillings.ingredient);
+  
+  const id = ingredient.id
   const orderDetails = useSelector((store) => store.fillings.orderDetails);
   const orderDetailsModal = useSelector(
     (store) => store.fillings.orderDetailsModal
@@ -34,13 +47,12 @@ const App = () => {
   const dispatch = useDispatch();
 
   const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+  const [login, setLogin] = useState(false);
+
 
   const componentClick = (component) => {
     dispatch(onIngredientClick(component));
-  };
-
-  const orderButtonClick = () => {
-    dispatch(postOrderNumber(ingredientsId));
+    localStorage.setItem("ingredient", JSON.stringify(component))
   };
 
   const closeIngredientModal = () => {
@@ -51,34 +63,43 @@ const App = () => {
     dispatch(closeOrderModal());
   };
 
-  const content = useMemo(
-    () => {
-      return orderDetailsRequest ? (
-        <Loader size="large" />
-      ) : (
-        <Modal onClick={closeOrderModals}>
-          <OrderDetails orderNumber={orderDetails} />
-        </Modal>
-      );
-    },
-    [orderDetailsRequest, orderDetails]
-  );
+  const content = useMemo(() => {
+    return orderDetailsRequest ? (
+      <Loader size="large" />
+    ) : (
+      <Modal onClick={closeOrderModals}>
+        <OrderDetails orderNumber={orderDetails} />
+      </Modal>
+    );
+  }, [orderDetailsRequest, orderDetails]);
+
+  const OrderButtonClick = () => {
+    if (auth.user) {
+      dispatch(postOrderNumber(ingredientsId));
+    } else {
+      setLogin(true);
+    }
+  };
+
+  if (login) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+        }}
+      />
+    );
+  }
 
   return (
     <div className={styles.App}>
       <DndProvider backend={HTML5Backend}>
         <AppHeader />
         <main className={styles.main}>
-          <BurgerIngredients onClick={componentClick} />
-          <BurgerConstructor onClick={orderButtonClick} />
+          <BurgerIngredients onClick={componentClick}/>
+          <BurgerConstructor onClick={OrderButtonClick} />
         </main>
-        {ingredientsModal && (
-          <Modal onClick={closeIngredientModal}>
-            <IngredientDetails component={ingredient} />
-          </Modal>
-        )}
-        {orderDetailsModal && (content
-        )}
+        {orderDetailsModal && content}
       </DndProvider>
     </div>
   );

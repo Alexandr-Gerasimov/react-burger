@@ -8,7 +8,6 @@ const config = {
 };
 
 export const resetRequest = async (email) => {
-  console.log(email);
   return await fetch(`${config.baseUrl}/password-reset`, {
     method: "POST",
     mode: "cors",
@@ -40,7 +39,8 @@ export const loginRequest = async (form) => {
 };
 
 export const resetPasswordRequest = async (password, token) => {
-  console.log(password);
+  console.log(password)
+  console.log(token)
   return await fetch(`${config.baseUrl}/password-reset/reset`, {
     method: "POST",
     mode: "cors",
@@ -57,9 +57,6 @@ export const resetPasswordRequest = async (password, token) => {
 };
 
 export const newUserRequest = async (name, email, password) => {
-  console.log(password);
-  console.log(password);
-  console.log(password);
   return await fetch(`${config.baseUrl}/auth/register`, {
     method: "POST",
     mode: "cors",

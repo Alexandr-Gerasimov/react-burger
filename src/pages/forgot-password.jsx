@@ -1,42 +1,74 @@
-import React, { useCallback, useState } from "react";
+import React, { useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { loginRequest } from '../services/api'
+import { resetRequest } from '../services/api'
+import { useAuth } from "../services/auth";
+import { useDispatch } from "react-redux";
+import { EMAIL_SENDING } from "../services/actions/profile"
 
 export function ForgotPage() {
-
+  const auth = useAuth();
+  const [reset, setReset] = React.useState()
+  const [value, setValue] = React.useState({ email: '' });
+  console.log(value)
+  const inputRef = React.useRef(null);
+  const dispatch = useDispatch()
 
   const getResponseData = (res) => {
     return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
   };
 
-  const postEmail = async (email) => {
-    return await loginRequest(email)
-      .then(getResponseData)
-      .then(res => {
-        if (res.success === true) {
-            return (
-              <Redirect
-                to={{
-                  path: "/reset-password"
-                }}
-              />
-            );
-          }
-        console.log(res.success)
-      });
+  const init = async () => {
+    return await auth.getUser();
   };
 
+  useEffect(() => {
+    init()
+  }, []);
 
-  const [value, setValue] = React.useState({ email: '' });
-  console.log(value)
-  const inputRef = React.useRef(null);
+  if (auth.user) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/",
+        }}
+      />
+    );
+  }
+
+  const postEmail = async (email) => {
+    return await resetRequest(email)
+      .then(getResponseData)
+      .then(res => {
+        if (res.success) {
+          dispatch({
+            type: EMAIL_SENDING,
+            payload: true
+          })
+        return setReset(true)
+        }
+      });
+  };
+  console.log(reset)
+
+  if (reset) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/reset-password",
+        }}
+      />
+    );
+  }
+
+console.log(reset)
+
+  
   return (
     <div className={styles.wrapper}>
       <AppHeader />

@@ -27,12 +27,10 @@ export function useProvideAuth() {
   console.log(background)
   console.log(history)
 
-
   const getUser = async () => {
     return await getUserRequest()
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.success) {
           setUser(data.user);
         } else {

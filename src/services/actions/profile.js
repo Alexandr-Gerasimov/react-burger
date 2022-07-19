@@ -8,6 +8,7 @@ export const GET_USER_PROFILE_FAILED = "GET_USER_PROFILE_FAILED";
 export const LOG_USER_PROFILE_SUCCESS = "LOG_USER_PROFILE_SUCCESS";
 
 export const AUTH_CHECKED = "AUTH_CHECKED";
+export const EMAIL_SENDING = "EMAIL_SENDING";
 
 const config = {
   baseUrl: "https://norma.nomoreparties.space/api",

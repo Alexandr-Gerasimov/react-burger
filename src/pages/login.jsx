@@ -1,22 +1,19 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Input,
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { LOG_USER_PROFILE_SUCCESS } from "../services/actions/profile";
-import { loginRequest } from "../services/api";
-import { setCookie } from "../services/utils";
 import { useAuth } from "../services/auth";
 
 export function LoginPage() {
+  const auth = useAuth();
   const [log, setValue] = React.useState({ email: "", password: "" });
   const inputRef = React.useRef(null);
-  const auth = useAuth();
+  
 
   let login = useCallback(
     e => {
@@ -25,6 +22,16 @@ export function LoginPage() {
     },
     [auth, log]
   );
+
+  const init = async () => {
+    return await auth.getUser();
+  };
+
+  useEffect(() => {
+    init()
+  }, []);
+
+  console.log(auth)
 
   if (auth.user) {
     return (

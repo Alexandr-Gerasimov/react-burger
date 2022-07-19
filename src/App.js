@@ -15,13 +15,13 @@ import { ProfilePage } from "./pages/profile";
 import { ProfileOrdersPage } from "./pages/orders";
 import { ProvideAuth } from "./services/auth";
 import { ProtectedRoute } from "./services/protected-route";
+import IngredientDetails from "./components/ingredient-details/ingredietn-details"
 import { AUTH_CHECKED } from "./services/actions/profile";
 import { getCookie } from "./services/utils";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "./services/auth";
 import Modal from "./components/modal/modal";
-import IngredientDetails from "./components/ingredient-details/ingredietn-details";
 import { closeIngredientModals, getAllItems } from "./services/actions";
 import { setCookie } from "./services/utils";
 
@@ -35,7 +35,7 @@ export default function App() {
     (state) => state.fillings.ingredientsModal
   );
   const init = async () => {
-    await auth.getUser();
+    return await auth.getUser();
   };
 
   const dispatch = useDispatch();

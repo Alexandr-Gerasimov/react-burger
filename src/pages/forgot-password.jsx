@@ -1,35 +1,31 @@
 import React, { useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
-import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { resetRequest } from '../services/api'
+import { resetRequest } from "../services/api";
 import { useAuth } from "../services/auth";
 import { useDispatch } from "react-redux";
-import { EMAIL_SENDING } from "../services/actions/profile"
+import { EMAIL_SENDING } from "../services/actions/profile";
+import { getResponseData } from "../services/api";
 
 export function ForgotPage() {
   const auth = useAuth();
-  const [reset, setReset] = React.useState()
-  const [value, setValue] = React.useState({ email: '' });
-  console.log(value)
+  const [reset, setReset] = React.useState();
+  const [value, setValue] = React.useState({ email: "" });
+  console.log(value);
   const inputRef = React.useRef(null);
-  const dispatch = useDispatch()
-
-  const getResponseData = (res) => {
-    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-  };
+  const dispatch = useDispatch();
 
   const init = async () => {
     return await auth.getUser();
   };
 
   useEffect(() => {
-    init()
-  }, []);
+    init();
+  });
 
   if (auth.user) {
     return (
@@ -44,17 +40,18 @@ export function ForgotPage() {
   const postEmail = async (email) => {
     return await resetRequest(email)
       .then(getResponseData)
-      .then(res => {
+      .then((res) => {
         if (res.success) {
           dispatch({
             type: EMAIL_SENDING,
-            payload: true
-          })
-        return setReset(true)
+            payload: true,
+          });
+          return setReset(true);
         }
-      });
+      })
+      .catch((err) => console.log(err));
   };
-  console.log(reset)
+  console.log(reset);
 
   if (reset) {
     return (
@@ -66,15 +63,13 @@ export function ForgotPage() {
     );
   }
 
-console.log(reset)
+  console.log(reset);
 
-  
   return (
     <div className={styles.wrapper}>
-      <AppHeader />
       <div className={styles.container}>
         <h2 className={styles.header}>Восстановление пароля</h2>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={() => postEmail(value)}>
           <Input
             type={"email"}
             placeholder={"Укажите e-mail"}
@@ -85,10 +80,13 @@ console.log(reset)
             ref={inputRef}
             size={"default"}
           />
+          <div className={styles.loginButton}>
+            <Button type="primary" size="medium">
+              Восстановить
+            </Button>
+          </div>
         </form>
-        <Button onClick={() => postEmail(value)} type="primary" size="medium">
-          Восстановить
-        </Button>
+
         <p>
           Вспомнили пароль? <Link to="/login">Войти</Link>
         </p>

@@ -1,5 +1,7 @@
 import { newUserRequest } from "../api";
 import { useState } from "react";
+import { config } from "../api";
+import { getResponseData } from "../api";
 
 export const GET_USER_PROFILE_REQUEST = "REGISTRATION_REQUEST";
 export const GET_USER_PROFILE_SUCCESS = "GET_USER_PROFILE_SUCCESS";
@@ -9,17 +11,6 @@ export const LOG_USER_PROFILE_SUCCESS = "LOG_USER_PROFILE_SUCCESS";
 
 export const AUTH_CHECKED = "AUTH_CHECKED";
 export const EMAIL_SENDING = "EMAIL_SENDING";
-
-const config = {
-  baseUrl: "https://norma.nomoreparties.space/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-
-const getResponseData = (res) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-};
 
 export function useAllItems() {
   const [user, setUser] = useState(null);
@@ -44,7 +35,8 @@ export function useAllItems() {
           type: GET_USER_PROFILE_SUCCESS,
           payload: res.data,
         });
-      });
+      })
+      .catch((err) => console.log(err));
     dispatch({
       type: GET_USER_PROFILE_FAILED,
       payload: false,

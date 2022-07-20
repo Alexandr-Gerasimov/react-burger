@@ -1,10 +1,16 @@
 import { useContext, useState, createContext } from "react";
-import { deleteCookie, getCookie, setCookie } from "./utils";
-import React from "react";
-import { loginRequest, getUserRequest, logoutRequest, resetPasswordRequest, patchUserRequest, refreshRequest } from "./api";
+import { deleteCookie, setCookie } from "./utils";
+import {
+  loginRequest,
+  getUserRequest,
+  logoutRequest,
+  patchUserRequest,
+  refreshRequest,
+} from "./api";
 import { useDispatch } from "react-redux";
 import { GET_USER_PROFILE_SUCCESS } from "./actions/profile";
-import { Redirect, useHistory, useLocation } from "react-router-dom"
+import { Redirect, useHistory, useLocation } from "react-router-dom";
+import { getResponseData } from "./api";
 
 const AuthContext = createContext(undefined);
 
@@ -21,58 +27,56 @@ export function useProvideAuth() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const location = useLocation();
+  localStorage.setItem("lastAddress", JSON.stringify(location.state))
   const background = location.state?.background;
   const history = useHistory();
-  console.log(location)
-  console.log(background)
-  console.log(history)
+  console.log(location.state);
+  console.log(background);
+  console.log(history);
 
   const getUser = async () => {
-    return await getUserRequest()
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setUser(data.user);
-        } else {
-          refreshRequest((getCookie("refreshToken")))
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data)
-              dispatch({
-                type: GET_USER_PROFILE_SUCCESS,
-                data,
-              });
-              let authToken;
-              authToken = data.accessToken.split("Bearer ")[1];
-              if (authToken) {
-                setCookie("token", authToken);
-                setCookie("refreshToken", data.refreshToken)
-              }
-              if (data.success) {
-                  setUser(data.user)
-                  return (
-                    <Redirect
-                      to={history.goBack()}
-                    />
-                  );
-                }
-            });
+    try {
+      const res = await getUserRequest();
+      const data = await getResponseData(res);
+      return setUser(data.user);
+    } catch (err) {
+      if (err.message === "jwt expired") {
+        const refreshData = await refreshRequest();
+        if (!refreshData.success) {
+          return Promise.reject(refreshData);
         }
-        return data.success;
-      });
+        let authToken;
+        authToken = refreshData.accessToken.split("Bearer ")[1];
+        if (authToken) {
+          setCookie("token", authToken);
+          setCookie("refreshToken", refreshData.refreshToken);
+        }
+        const res = await getUserRequest();
+        const data = await getResponseData(res);
+        return setUser(data.user);
+      } else {
+        return (
+        <Redirect
+            to={{
+              pathname: '/login'
+            }}
+          />)
+      }
+    }
   };
 
   const refreshUser = async (name, email) => {
     return await patchUserRequest(name, email)
-      .then((res) => res.json())
+      .then(getResponseData)
       .then((data) => {
         return data.success;
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const signIn = async (form) => {
-    const data = await loginRequest(form)
-      .then((res) => res.json())
+    return await loginRequest(form)
+      .then(getResponseData)
       .then((data) => {
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
@@ -82,14 +86,13 @@ export function useProvideAuth() {
         authToken = data.accessToken.split("Bearer ")[1];
         if (authToken) {
           setCookie("token", authToken);
-          setCookie("refreshToken", data.refreshToken)
+          setCookie("refreshToken", data.refreshToken);
         }
         if (data.success) {
-            setUser(data.user);
-          }
-      });
-
-    
+          setUser(data.user);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const signOut = async () => {

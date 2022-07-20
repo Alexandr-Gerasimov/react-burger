@@ -1,8 +1,7 @@
 .App {
   text-align: center;
-  background-color: #000;
+  background-color: #131316;
   min-width: 1280px;
-  min-height: 100vh;
   display: flex;
   font-family: "Jet Brains Mono", Arial, sans-serif;
   flex-direction: column;

@@ -1,10 +1,30 @@
 import { getCookie } from "./utils";
 
-const config = {
+export const config = {
   baseUrl: "https://norma.nomoreparties.space/api",
   headers: {
     "Content-Type": "application/json",
   },
+};
+
+export const getResponseData = (res) => {
+  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+};
+
+export const getAllIngredients = async () => {
+  return await fetch(`${config.baseUrl}/ingredients`, {
+      headers: config.headers,
+    })
+  }
+
+export const getIngredients = async () => {
+    return await getAllIngredients()
+      .then(getResponseData)
+      .then((data) => {
+        console.log(data)
+        return data.success;
+      })
+      .catch((err) => console.log(err));
 };
 
 export const resetRequest = async (email) => {

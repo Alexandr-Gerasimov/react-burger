@@ -1,12 +1,11 @@
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
+import App from "./components/App/App";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import React from "react";
 import { store } from "./services/store";
-import { ProvideAuth } from "./services/auth";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -130,3 +130,8 @@
   background-color: #131316;
   margin-right: 28px;
 }
+
+.loginButton {
+  display: flex;
+  justify-content: center;
+}

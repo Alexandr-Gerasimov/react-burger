@@ -1,6 +1,5 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
-import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
   Input,
@@ -13,10 +12,9 @@ export function LoginPage() {
   const auth = useAuth();
   const [log, setValue] = React.useState({ email: "", password: "" });
   const inputRef = React.useRef(null);
-  
 
   let login = useCallback(
-    e => {
+    (e) => {
       e.preventDefault();
       auth.signIn(log);
     },
@@ -28,17 +26,15 @@ export function LoginPage() {
   };
 
   useEffect(() => {
-    init()
-  }, []);
-
-  console.log(auth)
+    init();
+  });
+  const address = JSON.parse(localStorage.getItem("lastAddress"))
+  const nextAddress = address.from.pathname
 
   if (auth.user) {
     return (
       <Redirect
-        to={{
-          pathname: "/",
-        }}
+        to={nextAddress}
       />
     );
   }
@@ -48,10 +44,9 @@ export function LoginPage() {
   };
   return (
     <div className={styles.wrapper}>
-      <AppHeader />
       <div className={styles.container}>
         <h2 className={styles.header}>Вход</h2>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={login}>
           <Input
             type={"email"}
             placeholder={"E-mail"}
@@ -67,10 +62,13 @@ export function LoginPage() {
             value={log.password}
             name={"password"}
           />
+          <div className={styles.loginButton}>
+          <Button type="primary" size="medium">
+            Войти
+          </Button>
+          </div>
         </form>
-        <Button type="primary" size="medium" onClick={login}>
-          Войти
-        </Button>
+
         <p>
           Вы - новый пользователь?{" "}
           <Link to="/register">Зарегистрироваться</Link>

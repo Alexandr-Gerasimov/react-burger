@@ -1,12 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import App from "../components/app/App";
-import { useAuth } from '../services/auth';
+import Main from "../components/main/main";
 
 export function Home() {
     return (
       <>
-        <App />
+        <Main />
       </>
     );
   }

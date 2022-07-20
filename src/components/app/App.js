@@ -1,108 +1,75 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  useLocation,
-  Link,
-} from "react-router-dom";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import styles from "./App.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import Modal from "../modal/modal";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
+import { Home } from "../../pages/home";
+import { LoginPage } from "../../pages/login";
+import { RegisterPage } from "../../pages/register";
+import { ForgotPage } from "../../pages/forgot-password";
+import { ResetPage } from "../../pages/reset-password";
+import { ProfilePage } from "../../pages/profile";
+import { ProfileOrdersPage } from "../../pages/orders";
+import { ProvideAuth } from "../../services/auth";
+import { ProtectedRoute } from "../protected-route/protected-route";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
-import OrderDetails from "../order-details/order-details";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo, useState } from "react";
-import {
-  closeIngredientModals,
-  onIngredientClick,
-  closeOrderModal,
-  postOrderNumber,
-} from "../../services/actions";
-import { Loader } from "../../ui/loader/loader";
-import { useAuth } from "../../services/auth";
-import { setCookie } from "../../services/utils";
+import Modal from "../modal/modal";
+import { getAllItems } from "../../services/actions";
+import AppHeader from "../app-header/app-header";
 
-const App = () => {
-  const ingredients = useSelector((store) => store.fillings.ingredients);
-  const ingredientsModal = useSelector(
-    (state) => state.fillings.ingredientsModal
-  );
-  const auth = useAuth();
+export default function App() {
+  const location = useLocation();
+  const background = location.state?.background;
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllItems());
+  }, []);
 
   const ingredient = useSelector((store) => store.fillings.ingredient);
-  
-  const id = ingredient.id
-  const orderDetails = useSelector((store) => store.fillings.orderDetails);
-  const orderDetailsModal = useSelector(
-    (store) => store.fillings.orderDetailsModal
-  );
-  const orderDetailsRequest = useSelector(
-    (store) => store.fillings.orderDetailsRequest
-  );
-  const dispatch = useDispatch();
-
-  const ingredientsId = ingredients.map((ingredient) => ingredient._id);
-  const [login, setLogin] = useState(false);
-
-
-  const componentClick = (component) => {
-    dispatch(onIngredientClick(component));
-    localStorage.setItem("ingredient", JSON.stringify(component))
-  };
 
   const closeIngredientModal = () => {
-    dispatch(closeIngredientModals());
+    history.goBack();
   };
-
-  const closeOrderModals = () => {
-    dispatch(closeOrderModal());
-  };
-
-  const content = useMemo(() => {
-    return orderDetailsRequest ? (
-      <Loader size="large" />
-    ) : (
-      <Modal onClick={closeOrderModals}>
-        <OrderDetails orderNumber={orderDetails} />
-      </Modal>
-    );
-  }, [orderDetailsRequest, orderDetails]);
-
-  const OrderButtonClick = () => {
-    if (auth.user) {
-      dispatch(postOrderNumber(ingredientsId));
-    } else {
-      setLogin(true);
-    }
-  };
-
-  if (login) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/login",
-        }}
-      />
-    );
-  }
 
   return (
-    <div className={styles.App}>
-      <DndProvider backend={HTML5Backend}>
-        <AppHeader />
-        <main className={styles.main}>
-          <BurgerIngredients onClick={componentClick}/>
-          <BurgerConstructor onClick={OrderButtonClick} />
-        </main>
-        {orderDetailsModal && content}
-      </DndProvider>
-    </div>
+    <ProvideAuth>
+      <AppHeader />
+      <Switch location={background || location}>
+        <Route path="/" exact={true}>
+          <Home />
+        </Route>
+        <Route path="/login" exact={true}>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact={true}>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <ForgotPage />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ResetPage />
+        </Route>
+        <ProtectedRoute path="/profile" exact={true}>
+          <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" exact={true}>
+          <ProfileOrdersPage />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id">
+          <IngredientDetails ingredient={ingredient} />
+        </Route>
+      </Switch>
+      {background && (
+        <Route
+          path="/ingredients/:id"
+          children={
+            <Modal onClick={closeIngredientModal}>
+              <IngredientDetails ingredient={ingredient} />
+            </Modal>
+          }
+        />
+      )}
+    </ProvideAuth>
   );
-};
-
-export default App;
+}

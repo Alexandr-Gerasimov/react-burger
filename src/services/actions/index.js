@@ -1,3 +1,6 @@
+import { config } from "../../services/api";
+import { getResponseData } from "../../services/api";
+
 export const GET_INGREDIENT_LIST_REQUEST = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS = "GET_INGREDIENT_LIST_SUCCESS";
 export const GET_INGREDIENT_LIST_FAILED = "GET_INGREDIENT_LIST_FAILED";
@@ -19,18 +22,6 @@ export const DELETE_ITEM = "DELETE_ITEM";
 export const REFRESH_FILLINGS = "REFRESH_FILLINGS";
 export const NEW_ORDER = "NEW_ORDER";
 
-
-const config = {
-  baseUrl: "https://norma.nomoreparties.space/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-
-const getResponseData = (res) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-};
-
 export function getAllItems() {
   return function (dispatch) {
     dispatch({
@@ -46,7 +37,8 @@ export function getAllItems() {
           type: GET_INGREDIENT_LIST_SUCCESS,
           payload: res.data,
         });
-      });
+      })
+      .catch((err) => console.log(err));
     dispatch({
       type: GET_INGREDIENT_LIST_FAILED,
       payload: false,
@@ -89,7 +81,8 @@ export function postOrderNumber(ingredientsId) {
         dispatch({
           type: NEW_ORDER,
         });
-      });
+      })
+      .catch((err) => console.log(err));
     dispatch({
       type: GET_ORDER_NUMBER_FAILED,
       payload: false,

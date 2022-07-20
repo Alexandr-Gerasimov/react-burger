@@ -1,36 +1,28 @@
-import React, { useCallback, useState } from "react";
-import { Redirect, Link, NavLink, useHistory, useLocation } from "react-router-dom";
-import AppHeader from "../components/app-header/app-header";
+import React, { useCallback } from "react";
+import { NavLink, useHistory } from "react-router-dom";
 import styles from "./login.module.css";
 import {
   Input,
-  PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getUserRequest } from "../services/api";
 import { useAuth } from "../services/auth";
-import { getCookie } from "../services/utils";
 
 export function ProfilePage() {
-  const location = useLocation();
-  
   const auth = useAuth();
   const [reg, setValue] = React.useState({
     name: auth.user.name,
     email: auth.user.email,
     password: auth.password,
   });
-  const [click, setClick] = React.useState(false)
   const inputRef = React.useRef(null);
   const history = useHistory();
-  const logout = useCallback(
-    () => {
-      auth.signOut().then(() => {
-        history.replace({ pathname: '/login' });
-      });
-    },
-    [auth, history]
-  );
+  const logout = useCallback(() => {
+    auth.signOut().then(() => {
+      history.replace({ pathname: "/login" });
+    });
+  }, [auth, history]);
+
+  console.log(auth.user)
 
   const cancelChanges = (e) => {
     e.preventDefault();
@@ -38,17 +30,15 @@ export function ProfilePage() {
   };
 
   const refreshUs = (name, email) => {
-    auth.refreshUser(name, email)
-  } 
+    auth.refreshUser(name, email);
+  };
 
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
 
-
   return (
     <div className={styles.wrapper}>
-      <AppHeader />
       <div className={styles.account}>
         <nav className={styles.navMenu}>
           <NavLink
@@ -74,7 +64,7 @@ export function ProfilePage() {
           </p>
         </nav>
         <div className={styles.redAccount}>
-          <form className={styles.navForm}>
+          <form className={styles.navForm} onSubmit={refreshUs(reg.name, reg.email)}>
             <Input
               type={"text"}
               placeholder={"Имя"}
@@ -109,8 +99,12 @@ export function ProfilePage() {
               size={"default"}
             />
             <div className={styles.profileButtons}>
-            <button className={styles.cancelButton} onClick={cancelChanges}>Отмена</button>
-            <Button onSubmit={refreshUs(reg.name, reg.email)}>Сохранить</Button>
+              <button className={styles.cancelButton} onClick={cancelChanges}>
+                Отмена
+              </button>
+              <Button >
+                Сохранить
+              </Button>
             </div>
           </form>
         </div>

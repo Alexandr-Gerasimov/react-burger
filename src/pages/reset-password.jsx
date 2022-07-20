@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
-import AppHeader from "../components/app-header/app-header";
 import styles from "./login.module.css";
 import {
   Input,
@@ -10,23 +9,22 @@ import {
 import { resetPasswordRequest } from "../services/api";
 import { useAuth } from "../services/auth";
 import { useSelector } from "react-redux";
+import { getResponseData } from "../services/api";
 
-export function ResetPage() { 
+export function ResetPage() {
   const auth = useAuth();
-  const [form, setValue] = useState({ password: '', code: '' });
-  const [success, setSuccess] = React.useState()
+  const [form, setValue] = useState({ password: "", code: "" });
+  const [success, setSuccess] = React.useState();
   const inputRef = React.useRef(null);
   const emailSending = useSelector((store) => store.profile.emailSending);
-
-  console.log(emailSending)
 
   const init = async () => {
     return await auth.getUser();
   };
 
   useEffect(() => {
-    init()
-  }, []);
+    init();
+  });
 
   if (!emailSending) {
     return (
@@ -47,41 +45,45 @@ export function ResetPage() {
       />
     );
   }
-  
-  const getResponseData = (res) => {
-    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-  };
 
   const resetPassword = async (password, token) => {
     return await resetPasswordRequest(password, token)
       .then(getResponseData)
-      .then(res => {
+      .then((res) => {
         if (res.success) {
-          return setSuccess(true)
-          }
+          return setSuccess(true);
+        }
       })
+      .catch((err) => console.log(err));
   };
 
   if (success) {
     return (
       <Redirect
         to={{
-          pathname: "/login"
+          pathname: "/login",
         }}
       />
     );
   }
 
-  const onChange = e => {
+  const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
   return (
     <div className={styles.wrapper}>
-      <AppHeader />
       <div className={styles.container}>
         <h2 className={styles.header}>Восстановление пароля</h2>
-        <form className={styles.form}>
-          <PasswordInput onChange={onChange} value={form.password} name={"password"} placeholder={"Введите новый пароль"} />
+        <form
+          className={styles.form}
+          onSubmit={() => resetPassword(form.password, form.code)}
+        >
+          <PasswordInput
+            onChange={onChange}
+            value={form.password}
+            name={"password"}
+            placeholder={"Введите новый пароль"}
+          />
           <Input
             type={"text"}
             placeholder={"Введите код из письма"}
@@ -92,10 +94,13 @@ export function ResetPage() {
             ref={inputRef}
             size={"default"}
           />
+          <div className={styles.loginButton}>
+            <Button type="primary" size="medium">
+              Сохранить
+            </Button>
+          </div>
         </form>
-        <Button type="primary" size="medium" onClick={() => resetPassword(form.password, form.code)}>
-          Сохранить
-        </Button>
+
         <p>
           Вспомнили пароль? <Link to="/login">Войти</Link>
         </p>

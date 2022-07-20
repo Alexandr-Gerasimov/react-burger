@@ -1,10 +1,10 @@
-import { useAuth } from './auth';
-import { Redirect, Route } from 'react-router-dom';
+import { useAuth } from '../../services/auth';
+import { Redirect, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export function ProtectedRoute({ children, ...rest }) {
-  console.log(children)
-  let { getUser, ...auth } = useAuth();
+  const { getUser, ...auth } = useAuth();
+  const location = useLocation();
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   const init = async () => {
@@ -19,6 +19,8 @@ export function ProtectedRoute({ children, ...rest }) {
   if (!isUserLoaded) {
     return null;
   }
+
+  console.log(location)
 
   return (
     <Route

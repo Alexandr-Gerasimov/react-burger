@@ -9,7 +9,7 @@ import {
 } from "./api";
 import { useDispatch } from "react-redux";
 import { GET_USER_PROFILE_SUCCESS } from "./actions/profile";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { getResponseData } from "./api";
 
 const AuthContext = createContext(undefined);
@@ -28,11 +28,6 @@ export function useProvideAuth() {
   const [user, setUser] = useState(null);
   const location = useLocation();
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
-  const background = location.state?.background;
-  const history = useHistory();
-  console.log(location.state);
-  console.log(background);
-  console.log(history);
 
   const getUser = async () => {
     try {

@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, Redirect } from "react-router-dom";
 import styles from "./login.module.css";
 import {
   Input,
   Button,
+  PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
 
@@ -12,8 +13,8 @@ export function ProfilePage() {
   const [reg, setValue] = React.useState({
     name: auth.user.name,
     email: auth.user.email,
-    password: auth.password,
   });
+  const [password, setPassword] = React.useState('');
   const inputRef = React.useRef(null);
   const history = useHistory();
   const logout = useCallback(() => {
@@ -21,8 +22,6 @@ export function ProfilePage() {
       history.replace({ pathname: "/login" });
     });
   }, [auth, history]);
-
-  console.log(auth.user)
 
   const cancelChanges = (e) => {
     e.preventDefault();
@@ -36,6 +35,13 @@ export function ProfilePage() {
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
+  const onChangePassword = e => {
+    setPassword(e.target.value)
+  };
+
+  if (!auth.user) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -64,7 +70,10 @@ export function ProfilePage() {
           </p>
         </nav>
         <div className={styles.redAccount}>
-          <form className={styles.navForm} onSubmit={refreshUs(reg.name, reg.email)}>
+          <form
+            className={styles.navForm}
+            onSubmit={refreshUs(reg.name, reg.email)}
+          >
             <Input
               type={"text"}
               placeholder={"Имя"}
@@ -87,24 +96,16 @@ export function ProfilePage() {
               ref={inputRef}
               size={"default"}
             />
-            <Input
-              type={"text"}
-              placeholder={"Пароль"}
-              onChange={onChange}
-              value={reg.password}
-              icon={"EditIcon"}
+            <PasswordInput
+              onChange={onChangePassword}
+              value={password}
               name={"password"}
-              error={false}
-              ref={inputRef}
-              size={"default"}
             />
             <div className={styles.profileButtons}>
               <button className={styles.cancelButton} onClick={cancelChanges}>
                 Отмена
               </button>
-              <Button >
-                Сохранить
-              </Button>
+              <Button>Сохранить</Button>
             </div>
           </form>
         </div>

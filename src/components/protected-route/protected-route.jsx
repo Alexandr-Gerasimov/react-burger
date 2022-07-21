@@ -1,10 +1,11 @@
 import { useAuth } from '../../services/auth';
-import { Redirect, Route, useLocation } from 'react-router-dom';
+import { Redirect, Route, useLocation, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 export function ProtectedRoute({ children, ...rest }) {
   const { getUser, ...auth } = useAuth();
   const location = useLocation();
+  const history = useHistory()
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   const init = async () => {
@@ -19,8 +20,6 @@ export function ProtectedRoute({ children, ...rest }) {
   if (!isUserLoaded) {
     return null;
   }
-
-  console.log(location)
 
   return (
     <Route

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, useLocation } from "react-router-dom";
 import styles from "./login.module.css";
 import {
   Input,
@@ -9,6 +9,7 @@ import {
 import { useAuth } from "../services/auth";
 
 export function LoginPage() {
+  const location = useLocation();
   const auth = useAuth();
   const [log, setValue] = React.useState({ email: "", password: "" });
   const inputRef = React.useRef(null);
@@ -28,15 +29,11 @@ export function LoginPage() {
   useEffect(() => {
     init();
   });
-  const address = JSON.parse(localStorage.getItem("lastAddress"))
-  const nextAddress = address.from.pathname
-
+  
   if (auth.user) {
-    return (
-      <Redirect
-        to={nextAddress}
-      />
-    );
+    return (<Redirect
+        to={location?.state?.from || '/'}
+      />)
   }
 
   const onChange = (e) => {

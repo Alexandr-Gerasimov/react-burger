@@ -28,8 +28,10 @@ const Main = () => {
     (store) => store.fillings.orderDetailsRequest
   );
   const dispatch = useDispatch();
-
-  const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+  const orgerItems = useSelector(
+    (store) => store.fillings.getAllItems
+  );
+  const ingredientsId = orgerItems.map((ingredient) => ingredient._id);
   const [login, setLogin] = useState(false);
 
   const componentClick = (component) => {

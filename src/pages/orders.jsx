@@ -1,17 +1,34 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./login.module.css";
 import FeedOrder from "../components/order-items/order-items";
-import { useSelector } from "react-redux";
-import { Loader } from "../ui/loader/loader";
+import { useSelector, useDispatch } from "react-redux";
+import { WS_FEED_CONNECTION_START, WS_FEED_CONNECTION_CLOSED } from "../services/actions/wsFeedAction";
 
 export function ProfileOrdersPage() {
 
   const orders = useSelector(
     (store) => store.socketFeed.messages
   )[0];
-  console.log(orders)
+
+  const wsConnected = useSelector(
+    (store) => store.socketFeed.messages
+  )[0];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(!wsConnected) {
+      dispatch({type: WS_FEED_CONNECTION_START})
+    }
+  },[wsConnected])
+  useEffect(() => {
+    return() => {
+      dispatch({type: WS_FEED_CONNECTION_CLOSED})}
+  },[])
+
   const order = orders.data.orders
+
   if(!order) {
     return (
       <div className={styles.wrapper}>

@@ -10,8 +10,6 @@ import {
     wsConnected: false,
     messages: []
   };
-
-  console.log(initialState.messages)
   
   export const wsReducer = (state = initialState, action) => {
     switch (action.type) {

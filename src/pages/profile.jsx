@@ -1,4 +1,5 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink, useHistory, Redirect } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -7,6 +8,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
+import { WS_FEED_CONNECTION_START } from "../services/actions/wsFeedAction";
 
 export function ProfilePage() {
   const auth = useAuth();
@@ -14,7 +16,9 @@ export function ProfilePage() {
     name: auth.user.name,
     email: auth.user.email,
   });
-  const [password, setPassword] = React.useState('');
+  const dispatch = useDispatch();
+
+  const [password, setPassword] = React.useState("");
   const inputRef = React.useRef(null);
   const history = useHistory();
   const logout = useCallback(() => {
@@ -35,8 +39,8 @@ export function ProfilePage() {
   const onChange = (e) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
-  const onChangePassword = e => {
-    setPassword(e.target.value)
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
   };
 
   if (!auth.user) {

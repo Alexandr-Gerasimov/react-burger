@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import styles from './order-items.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAuth } from "../../services/auth";
 import { Loader } from "../../ui/loader/loader";
 
@@ -74,7 +74,7 @@ const FeedOrder = (data) => {
   return (
     <li className={styles.order}>
       <Link className={styles.link} to={{
-                    pathname: location === '/feed' ? `/feed/${order._id}` : `/profile/orders/${order._id}`,
+                    pathname: location.pathname === '/feed' ? `/feed/${order._id}` : `/profile/orders/${order._id}`,
                     state: { background: location },
                   }}>
         <div className={styles.orderRow}>

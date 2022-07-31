@@ -1,8 +1,6 @@
 import { useMemo, useCallback } from "react";
 import styles from "./burger-constructor.module.css";
-import update from "immutability-helper";
 import { nanoid } from "nanoid";
-import { v4 as uuidv4 } from "uuid";
 import {
   ConstructorElement,
   Button,
@@ -15,13 +13,11 @@ import { useDrop } from "react-dnd";
 import {
   ADD_ITEM,
   DELETE_ITEM,
-  getAllItems,
   REFRESH_FILLINGS,
 } from "../../services/actions";
 import { ConstructorCard } from "./constructor-card.js";
 
 export default function BurgerConstructor({ onClick }) {
-  const ingredients = useSelector((store) => store.fillings.ingredients);
 
   const constructorBuns = useSelector(
     (store) => store.fillings.constructorBuns
@@ -31,19 +27,10 @@ export default function BurgerConstructor({ onClick }) {
     (store) => store.fillings.constructorFillings
   );
 
-  console.log(constructorFillings.price)
-  
-  const orgerItems = useSelector(
-    (store) => store.fillings.getAllItems
-  );
-  const orderDetails = useSelector(
-    (store) => store.fillings.orderDetails
-  );
-
-  console.log(orderDetails.name)
+  const orgerItems = useSelector((store) => store.fillings.getAllItems);
 
   const dispatch = useDispatch();
-  const ingredientsId = ingredients.map((ingredient) => ingredient._id);
+  const ingredientsId = orgerItems.map((ingredient) => ingredient._id);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "bun",

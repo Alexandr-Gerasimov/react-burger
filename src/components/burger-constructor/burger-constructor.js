@@ -1,4 +1,4 @@
-import { useMemo, useCallback,  } from "react";
+import { useMemo, useCallback } from "react";
 import styles from "./burger-constructor.module.css";
 import update from "immutability-helper";
 import { nanoid } from "nanoid";
@@ -15,6 +15,7 @@ import { useDrop } from "react-dnd";
 import {
   ADD_ITEM,
   DELETE_ITEM,
+  getAllItems,
   REFRESH_FILLINGS,
 } from "../../services/actions";
 import { ConstructorCard } from "./constructor-card.js";
@@ -29,6 +30,17 @@ export default function BurgerConstructor({ onClick }) {
   const constructorFillings = useSelector(
     (store) => store.fillings.constructorFillings
   );
+
+  console.log(constructorFillings.price)
+  
+  const orgerItems = useSelector(
+    (store) => store.fillings.getAllItems
+  );
+  const orderDetails = useSelector(
+    (store) => store.fillings.orderDetails
+  );
+
+  console.log(orderDetails.name)
 
   const dispatch = useDispatch();
   const ingredientsId = ingredients.map((ingredient) => ingredient._id);
@@ -136,14 +148,17 @@ export default function BurgerConstructor({ onClick }) {
           <p className={styles.total}>{price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        {constructorBuns === null ? <div className={styles.unactiveButton}>Оформить заказ</div> : <Button
-          type="primary"
-          size="large"
-          onClick={() => onClick(ingredientsId)}
-        >
-          Оформить заказ
-        </Button>}
-        
+        {constructorBuns === null ? (
+          <div className={styles.unactiveButton}>Оформить заказ</div>
+        ) : (
+          <Button
+            type="primary"
+            size="large"
+            onClick={() => onClick(ingredientsId)}
+          >
+            Оформить заказ
+          </Button>
+        )}
       </div>
     </div>
   );

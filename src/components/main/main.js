@@ -15,6 +15,7 @@ import {
 } from "../../services/actions";
 import { Loader } from "../../ui/loader/loader";
 import { useAuth } from "../../services/auth";
+import { getCookie } from "../../services/utils";
 
 const Main = () => {
   const ingredients = useSelector((store) => store.fillings.ingredients);

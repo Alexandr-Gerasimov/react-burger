@@ -17,6 +17,8 @@ import {
   NEW_ORDER,
 } from "../actions";
 import { profileReducer } from "./profile";
+import { wsFeedReducer } from "./wsFeedReducer";
+import { wsReducer } from "./wsOrdersReducer";
 
 const initialState = {
   ingredients: [],
@@ -30,6 +32,7 @@ const initialState = {
 
   constructorBuns: null,
   constructorFillings: [],
+  getAllItems: [],
 
   ingredientsModal: false,
   ingredient: {},
@@ -42,11 +45,7 @@ const initialState = {
 
 export const ingredientReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_INGREDIENT_LIST_REQUEST:
-      return {
-        ...state,
-        ingredientsRequest: true,
-      };
+    
     case GET_INGREDIENT_LIST_SUCCESS:
       return {
         ...state,
@@ -112,6 +111,7 @@ export const ingredientReducer = (state = initialState, action) => {
           ...state,
           constructorBuns: action.payload,
           constructorFillings: [...state.constructorFillings],
+          getAllItems: [...state.getAllItems, action.payload],
           ingredients: [...state.ingredients].map((item) =>
             item._id === action.payload._id ? { ...item, __v: 1 } : item
           ),
@@ -121,6 +121,7 @@ export const ingredientReducer = (state = initialState, action) => {
           ...state,
           constructorBuns: state.constructorBuns,
           constructorFillings: [...state.constructorFillings, action.payload],
+          getAllItems: [...state.getAllItems, action.payload],
           ingredients: [...state.ingredients].map((item) =>
             item._id === action.payload._id
               ? { ...item, __v: ++item.__v }
@@ -169,6 +170,9 @@ export const ingredientReducer = (state = initialState, action) => {
 };
 
 export const rootReducer = combineReducers({
+  socket: wsReducer,
+  socketFeed: wsFeedReducer,
   fillings: ingredientReducer,
   profile: profileReducer,
+  
 });

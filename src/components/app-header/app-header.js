@@ -25,7 +25,7 @@ export default function AppHeader() {
         </button>
         <button className={styles.button} type="button">
           <ListIcon type="secondary" />
-          <NavLink to="/orders" activeClassName={styles.activeText} className={styles.text}>Лента заказов</NavLink>
+          <NavLink to="/feed" activeClassName={styles.activeText} className={styles.text}>Лента заказов</NavLink>
         </button>
       </nav>
     );

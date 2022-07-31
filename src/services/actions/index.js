@@ -1,5 +1,8 @@
 import { config } from "../../services/api";
 import { getResponseData } from "../../services/api";
+import { WS_CONNECTION_START } from "./wsOrdersAction";
+import { WS_FEED_CONNECTION_START } from "./wsFeedAction";
+import { getCookie } from "../utils";
 
 export const GET_INGREDIENT_LIST_REQUEST = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS = "GET_INGREDIENT_LIST_SUCCESS";
@@ -43,6 +46,12 @@ export function getAllItems() {
       type: GET_INGREDIENT_LIST_FAILED,
       payload: false,
     });
+    dispatch({
+      type: WS_CONNECTION_START
+    });
+    dispatch({
+      type: WS_FEED_CONNECTION_START
+    });
   };
 }
 
@@ -56,6 +65,7 @@ export const onIngredientClick = (ingredient) => ({
 });
 
 export function postOrderNumber(ingredientsId) {
+  console.log(ingredientsId)
   return function (dispatch) {
     dispatch({
       type: GET_ORDER_NUMBER_REQUEST,
@@ -63,13 +73,17 @@ export function postOrderNumber(ingredientsId) {
     });
     fetch(`${config.baseUrl}/orders`, {
       method: "POST",
-      headers: config.headers,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("token")
+      },
       body: JSON.stringify({
         ingredients: ingredientsId,
       }),
     })
       .then(getResponseData)
       .then((data) => {
+        console.log(data)
         dispatch({
           type: GET_ORDER_NUMBER_SUCCESS,
           payload: data,

@@ -6,6 +6,9 @@ import { ForgotPage } from "../../pages/forgot-password";
 import { ResetPage } from "../../pages/reset-password";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/orders";
+import { FeedPage } from "../../pages/feed-page";
+import BurgerDetails from "../burger-deteils/burger-details";
+import FeedOrder from "../order-items/order-items";
 import { ProvideAuth } from "../../services/auth";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
@@ -20,9 +23,12 @@ export default function App() {
   const background = location.state?.background;
   const history = useHistory();
 
+  
   const dispatch = useDispatch();
   useEffect(() => {
+    if (location.pathname === "/") {
     dispatch(getAllItems());
+    }
   }, []);
 
   const ingredient = useSelector((store) => store.fillings.ingredient);
@@ -56,8 +62,14 @@ export default function App() {
         <ProtectedRoute path="/profile/orders" exact={true}>
           <ProfileOrdersPage />
         </ProtectedRoute>
+        <Route path="/profile/orders/:id" exact={true}>
+          <BurgerDetails/>
+        </Route>
         <Route path="/ingredients/:id">
           <IngredientDetails ingredient={ingredient} />
+        </Route>
+        <Route path="/feed" exact={true}>
+         <FeedPage />
         </Route>
       </Switch>
       {background && (
@@ -66,6 +78,16 @@ export default function App() {
           children={
             <Modal onClick={closeIngredientModal}>
               <IngredientDetails ingredient={ingredient} />
+            </Modal>
+          }
+        />
+      )}
+      {background && (
+        <Route
+          path="/profile/orders/:id"
+          children={
+            <Modal onClick={closeIngredientModal}>
+              <BurgerDetails/>
             </Modal>
           }
         />

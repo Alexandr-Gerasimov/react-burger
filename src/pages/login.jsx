@@ -21,14 +21,6 @@ export function LoginPage() {
     },
     [auth, log]
   );
-
-  const init = async () => {
-    return await auth.getUser();
-  };
-
-  useEffect(() => {
-    init();
-  });
   
   if (auth.user) {
     return (<Redirect

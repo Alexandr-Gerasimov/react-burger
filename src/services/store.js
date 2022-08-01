@@ -2,6 +2,7 @@ import { compose, createStore, applyMiddleware } from "redux";
 import { rootReducer } from "./reducers/index";
 import thunk from "redux-thunk";
 import { socketMiddleware } from './middleware/socketMiddleware';
+import { getCookie } from "./utils";
 import thunkMiddleware from 'redux-thunk';
 import {
   WS_CONNECTION_CLOSED,
@@ -39,8 +40,10 @@ export const wsFeedActions = {
   onMessage: WS_FEED_GET_MESSAGE
 }
 
+const token = getCookie("token");
+
 const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
-const wsUrlUser = 'wss://norma.nomoreparties.space/orders';
+const wsUrlUser = `wss://norma.nomoreparties.space/orders?token=${token}`;
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

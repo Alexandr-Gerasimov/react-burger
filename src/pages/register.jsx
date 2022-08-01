@@ -25,15 +25,7 @@ export function RegisterPage() {
       data,
     });
   };
-
-  const init = async () => {
-    return await auth.getUser();
-  };
-
-  useEffect(() => {
-    init();
-  });
-
+  
   const postEmail = async (name, email, password) => {
     return await newUserRequest(name, email, password)
       .then(getResponseData)

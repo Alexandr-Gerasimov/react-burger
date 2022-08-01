@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
+import { nanoid } from "nanoid";
 import styles from "./login.module.css";
-import FeedOrder from "../components/order-items/order-items";
+import OrderItems from "../components/order-items/order-items";
 import { useSelector, useDispatch } from "react-redux";
+import { Loader } from "../ui/loader/loader";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,
 } from "../services/actions/wsOrdersAction";
 
 export function FeedPage() {
-  const orders = useSelector((store) => store.socket.messages)[0];
+  
 
-  const wsConnected = useSelector((store) => store.socket.messages)[0];
+  const wsConnected = useSelector((store) => store.socket.wsConnected);
 
   const dispatch = useDispatch();
 
@@ -19,11 +21,8 @@ export function FeedPage() {
       dispatch({ type: WS_CONNECTION_START });
     }
   }, [wsConnected]);
-  useEffect(() => {
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
-    };
-  }, []);
+debugger
+  const orders = useSelector((store) => store.socket.messages)[0];
 
   const order = orders.data.orders;
   if (orders) {
@@ -33,7 +32,11 @@ export function FeedPage() {
           <p className={styles.feedTitle}>Лента заказов</p>
           <ul className={styles.feedList}>
             {order.map((obj) => {
-              return <FeedOrder data={obj} />;
+              return (
+                <React.Fragment key={(obj.id = nanoid())}>
+                  <OrderItems data={obj} />
+                </React.Fragment>
+              );
             })}
           </ul>
         </div>
@@ -46,7 +49,9 @@ export function FeedPage() {
                   .filter((obj) => obj.status === "done")
                   .map((obj) => {
                     return (
-                      <li className={styles.feedComplitePos}>{obj.number}</li>
+                      <React.Fragment key={(obj.id = nanoid())}>
+                        <li className={styles.feedComplitePos}>{obj.number}</li>
+                      </React.Fragment>
                     );
                   })}
               </ul>
@@ -58,9 +63,11 @@ export function FeedPage() {
                   .filter((obj) => obj.status === "created")
                   .map((obj) => {
                     return (
-                      <li className={styles.feedComplitePosInWork}>
-                        {obj.number}
-                      </li>
+                      <React.Fragment key={(obj.id = nanoid())}>
+                        <li className={styles.feedComplitePosInWork}>
+                          {obj.number}
+                        </li>
+                      </React.Fragment>
                     );
                   })}
               </ul>

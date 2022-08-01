@@ -18,14 +18,6 @@ export function ResetPage() {
   const inputRef = React.useRef(null);
   const emailSending = useSelector((store) => store.profile.emailSending);
 
-  const init = async () => {
-    return await auth.getUser();
-  };
-
-  useEffect(() => {
-    init();
-  });
-
   if (!emailSending) {
     return (
       <Redirect

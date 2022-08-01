@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Redirect, Link } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -13,19 +13,19 @@ import { getResponseData } from "../services/api";
 
 export function ForgotPage() {
   const auth = useAuth();
-  const [reset, setReset] = React.useState();
+  const [reset, setReset] = React.useState(false);
   const [value, setValue] = React.useState({ email: "" });
   console.log(value);
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
 
-  const init = async () => {
-    return await auth.getUser();
-  };
-
-  useEffect(() => {
-    init();
-  });
+  let post = useCallback(
+    (e) => {
+      e.preventDefault();
+      postEmail(value.email);
+    },
+    [value.email]
+  );
 
   if (auth.user) {
     return (
@@ -42,6 +42,7 @@ export function ForgotPage() {
       .then(getResponseData)
       .then((res) => {
         if (res.success) {
+          console.log(res)
           dispatch({
             type: EMAIL_SENDING,
             payload: true,
@@ -51,7 +52,7 @@ export function ForgotPage() {
       })
       .catch((err) => console.log(err));
   };
-  console.log(reset);
+  
 
   if (reset) {
     return (
@@ -63,21 +64,22 @@ export function ForgotPage() {
     );
   }
 
-  console.log(reset);
+  const onChange = (e) => {
+    setValue({ ...value, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <h2 className={styles.header}>Восстановление пароля</h2>
-        <form className={styles.form} onSubmit={() => postEmail(value)}>
+        <form className={styles.form} onSubmit={post}>
           <Input
             type={"email"}
             placeholder={"Укажите e-mail"}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={onChange}
             value={value.email}
             name={"email"}
             error={false}
-            ref={inputRef}
             size={"default"}
           />
           <div className={styles.loginButton}>

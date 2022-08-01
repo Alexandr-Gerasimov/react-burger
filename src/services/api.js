@@ -28,6 +28,7 @@ export const getIngredients = async () => {
 };
 
 export const resetRequest = async (email) => {
+  console.log(email)
   return await fetch(`${config.baseUrl}/password-reset`, {
     method: "POST",
     mode: "cors",

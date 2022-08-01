@@ -7,6 +7,8 @@ import { ResetPage } from "../../pages/reset-password";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/orders";
 import { FeedPage } from "../../pages/feed-page";
+import FeedProfile from "../feed-profile/feed-profile";
+import FeedOrder from "../feed-order/feed-order";
 import BurgerDetails from "../burger-deteils/burger-details";
 import { ProvideAuth } from "../../services/auth";
 import { ProtectedRoute } from "../protected-route/protected-route";
@@ -28,6 +30,8 @@ export default function App() {
   }, []);
 
   const ingredient = useSelector((store) => store.fillings.ingredient);
+  const allOrders = useSelector((store) => store.socketFeed.messages)[0];
+
 
   const closeIngredientModal = () => {
     history.goBack();
@@ -56,10 +60,10 @@ export default function App() {
           <ProfilePage />
         </ProtectedRoute>
         <ProtectedRoute path="/profile/orders" exact={true}>
-          <ProfileOrdersPage />
+          <ProfileOrdersPage allOrders={allOrders}/>
         </ProtectedRoute>
-        <Route path="/profile/orders/:id" exact={true}>
-          <BurgerDetails />
+        <Route path="/profile/orders/:id">
+          <FeedProfile allOrders={allOrders}/>
         </Route>
         <Route path="/ingredients/:id">
           <IngredientDetails ingredient={ingredient} />
@@ -67,7 +71,7 @@ export default function App() {
         <Route path="/feed" exact={true}>
           <FeedPage />
         </Route>
-        <Route path="/feed/:id" exact={true}>
+        <Route path="/feed/:id">
           <BurgerDetails />
         </Route>
       </Switch>
@@ -86,7 +90,7 @@ export default function App() {
           path="/profile/orders/:id"
           children={
             <Modal onClick={closeIngredientModal}>
-              <BurgerDetails />
+              <FeedProfile allOrders={allOrders}/>
             </Modal>
           }
         />
@@ -96,7 +100,7 @@ export default function App() {
           path="/feed/:id"
           children={
             <Modal onClick={closeIngredientModal}>
-              <BurgerDetails />
+              <FeedOrder />
             </Modal>
           }
         />

@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 import { useAuth } from "../../services/auth";
 import { Loader } from "../../ui/loader/loader";
 
-const FeedOrder = (data) => {
+const OrderItems = (data) => {
   const location = useLocation();
 
   const allIngredients = useSelector((store) => store.fillings.ingredients);
 
   useEffect(() => {
   }, [data]);
-
+  console.log(data)
   const auth = useAuth();
 
   const order = data.data
@@ -128,4 +128,4 @@ const FeedOrder = (data) => {
 }
 }
 
-export default FeedOrder
+export default OrderItems

@@ -20,7 +20,6 @@ export const socketMiddleware = (actions, url) => {
     return (next) => (actions) => {
       const { dispatch } = store;
       const { type, payload } = actions;
-      console.log(type)
       if (type === wsInit) {
         socket = new WebSocket(url);
         socket.onopen = (event) => {

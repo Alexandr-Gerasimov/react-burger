@@ -140,11 +140,13 @@ export const logoutRequest = async () => {
     },
     redirect: "follow",
     referrerPolicy: "no-referrer",
+    body: JSON.stringify({
+      token: getCookie("token")
+    }),
   });
 };
 
-export const refreshRequest = async (refreshToken) => {
-  console.log(refreshToken)
+export const refreshRequest = async (token) => {
   return await fetch(`${config.baseUrl}/auth/token`, {
     method: "POST",
     mode: "cors",
@@ -156,7 +158,7 @@ export const refreshRequest = async (refreshToken) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify({
-      token: refreshToken
+      token: token
     }),
   });
 };

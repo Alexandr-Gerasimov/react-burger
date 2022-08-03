@@ -7,6 +7,7 @@ import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
 import { setCookie } from "../../services/utils";
+import { useSelector } from "react-redux";
 
 export const Ingredient = ({ set, onClick }) => {
   const ingredientCount = set.__v;
@@ -17,6 +18,10 @@ export const Ingredient = ({ set, onClick }) => {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
+
+  const constructorBuns = useSelector(
+    (store) => store.fillings.constructorBuns
+  );
 
 
   return (

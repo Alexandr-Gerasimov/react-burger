@@ -14,19 +14,28 @@ const OrderItems = (data) => {
 
   useEffect(() => {
   }, [data]);
-  console.log(data)
   const auth = useAuth();
-
   const order = data.data
   const orderIngredients = data.data.ingredients
   const ingredients = orderIngredients.map((ingredient) => allIngredients.find(item => item._id === ingredient));
-
-  const constructorBuns = ingredients.filter((obj) => obj.type === 'bun')[0]
-  const constructorFillings = ingredients.filter((obj) => obj.type !== 'bun')
+  const constructorBuns = ingredients.filter((obj) => {
+    if (obj === undefined) {
+      return null
+    } else {
+      return (obj.type === 'bun')
+    }
+    })[0]
+  const constructorFillings = ingredients.filter((obj) => {
+    if (obj === undefined) {
+      return null
+    } else {
+      return (obj.type !== 'bun')
+    }
+    })
 
   const price = useMemo(() => {
     return (
-      (constructorBuns === null ? 0 : constructorBuns.price * 2) +
+      (!constructorBuns ? 0 : constructorBuns.price * 2) +
       constructorFillings.reduce((s, v) => s + v.price, 0)
     );
   }, [constructorBuns, constructorFillings]);
@@ -70,6 +79,11 @@ const OrderItems = (data) => {
 
   if(!data) {
     return <Loader size="large" />
+  } 
+  if (!constructorBuns) {
+    return (
+    <p>заказ составлен не корректно</p>
+    )
   } else {
   return (
     <li className={styles.order}>

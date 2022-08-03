@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Redirect, Link, useLocation } from "react-router-dom";
 import styles from "./login.module.css";
 import {

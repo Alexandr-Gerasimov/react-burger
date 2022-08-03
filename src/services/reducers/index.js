@@ -113,7 +113,7 @@ export const ingredientReducer = (state = initialState, action) => {
           constructorFillings: [...state.constructorFillings],
           getAllItems: [...state.getAllItems, action.payload],
           ingredients: [...state.ingredients].map((item) =>
-            item._id === action.payload._id ? { ...item, __v: 1 } : item
+            item._id === action.payload._id ? { ...item, __v: 2 } : { ...item, __v: 0}
           ),
         };
       } else {

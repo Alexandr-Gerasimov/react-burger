@@ -46,7 +46,6 @@ export default function BurgerConstructor({ onClick }) {
     dispatch({
       type: ADD_ITEM,
       payload: set,
-      id: nanoid(),
     });
   };
 

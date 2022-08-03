@@ -10,7 +10,8 @@ import { FeedPage } from "../../pages/feed-page";
 import FeedProfile from "../feed-profile/feed-profile";
 import FeedOrder from "../feed-order/feed-order";
 import BurgerDetails from "../burger-deteils/burger-details";
-import { ProvideAuth } from "../../services/auth";
+import BurgerDetailsOrder from "../burger-deteils/burger-details-order";
+import { ProvideAuth, useAuth } from "../../services/auth";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
 import { useEffect } from "react";
@@ -23,7 +24,7 @@ export default function App() {
   const location = useLocation();
   const background = location.state?.background;
   const history = useHistory();
-
+  const auth = useAuth()
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllItems());
@@ -60,10 +61,10 @@ export default function App() {
           <ProfilePage />
         </ProtectedRoute>
         <ProtectedRoute path="/profile/orders" exact={true}>
-          <ProfileOrdersPage allOrders={allOrders}/>
+          <ProfileOrdersPage/>
         </ProtectedRoute>
         <Route path="/profile/orders/:id">
-          <FeedProfile allOrders={allOrders}/>
+          <BurgerDetailsOrder/>
         </Route>
         <Route path="/ingredients/:id">
           <IngredientDetails ingredient={ingredient} />
@@ -87,17 +88,17 @@ export default function App() {
       )}
       {background && (
         <Route
-          path="/profile/orders/:id"
+          path="/profile/orders/:id" exact={true}
           children={
             <Modal onClick={closeIngredientModal}>
-              <FeedProfile allOrders={allOrders}/>
+              <FeedProfile/>
             </Modal>
           }
         />
       )}
       {background && (
         <Route
-          path="/feed/:id"
+          path="/feed/:id" exact={true}
           children={
             <Modal onClick={closeIngredientModal}>
               <FeedOrder />

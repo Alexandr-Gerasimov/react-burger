@@ -41,9 +41,14 @@ export const wsFeedActions = {
 }
 
 const token = getCookie("token");
+console.log(token)
 
 const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
-const wsUrlUser = `wss://norma.nomoreparties.space/orders?token=${token}`;
+const wsUrlUser = () => {
+  if (token) {
+  return (`wss://norma.nomoreparties.space/orders?token=${token}`
+  )}
+};
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

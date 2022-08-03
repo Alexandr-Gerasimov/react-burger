@@ -78,7 +78,7 @@ const Main = () => {
           <BurgerIngredients onClick={componentClick} />
           <BurgerConstructor onClick={OrderButtonClick} />
         </main>
-        {orderDetailsModal && content}
+        {orderDetailsModal? content : <Loader />}
       </DndProvider>
     </div>
   );

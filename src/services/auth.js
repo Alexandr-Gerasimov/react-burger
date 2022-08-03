@@ -1,5 +1,5 @@
 import { useContext, useState, createContext } from "react";
-import { deleteCookie, setCookie } from "./utils";
+import { deleteCookie, getCookie, setCookie } from "./utils";
 import {
   loginRequest,
   getUserRequest,
@@ -26,6 +26,8 @@ export function useAuth() {
 export function useProvideAuth() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
+  const token = getCookie('token')
+  console.log(token)
   const location = useLocation();
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
 
@@ -91,7 +93,7 @@ export function useProvideAuth() {
   };
 
   const signOut = async () => {
-    await logoutRequest();
+    await logoutRequest(token);
     setUser(null);
     deleteCookie("token");
   };

@@ -28,23 +28,12 @@ const FeedOrder = () => {
       dispatch({type: WS_CONNECTION_CLOSED})}
   },[])
 
-  
-
-  const allOrders = useSelector((store) => { return (wsConnected ? (store.socket.messages) : (<Loader size="large" />))})[0];
-
-  const orders = allOrders.data.orders;
-  console.log(orders)
-
-  if (!wsConnected) {
-    return <Loader size="large" />;
-  } else {
-    return (
-      <>
-        <BurgerDetails props={orders}/>
-      </>
-    );
-  }
-};
+  return (
+    <>
+      {wsConnected && <BurgerDetails />}
+    </>
+  );
+}
 
 FeedOrder.PropType = {
   component: ingredientPropType.isRequired,

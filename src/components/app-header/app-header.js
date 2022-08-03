@@ -13,7 +13,11 @@ export default function AppHeader() {
   };
 
   const Logotype = () => {
-    return <img src={burgerLogo} className={styles.logo} />;
+    return (
+      <Link to='/'>
+        <img src={burgerLogo} className={styles.logo} />
+      </Link>
+    );
   };
 
   const Menu = () => {
@@ -21,11 +25,24 @@ export default function AppHeader() {
       <nav className={styles.nav}>
         <button className={styles.button} type="button">
           <BurgerIcon type="secondary" />
-          <NavLink to="/" activeClassName={styles.activeText} className={styles.text} exact={true}>Конструктор</NavLink>
+          <NavLink
+            to="/"
+            activeClassName={styles.activeText}
+            className={styles.text}
+            exact={true}
+          >
+            Конструктор
+          </NavLink>
         </button>
         <button className={styles.button} type="button">
           <ListIcon type="secondary" />
-          <NavLink to="/feed" activeClassName={styles.activeText} className={styles.text}>Лента заказов</NavLink>
+          <NavLink
+            to="/feed"
+            activeClassName={styles.activeText}
+            className={styles.text}
+          >
+            Лента заказов
+          </NavLink>
         </button>
       </nav>
     );
@@ -35,7 +52,13 @@ export default function AppHeader() {
     return (
       <button className={styles.private} type="button">
         <ProfileIcon type="secondary" />
-        <NavLink to="/profile" activeClassName={styles.activeText} className={styles.text}>Личный кабинет</NavLink>
+        <NavLink
+          to="/profile"
+          activeClassName={styles.activeText}
+          className={styles.text}
+        >
+          Личный кабинет
+        </NavLink>
       </button>
     );
   };

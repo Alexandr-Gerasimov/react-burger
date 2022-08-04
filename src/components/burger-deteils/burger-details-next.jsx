@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useMemo } from "react";
 import { nanoid } from "nanoid";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 function BurgerDetailsNext() {
   const params = useParams();
@@ -12,16 +13,10 @@ function BurgerDetailsNext() {
   const background = location.state?.background;
 
   const allOrders = useSelector((store) => store.socket.messages)[0];
-  console.log(allOrders) 
   const orders = allOrders.data.orders;
-  console.log(orders) 
 
   const allIngredients = useSelector((store) => store.fillings.ingredients);
-  console.log(orders)
   const order = orders.filter((obj) => obj._id === params.id)[0];
-
-  console.log(params)
-  console.log(order)
 
   const orderIngredients = order.ingredients;
 
@@ -67,11 +62,8 @@ function BurgerDetailsNext() {
                     key={(ingredient.id = nanoid())}
                   >
                     <div className={styles.ingredientPositionDescription}>
-                      <image
+                      <img
                         className={styles.ingredientImage}
-                        style={{
-                          backgroundImage: `url(${ingredient.image})`,
-                        }}
                         src={ingredient.image}
                         alt={ingredient.name}
                       />
@@ -119,7 +111,7 @@ function BurgerDetailsNext() {
                     key={(ingredient.id = nanoid())}
                   >
                     <div className={styles.ingredientPositionDescription}>
-                      <image
+                      <img
                         className={styles.ingredientImage}
                         style={{
                           backgroundImage: `url(${ingredient.image})`,

@@ -10,7 +10,6 @@ const IngredientDetails = () => {
 
   const location = useLocation();
   const background = location.state?.background;
-  console.log(background)
 
   const ingredient = ingredients.find((el) => el._id === id);
   if(!ingredient) {

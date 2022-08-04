@@ -33,7 +33,7 @@ export function ProfileOrdersPage() {
 
   return (
   <>
-    {wsConnected && auth.user && <ProfileOrdersPageNext />}
+    <ProfileOrdersPageNext />
   </>
   )
 }

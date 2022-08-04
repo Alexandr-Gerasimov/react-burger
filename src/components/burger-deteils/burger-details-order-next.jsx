@@ -13,16 +13,10 @@ function BurgerDetailsOrderNext() {
   const background = location.state?.background;
 
   const allOrders = useSelector((store) => store.socketFeed.messages)[0];
-  console.log(allOrders) 
   const orders = allOrders.data.orders;
-  console.log(allOrders) 
 
   const allIngredients = useSelector((store) => store.fillings.ingredients);
-  console.log(orders)
   const order = orders.filter((obj) => obj._id === params.id)[0];
-
-  console.log(params)
-  console.log(order)
 
   const orderIngredients = order.ingredients;
 
@@ -68,7 +62,7 @@ function BurgerDetailsOrderNext() {
                     key={(ingredient.id = nanoid())}
                   >
                     <div className={styles.ingredientPositionDescription}>
-                      <image
+                      <img
                         className={styles.ingredientImage}
                         style={{
                           backgroundImage: `url(${ingredient.image})`,
@@ -120,7 +114,7 @@ function BurgerDetailsOrderNext() {
                     key={(ingredient.id = nanoid())}
                   >
                     <div className={styles.ingredientPositionDescription}>
-                      <image
+                      <img
                         className={styles.ingredientImage}
                         style={{
                           backgroundImage: `url(${ingredient.image})`,

@@ -1,12 +1,13 @@
 .ingredientDetails {
-    z-index: 1;
+  margin: auto;
+  z-index: 1;
   width: 640px;
   height: 620px;
   padding: 40px;
 }
 
 .ingredientTitle {
-    margin: 0;
+  margin: 0;
   font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
@@ -16,8 +17,8 @@
 }
 
 .ingredientName {
-    margin: 0;
-    height: 30px;
+  margin: 0;
+  height: 30px;
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 700;
@@ -29,7 +30,7 @@
 }
 
 .ingredientStatus {
-    margin: 0;
+  margin: 0;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -39,7 +40,7 @@
 }
 
 .ingredientComposition {
-    margin: 0;
+  margin: 0;
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -61,20 +62,20 @@
 }
 
 .ingredientTypes::-webkit-scrollbar {
-    width: 12px; /* ширина scrollbar */
-    padding: 0;
-  }
-  
-  .ingredientTypes::-webkit-scrollbar-track {
-    background: #2f2f37; /* цвет дорожки */
-  }
-  
-  .ingredientTypes::-webkit-scrollbar-thumb {
-    background: #8585AD; /* цвет плашки */
-  }
+  width: 12px; /* ширина scrollbar */
+  padding: 0;
+}
+
+.ingredientTypes::-webkit-scrollbar-track {
+  background: #2f2f37; /* цвет дорожки */
+}
+
+.ingredientTypes::-webkit-scrollbar-thumb {
+  background: #8585ad; /* цвет плашки */
+}
 
 .ingredientOrderTime {
-    margin: 0;
+  margin: 0;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -83,71 +84,74 @@
 }
 
 .ingredientOrderPrice {
-    display: flex;
+  display: flex;
 }
 
 .ingredientOrderPriceText {
-    margin: 0;
-    font-weight: 400;
-    font-size: 28px;
-    line-height: 24px;
-    color: #f2f2f3;
-    margin-right: 10px;
+  margin: 0;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #f2f2f3;
+  margin-right: 10px;
 }
 
 .ingredientOrderDetails {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .ingredientPosition {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
 .ingredientPositionDescription {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .ingredientImage {
-margin: 0;
-    padding: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 100px;
-    background: #131316;
-    border: 2px solid transparent;
-    border-color: #4C4CFF;
-    box-sizing: border-box;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    overflow: hidden;
-    margin-right: 16px;
+  margin: 0;
+  display: block;
+  object-fit: cover;
+  padding: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: #131316;
+  border: 2px solid transparent;
+  border-color: #4c4cff;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #131316;
+  position: relative;
+  overflow: hidden;
+  margin-right: 16px;
 }
 
 .ingredientPositionText {
-    margin: 0;
-    font-style: normal;
-font-weight: 400;
-font-size: 16px;
-line-height: 24px;
-color: #f2f2f3;
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f3;
 }
 
 .ingredientPositionPrice {
-    display: flex;
+  display: flex;
 }
 
 .ingredientPositionPriceText {
-    margin: 0;
-    font-style: normal;
-font-weight: 400;
-font-size: 28px;
-line-height: 24px;
-margin-right: 10px;
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-right: 10px;
 }

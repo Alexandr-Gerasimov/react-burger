@@ -48,7 +48,6 @@ export const wsFeedActions = {
 }
 
 const token = getCookie("token");
-console.log(token)
 
 const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 const wsUrlUser = `wss://norma.nomoreparties.space/orders?token=${token}`;

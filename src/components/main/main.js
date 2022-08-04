@@ -28,10 +28,18 @@ const Main = () => {
     (store) => store.fillings.orderDetailsRequest
   );
   const dispatch = useDispatch();
-  const orgerItems = useSelector(
-    (store) => store.fillings.getAllItems
+
+  const constructorBuns = useSelector(
+    (store) => store.fillings.constructorBuns
   );
-  const ingredientsId = orgerItems.map((ingredient) => ingredient._id);
+  const constructorFillings = useSelector(
+    (store) => store.fillings.constructorFillings
+  );
+
+  const orderIngredients = [ constructorBuns, ...constructorFillings ]
+console.log(orderIngredients)
+
+  
   const [login, setLogin] = useState(false);
 
   const componentClick = (component) => {
@@ -54,6 +62,7 @@ const Main = () => {
   }, [orderDetailsRequest, orderDetails]);
 
   const OrderButtonClick = () => {
+    const ingredientsId = orderIngredients.map((ingredient) => ingredient._id);
     if (auth.user) {
       dispatch(postOrderNumber(ingredientsId));
     } else {

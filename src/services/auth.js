@@ -27,7 +27,6 @@ export function useProvideAuth() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const token = getCookie('token')
-  console.log(token)
   const location = useLocation();
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
 

@@ -13,9 +13,15 @@
   color: #fff;
 }
 
+.button_block {
+  display: flex;
+  width: 600px;
+}
+
 .button {
   width: 200px;
   height: 56px;
+  text-decoration: none;
   border: none;
   box-shadow: inset 0px -1px 0px #2f2f37;
   background: none;
@@ -23,11 +29,6 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-}
-
-.button:active {
-  color: #fff;
-  box-shadow: inset 0px -2px 0px #4c4cff;
 }
 
 .section {
@@ -68,4 +69,9 @@
   gap: 16px;
   align-items: center;
   justify-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: #fff;
 }

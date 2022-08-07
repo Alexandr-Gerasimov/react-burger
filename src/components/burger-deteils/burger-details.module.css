@@ -1,0 +1,157 @@
+.ingredientDetails {
+  margin: auto;
+  z-index: 1;
+  width: 640px;
+  height: 620px;
+  padding: 40px;
+}
+
+.ingredientTitle {
+  margin: 0;
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-bottom: 40px;
+}
+
+.ingredientName {
+  margin: 0;
+  height: 30px;
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  margin-bottom: 12px;
+  color: #f2f2f3;
+  overflow: hidden;
+}
+
+.ingredientStatus {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #00cccc;
+  margin-bottom: 60px;
+}
+
+.ingredientComposition {
+  margin: 0;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #f2f2f3;
+  margin-bottom: 24px;
+}
+
+.ingredientTypes {
+  height: 312px;
+  margin-bottom: 40px;
+  display: block;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-right: 25px;
+  margin-bottom: 40px;
+}
+
+.ingredientTypes::-webkit-scrollbar {
+  width: 12px; /* ширина scrollbar */
+  padding: 0;
+}
+
+.ingredientTypes::-webkit-scrollbar-track {
+  background: #2f2f37; /* цвет дорожки */
+}
+
+.ingredientTypes::-webkit-scrollbar-thumb {
+  background: #8585ad; /* цвет плашки */
+}
+
+.ingredientOrderTime {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8585ad;
+}
+
+.ingredientOrderPrice {
+  display: flex;
+}
+
+.ingredientOrderPriceText {
+  margin: 0;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #f2f2f3;
+  margin-right: 10px;
+}
+
+.ingredientOrderDetails {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ingredientPosition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ingredientPositionDescription {
+  display: flex;
+  align-items: center;
+}
+
+.ingredientImage {
+  margin: 0;
+  display: block;
+  object-fit: cover;
+  padding: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  background: #131316;
+  border: 2px solid transparent;
+  border-color: #4c4cff;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #131316;
+  position: relative;
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+.ingredientPositionText {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f3;
+}
+
+.ingredientPositionPrice {
+  display: flex;
+}
+
+.ingredientPositionPriceText {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  margin-right: 10px;
+}

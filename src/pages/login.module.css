@@ -1,0 +1,363 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: #131316;
+}
+
+.container {
+  width: 480px;
+  height: 478px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin: auto;
+}
+
+.header {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  margin: 0;
+}
+
+.horizontal_padding {
+  padding: 0 var(--container-padding);
+}
+
+.vertical_padding {
+  padding: var(--container-padding) 0;
+}
+
+.form {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.form div {
+  width: fill;
+}
+
+.heading {
+  font-size: 40px;
+  color: white;
+}
+
+.account {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  margin-top: 120px;
+  justify-content: center;
+}
+
+.redAccount {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav {
+  text-decoration: none;
+  display: flex;
+  width: 320px;
+  height: 64px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #8585ad;
+  align-items: center;
+  border: none;
+  background-color: #131316;
+}
+
+.activeNav {
+  text-decoration: none;
+  display: flex;
+  width: 320px;
+  height: 64px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #fff;
+  align-items: center;
+}
+
+.navMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.caption {
+  width: 320px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 80px;
+  color: #8585ad;
+}
+
+.navForm {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 0px;
+  padding-bottom: 24px;
+}
+
+.navForm div {
+  width: fill;
+}
+
+.profileButtons {
+  display: flex;
+  justify-content: right;
+}
+
+.cancelButton {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4c4cff;
+  border: none;
+  background-color: #131316;
+  margin-right: 28px;
+}
+
+.loginButton {
+  display: flex;
+  justify-content: center;
+}
+
+.orders {
+  width: 872px;
+  height: 916px;
+}
+
+.orderListStyle {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.orderList {
+  width: 856px;
+  height: 246px;
+  display: flex;
+  flex-direction: column;
+  background: #1c1c21;
+  border-radius: 40px;
+  margin-bottom: 24px;
+}
+
+.orderInfo {
+  display: flex;
+  margin: 24px;
+  justify-content: space-between;
+}
+
+.orderNumber {
+  font-family: "Iceland";
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #f2f2f3;
+  margin: 0;
+}
+
+.orderDate {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: right;
+  color: #8585ad;
+}
+
+.orderName {
+  margin: 24px;
+  margin-top: 0;
+}
+
+.orderBurgerName {
+  margin: 0;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: #f2f2f3;
+}
+
+.orderStatus {
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f2f2f3;
+}
+
+.orderIconsAndPrice {
+  display: flex;
+  justify-content: space-between;
+  width: 808px;
+  height: 64px;
+  margin: 24px;
+  margin-top: 0;
+}
+
+.orderIcons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: dense;
+  direction: rtl;
+  column-gap: -20px;
+  width: 304px;
+  height: 64px;
+  list-style: none;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.orderCurrens {
+  display: flex;
+  align-items: center;
+}
+
+.orderPrice {
+  margin: 0;
+  margin-right: 9px;
+  font-family: "Iceland";
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #f2f2f3;
+}
+
+.orderIcon {
+  margin-left: -20px;
+}
+
+.orderIconImage {
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  background: #131316;
+  border-radius: 100px;
+  border: 2px solid rgba(128, 26, 178, 1);
+}
+
+.feedPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedTitle {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  color: #f2f2f3;
+}
+
+.feedBlock {
+  width: 608px;
+}
+
+.feedList {
+  width: 608px;
+  height: 852px;
+  list-style: none;
+  padding: 0;
+  margin: auto;
+  overflow: auto;
+}
+
+.feedList::-webkit-scrollbar {
+  width: 12px; /* ширина scrollbar */
+}
+
+.feedList::-webkit-scrollbar-track {
+  background: #2f2f37; /* цвет дорожки */
+}
+
+.feedList::-webkit-scrollbar-thumb {
+  background: #8585AD; /* цвет плашки */
+}
+
+.feedStatus {
+  width: 580px;
+  margin-left: 60px;
+}
+
+.feedProduction {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.feedProductionBoard {
+  min-width: 150px;
+  min-height: 206px;
+}
+
+.feedProductionHead {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  margin: 0;
+}
+
+.feedComplite {
+  list-style: none;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  grid-auto-flow: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.feedComplitePos {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #00cccc;
+}
+
+.feedComplitePosInWork {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  color: #f2f2f3;
+}
+
+.feedCompliteAtAll {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 144px;
+  line-height: 120px;
+  margin: 0;
+}
+
+.feedCompliteAtAll:first-child {
+  margin-bottom: 60px;
+}

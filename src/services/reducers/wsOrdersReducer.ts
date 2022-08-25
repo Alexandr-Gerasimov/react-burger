@@ -5,13 +5,20 @@ import {
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE
   } from '../actions/wsOrdersAction';
+  import { TWsOrdersActions } from '../actions/wsOrdersAction';
+  import { TWSFeed } from "../types/data";
   
-  const initialState = {
+  export type TInitialState = {
+    wsConnected: boolean,
+    messages: TWSFeed[],
+  };
+  
+  const initialState: TInitialState = {
     wsConnected: false,
     messages: []
   };
   
-  export const wsReducer = (state = initialState, action) => {
+  export const wsReducer = (state = initialState, action: TWsOrdersActions): TInitialState => {
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
@@ -35,13 +42,8 @@ import {
         return {
           ...state,
           messages: state.messages.length
-            ? [...state.messages, { ...action.payload, timestamp: new Date().getTime() / 1000 }]
-            : [{ ...action.payload, timestamp: new Date().getTime() / 1000 }]
-        };
-      case WS_USER_NAME_UPDATE:
-        return {
-          ...state,
-          user: action.payload
+            ? [...state.messages, { ...action.message, timestamp: new Date().getTime() / 1000 }]
+            : [{ ...action.message, timestamp: new Date().getTime() / 1000 }]
         };
   
       default: {

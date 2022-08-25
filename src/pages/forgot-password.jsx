@@ -45,7 +45,7 @@ export function ForgotPage() {
           console.log(res)
           dispatch({
             type: EMAIL_SENDING,
-            payload: true,
+            emailSending: true,
           });
           return setReset(true);
         }

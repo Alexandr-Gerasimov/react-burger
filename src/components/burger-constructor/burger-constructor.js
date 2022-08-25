@@ -45,14 +45,14 @@ export default function BurgerConstructor({ onClick }) {
   const moveIngredient = (set) => {
     dispatch({
       type: ADD_ITEM,
-      payload: set,
+      ingredient: set,
     });
   };
 
   const onDelete = (components) => {
     dispatch({
       type: DELETE_ITEM,
-      payload: components,
+      ingredient: components,
     });
   };
 

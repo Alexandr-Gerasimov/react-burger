@@ -5,8 +5,21 @@ import {
   AUTH_CHECKED,
   EMAIL_SENDING,
 } from "../actions/profile";
+import { TProfileActions } from "../actions/profile";
+import { TProfile } from "../types/data";
 
-const initialState = {
+export type TInitialState = {
+  registrationSuccess: boolean;
+  userProfile: TProfile | {};
+  accessToken: string;
+  refreshToken: string;
+  registrationFailed: boolean;
+
+  isAuthChecked: boolean;
+  emailSending: boolean;
+};
+
+const initialState: TInitialState = {
   registrationSuccess: false,
   userProfile: {},
   accessToken: "",
@@ -18,10 +31,10 @@ const initialState = {
 };
 
 
-export const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action: TProfileActions): TInitialState => {
   switch (action.type) {
     case GET_USER_PROFILE_SUCCESS:
-      console.log(action.data.user);
+      console.log(action.data);
       return {
         ...state,
         userProfile: action.data.user,
@@ -46,13 +59,13 @@ export const profileReducer = (state = initialState, action) => {
     case AUTH_CHECKED:
       return {
         ...state,
-        isAuthChecked: action.payload,
+        isAuthChecked: action.isAuthChecked,
       }
     case EMAIL_SENDING:
-      console.log(action.payload)
+      console.log(action.emailSending)
       return{
         ...state,
-        emailSending: action.payload,
+        emailSending: action.emailSending,
       }
     default: {
       return state;

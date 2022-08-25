@@ -19,8 +19,34 @@ import {
 import { profileReducer } from "./profile";
 import { wsFeedReducer } from "./wsFeedReducer";
 import { wsReducer } from "./wsOrdersReducer";
+import { TIngredient } from "../types/data";
+import { TIndexActions } from "../actions";
+import { TOrderDetails } from "../types/data";
 
-const initialState = {
+export type TInitialState = {
+  ingredients: ReadonlyArray<TIngredient>;
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+
+  ingredientQuantity: boolean | null;
+  ingredientCounter: string;
+
+  currentTab: string;
+
+  constructorBuns: TIngredient | null;
+  constructorFillings: ReadonlyArray<TIngredient>;
+  getAllItems: ReadonlyArray<TIngredient>;
+
+  ingredientsModal: boolean;
+  ingredient: TIngredient | {};
+
+  orderDetails: TOrderDetails | {};
+  orderDetailsModal: boolean;
+  orderDetailsRequest: boolean;
+  orderDetailsFailed: boolean;
+};
+
+const initialState: TInitialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -43,13 +69,15 @@ const initialState = {
   orderDetailsFailed: false,
 };
 
-export const ingredientReducer = (state = initialState, action) => {
+console.log(initialState.orderDetails)
+
+export const ingredientReducer = (state = initialState, action: TIndexActions): TInitialState => {
   switch (action.type) {
     
     case GET_INGREDIENT_LIST_SUCCESS:
       return {
         ...state,
-        ingredients: action.payload,
+        ingredients: action.ingredients,  
         ingredientsRequest: false,
         ingredientsFailed: false,
       };
@@ -63,7 +91,7 @@ export const ingredientReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredientsModal: true,
-        ingredient: action.payload,
+        ingredient: action.ingredient,
       };
     case INGREDIENT_DESCRIPTION_CLOSED:
       return {
@@ -79,7 +107,7 @@ export const ingredientReducer = (state = initialState, action) => {
     case GET_ORDER_NUMBER_SUCCESS:
       return {
         ...state,
-        orderDetails: action.payload,
+        orderDetails: action.orderDetails,
         orderDetailsRequest: false,
         orderDetailsFailed: false,
       };
@@ -92,7 +120,7 @@ export const ingredientReducer = (state = initialState, action) => {
     case ORDER_DETAILS_OPENED:
       return {
         ...state,
-        orderDetailsModal: action.payload,
+        orderDetailsModal: action.orderDetailsModal,
       };
     case ORDER_DETAILS_CLOSED:
       return {
@@ -106,24 +134,24 @@ export const ingredientReducer = (state = initialState, action) => {
       };
     }
     case ADD_ITEM: {
-      if (action.payload.type === "bun") {
+      if (action.ingredient.type === "bun") {
         return {
           ...state,
-          constructorBuns: action.payload,
+          constructorBuns: action.ingredient,
           constructorFillings: [...state.constructorFillings],
-          getAllItems: [...state.getAllItems, action.payload],
+          getAllItems: [...state.getAllItems, action.ingredient],
           ingredients: [...state.ingredients].map((item) =>
-            item._id === action.payload._id ? { ...item, __v: 2 } : { ...item, __v: 0}
+            item._id === action.ingredient._id ? { ...item, __v: 2 } : { ...item, __v: 0}
           ),
         };
       } else {
         return {
           ...state,
           constructorBuns: state.constructorBuns,
-          constructorFillings: [...state.constructorFillings, action.payload],
-          getAllItems: [...state.getAllItems, action.payload],
+          constructorFillings: [...state.constructorFillings, action.ingredient],
+          getAllItems: [...state.getAllItems, action.ingredient],
           ingredients: [...state.ingredients].map((item) =>
-            item._id === action.payload._id
+            item._id === action.ingredient._id
               ? { ...item, __v: ++item.__v }
               : item
           ),
@@ -134,10 +162,10 @@ export const ingredientReducer = (state = initialState, action) => {
       return {
         ...state,
         constructorFillings: [...state.constructorFillings].filter(
-          (item) => item.id !== action.payload.id
+          (item) => item.id !== action.ingredient.id
         ),
         ingredients: [...state.ingredients].map((item) =>
-          item._id === action.payload._id ? { ...item, __v: --item.__v } : item
+          item._id === action.ingredient._id ? { ...item, __v: --item.__v } : item
         ),
       };
     }

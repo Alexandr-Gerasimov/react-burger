@@ -1,3 +1,4 @@
+import { type } from "os";
 import {
   WS_FEED_USER_NAME_UPDATE,
   WS_FEED_CONNECTION_SUCCESS,
@@ -5,13 +6,20 @@ import {
   WS_FEED_CONNECTION_CLOSED,
   WS_FEED_GET_MESSAGE,
 } from "../actions/wsFeedAction";
+import { TWsFeedActions } from "../actions/wsFeedAction";
+import { TWSFeed } from "../types/data";
 
-const initialState = {
+export type TInitialState = {
+  wsConnected: boolean,
+  messages: TWSFeed[],
+};
+
+const initialState: TInitialState = {
   wsConnected: false,
   messages: [],
 };
 
-export const wsFeedReducer = (state = initialState, action) => {
+export const wsFeedReducer = (state = initialState, action: TWsFeedActions): TInitialState => {
   switch (action.type) {
     case WS_FEED_CONNECTION_SUCCESS:
       return {
@@ -37,16 +45,11 @@ export const wsFeedReducer = (state = initialState, action) => {
         messages: state.messages.length
           ? [
               ...state.messages,
-              { ...action.payload, timestamp: new Date().getTime() / 1000 },
+              { ...action.message, timestamp: new Date().getTime() / 1000 },
             ]
-          : [{ ...action.payload, timestamp: new Date().getTime() / 1000 }],
+          : [{ ...action.message, timestamp: new Date().getTime() / 1000 }],
       };
-    case WS_FEED_USER_NAME_UPDATE:
-      return {
-        ...state,
-        user: action.payload,
-      };
-
+      
     default: {
       return state;
     }

@@ -17,7 +17,7 @@ export function LoginPage() {
   let login = useCallback(
     (e) => {
       e.preventDefault();
-      auth.signIn(log);
+      auth.signIn(log.email, log.password);
     },
     [auth, log]
   );

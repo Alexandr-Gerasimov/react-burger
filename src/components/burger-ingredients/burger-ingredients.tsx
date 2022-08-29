@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { useInView } from "react-intersection-observer";
 import InView from "@mpth/react-in-view";
 import styles from "./burger-ingredients.module.css";
@@ -8,7 +8,11 @@ import { getAllItems } from "../../services/actions";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsCategory } from "../ingredients-category/ingredients-category";
 
-export default function BurgerIngredients({ onClick }) {
+type TBurgerIngredients = {
+  onClick: () => void;
+}
+
+export const BurgerIngredients: FC<TBurgerIngredients> = ({ onClick }) => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("bun");
 
@@ -87,6 +91,6 @@ export default function BurgerIngredients({ onClick }) {
   );
 }
 
-BurgerIngredients.PropType = {
+BurgerIngredients.propTypes = {
   onClick: PropTypes.func.isRequired,
 };

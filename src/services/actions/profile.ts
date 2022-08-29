@@ -58,7 +58,7 @@ export function useAllItems() {
       headers: config.headers,
     })
       .then(getResponseData)
-      .then((res) => {
+      .then((res: any) => {
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
           payload: res.data,

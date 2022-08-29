@@ -7,17 +7,21 @@ import {
   WS_FEED_GET_MESSAGE,
 } from "../actions/wsFeedAction";
 import { TWsFeedActions } from "../actions/wsFeedAction";
-import { TWSFeed } from "../types/data";
+import { TWSFeed, TWSFeedOrder, TOrder } from "../types/data";
 
 export type TInitialState = {
   wsConnected: boolean,
-  messages: TWSFeed[],
+  messages: TWSFeedOrder | null,
+  orders: Array<TOrder>
 };
 
 const initialState: TInitialState = {
   wsConnected: false,
-  messages: [],
+  messages: null,
+  orders: []
 };
+
+
 
 export const wsFeedReducer = (state = initialState, action: TWsFeedActions): TInitialState => {
   switch (action.type) {
@@ -39,16 +43,13 @@ export const wsFeedReducer = (state = initialState, action: TWsFeedActions): TIn
         wsConnected: false,
       };
 
-    case WS_FEED_GET_MESSAGE:
-      return {
-        ...state,
-        messages: state.messages.length
-          ? [
-              ...state.messages,
-              { ...action.message, timestamp: new Date().getTime() / 1000 },
-            ]
-          : [{ ...action.message, timestamp: new Date().getTime() / 1000 }],
-      };
+      case WS_FEED_GET_MESSAGE:
+        console.log(action.payload.data.orders)
+        return {
+          ...state,
+          messages: action.payload,
+          orders: action.payload.data.orders
+        };
       
     default: {
       return state;

@@ -31,8 +31,7 @@ export default function App() {
   }, []);
 
   const ingredient = useSelector((store) => store.fillings.ingredient);
-  const allOrders = useSelector((store) => store.socketFeed.messages)[0];
-
+  const orders = useSelector((store) => store.socket.orders);
 
   const closeIngredientModal = () => {
     history.goBack();

@@ -1,10 +1,12 @@
 import { WS_CONNECTION_START } from "../actions/wsOrdersAction";
-import { WS_FEED_CONNECTION_START } from "../actions/wsFeedAction";
+import { TWsFeedActions, WS_FEED_CONNECTION_START } from "../actions/wsFeedAction";
 import { getCookie } from "../utils";
+import { Middleware, MiddlewareAPI } from "redux";
+import { AppDispatch, RootState } from "../types/data";
 
-export const socketMiddleware = (actions, url) => {
-  return (store) => {
-    let socket = null;
+export const socketMiddleware = (actions: {[key in string]: any}, url: string): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
+    let socket: WebSocket | null = null;
     const {
       wsInit,
       wsClose,
@@ -33,10 +35,12 @@ export const socketMiddleware = (actions, url) => {
         socket.onmessage = (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
+          const { success, ...restParsedData } = parsedData
+          console.log(restParsedData)
           dispatch({
             type: onMessage,
             payload: {
-              data: parsedData,
+              data: restParsedData,
               timestamp: new Date().getTime() / 100,
             },
           });

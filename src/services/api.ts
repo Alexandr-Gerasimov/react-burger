@@ -7,9 +7,9 @@ export const config = {
   },
 };
 
-export const getResponseData = (res) => {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-};
+export const getResponseData = <T>(res: Response): Promise<T> => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
+}
 
 export const getAllIngredients = async () => {
   return await fetch(`${config.baseUrl}/ingredients`, {
@@ -19,15 +19,15 @@ export const getAllIngredients = async () => {
 
 export const getIngredients = async () => {
     return await getAllIngredients()
-      .then(getResponseData)
-      .then((data) => {
+      .then(res => getResponseData(res))
+      .then((data: any) => {
         console.log(data)
         return data.success;
       })
       .catch((err) => console.log(err));
 };
 
-export const resetRequest = async (email) => {
+export const resetRequest = async (email: string) => {
   console.log(email)
   return await fetch(`${config.baseUrl}/password-reset`, {
     method: "POST",
@@ -43,7 +43,7 @@ export const resetRequest = async (email) => {
   });
 };
 
-export const loginRequest = async (form) => {
+export const loginRequest = async (email: string, password: string) => {
   return await fetch(`${config.baseUrl}/auth/login`, {
     method: "POST",
     mode: "cors",
@@ -53,13 +53,13 @@ export const loginRequest = async (form) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify({
-      email: form.email,
-      password: form.password,
+      email: email,
+      password: password,
     }),
   });
 };
 
-export const resetPasswordRequest = async (password, token) => {
+export const resetPasswordRequest = async (password: string, token: string) => {
   console.log(password)
   console.log(token)
   return await fetch(`${config.baseUrl}/password-reset/reset`, {
@@ -77,7 +77,7 @@ export const resetPasswordRequest = async (password, token) => {
   });
 };
 
-export const newUserRequest = async (name, email, password) => {
+export const newUserRequest = async (name: string, email: string, password: string) => {
   return await fetch(`${config.baseUrl}/auth/register`, {
     method: "POST",
     mode: "cors",
@@ -108,7 +108,7 @@ export const getUserRequest = async () =>
     referrerPolicy: "no-referrer",
   });
 
-export const patchUserRequest = async (name, email) => {
+export const patchUserRequest = async (name: string, email: string) => {
   
   return await fetch(`${config.baseUrl}/auth/user`, {
     method: "PATCH",
@@ -126,7 +126,6 @@ export const patchUserRequest = async (name, email) => {
       email: email
     }),
   });
-  debugger
 }
 
 export const logoutRequest = async () => {
@@ -146,7 +145,7 @@ export const logoutRequest = async () => {
   });
 };
 
-export const refreshRequest = async (token) => {
+export const refreshRequest = async (token: string) => {
   return await fetch(`${config.baseUrl}/auth/token`, {
     method: "POST",
     mode: "cors",

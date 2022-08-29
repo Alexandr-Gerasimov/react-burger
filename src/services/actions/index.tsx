@@ -3,7 +3,7 @@ import { getResponseData } from "../api";
 import { WS_CONNECTION_START } from "./wsOrdersAction";
 import { WS_FEED_CONNECTION_START } from "./wsFeedAction";
 import { getCookie } from "../utils";
-import { TIngredient } from "../types/data";
+import { AppDispatch, AppThunk, TIngredient } from "../types/data";
 
 export const GET_INGREDIENT_LIST_REQUEST: "GET_INGREDIENT_LIST_REQUEST" = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS: "GET_INGREDIENT_LIST_SUCCESS" = "GET_INGREDIENT_LIST_SUCCESS";
@@ -121,7 +121,7 @@ export function getAllItems() {
       headers: config.headers,
     })
       .then(getResponseData)
-      .then((res) => {
+      .then((res: any) => {
         dispatch({
           type: GET_INGREDIENT_LIST_SUCCESS,
           ingredients: res.data,
@@ -150,7 +150,7 @@ export const onIngredientClick = (ingredient: string[]): IIngredientDescriptionO
   ingredient
 });
 
-export function postOrderNumber(ingredientsId) {
+export function postOrderNumber(ingredientsId: string) {
   console.log(ingredientsId)
   return function (dispatch) {
     dispatch({

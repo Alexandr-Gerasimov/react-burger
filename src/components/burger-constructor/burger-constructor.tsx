@@ -8,14 +8,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
   ADD_ITEM,
   DELETE_ITEM,
   REFRESH_FILLINGS,
 } from "../../services/actions";
-import { ConstructorCard } from "./constructor-card.js";
+import { ConstructorCard } from "./constructor-card";
+import { useSelector, useDispatch } from "../../services/store";
 
 export default function BurgerConstructor({ onClick }) {
 

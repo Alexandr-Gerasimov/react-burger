@@ -6,19 +6,24 @@ import {
     WS_GET_MESSAGE
   } from '../actions/wsOrdersAction';
   import { TWsOrdersActions } from '../actions/wsOrdersAction';
-  import { TWSFeed } from "../types/data";
+  import { TWSFeed, TWSFeedOrder, TOrder } from "../types/data";
   
   export type TInitialState = {
     wsConnected: boolean,
-    messages: TWSFeed[],
+    messages: TWSFeedOrder | null,
+    orders: Array<TOrder>
   };
   
   const initialState: TInitialState = {
     wsConnected: false,
-    messages: []
+    messages: null,
+    orders: []
   };
+
+  
   
   export const wsReducer = (state = initialState, action: TWsOrdersActions): TInitialState => {
+    console.log(initialState)
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
@@ -39,11 +44,11 @@ import {
         };
   
       case WS_GET_MESSAGE:
+        console.log(action.payload.data.orders)
         return {
           ...state,
-          messages: state.messages.length
-            ? [...state.messages, { ...action.message, timestamp: new Date().getTime() / 1000 }]
-            : [{ ...action.message, timestamp: new Date().getTime() / 1000 }]
+          messages: action.payload,
+          orders: action.payload.data.orders
         };
   
       default: {

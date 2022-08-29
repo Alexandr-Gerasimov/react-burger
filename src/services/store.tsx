@@ -12,6 +12,12 @@ import {
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE
 } from './actions/wsOrdersAction';
+import {
+  TypedUseSelectorHook,
+  useSelector as selectorHook,
+  useDispatch as dispatchHook,
+} from 'react-redux';
+import { RootState, AppDispatch, AppThunk } from "./types/data";
 
 import {
   WS_FEED_CONNECTION_CLOSED,
@@ -44,17 +50,22 @@ const token = getCookie("token");
 console.log(token)
 
 const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
-const wsUrlUser = () => {
+
+const wsUrlUser = () =>  {
   if (token) {
   return (`wss://norma.nomoreparties.space/orders?token=${token}`
   )}
 };
 
 const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  typeof window === 'object' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunkMiddleware, socketMiddleware(wsActions, wsUrl), socketMiddleware(wsFeedActions, wsUrlUser)));
+const enhancer = composeEnhancers(applyMiddleware(thunkMiddleware, socketMiddleware(wsActions, wsUrl), socketMiddleware(wsFeedActions, wsUrlUser as any)));
 
 export const store = createStore(rootReducer, enhancer);
+
+export const useSelector: TypedUseSelectorHook<RootState> = selectorHook; 
+
+export const useDispatch = () => dispatchHook<AppDispatch & AppThunk>();

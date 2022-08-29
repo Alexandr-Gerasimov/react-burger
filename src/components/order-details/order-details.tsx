@@ -1,8 +1,15 @@
 import styles from "./order-details.module.css";
 import orderLogo from "../../images/done.svg";
 import PropTypes from "prop-types";
+import { FC } from "react";
+import { TOrderDetails } from "../../services/types/data";
+import { RouteProps }  from 'react-router-dom';
 
-const OrderDetails = ({ orderNumber }) => {
+type TOrderDet ={
+  orderNumber: TOrderDetails
+} & RouteProps
+
+const OrderDetails: FC<TOrderDet> = ({ orderNumber }) => {
   return (
     <div className={styles.orderDetails}>
       <h1 className={styles.orderTitle}>{orderNumber.order.number}</h1>

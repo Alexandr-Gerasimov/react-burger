@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 
 import styles from './order-items.module.css';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
 import { useAuth } from "../../services/auth";
 import { Loader } from "../../ui/loader/loader";
+import { useSelector } from "../../services/store";
 
 const OrderItems = (data) => {
   const location = useLocation();
@@ -41,8 +41,8 @@ const OrderItems = (data) => {
   }, [constructorBuns, constructorFillings]);
 
   const getDate = (order) => {
-    const currentDate = new Date();
-    const orderDate = new Date(order.createdAt);
+    const currentDate: any = new Date();
+    const orderDate: any = new Date(order.createdAt);
     let dateDiff =  (Math.floor((currentDate - orderDate)/(1000*60*60*24)));
     if (plusDay(currentDate, orderDate)) {
       dateDiff += 1;

@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { nanoid } from "nanoid";
 import styles from "../../pages/login.module.css";
 import OrderItems from "../order-items/order-items";
-import { useSelector, useDispatch } from "react-redux";
 import { Loader } from "../../ui/loader/loader";
+import { useSelector } from "../../services/store";
+import { TWSFeedOrder } from "../../services/types/data";
 
 export function FeedPageNext () {
 
-  const orders = useSelector((store) => store.socket.messages)[0];
+  const orders = useSelector((store) => store.socket.messages);
 if (!orders) {
     return <Loader size="large" />
 } else {

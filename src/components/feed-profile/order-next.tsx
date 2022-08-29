@@ -3,14 +3,15 @@ import { NavLink, useHistory } from "react-router-dom";
 import { nanoid } from "nanoid";
 import styles from "../../pages/login.module.css";
 import OrderItems from "../order-items/order-items";
-import { useSelector, useDispatch } from "react-redux";
 import { Loader } from "../../ui/loader/loader";
 import { useAuth } from "../../services/auth";
+import { useSelector } from "../../services/store";
+import { TWSFeed, TWSFeedOrder } from "../../services/types/data";
 
 export function ProfileOrdersPageNext() {
-  const auth = useAuth();
+  const auth: any = useAuth();
   const history = useHistory();
-  const allOrders = useSelector((store) => store.socketFeed.messages)[0];
+  const orders = useSelector((store) => store.socket.orders);
 
   const logout = useCallback(() => {
     auth.signOut().then(() => {
@@ -18,10 +19,10 @@ export function ProfileOrdersPageNext() {
     });
   }, [auth, history]);
 
-  if(!allOrders) {
+  if(!orders) {
     return <Loader size="large" />;
   } else {
-    const order = allOrders.data.orders
+    const order = orders
     return (
     <div className={styles.wrapper}>
       <div className={styles.account}>

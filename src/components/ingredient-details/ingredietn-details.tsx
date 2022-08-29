@@ -1,6 +1,6 @@
 import styles from "./ingredient-details.module.css";
 import { ingredientPropType } from "../../utils/prop-types";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/store";
 import { useParams, useLocation } from "react-router-dom";
 import { Loader } from "../../ui/loader/loader";
 
@@ -85,10 +85,6 @@ const IngredientDetails = () => {
   }
 
   
-};
-
-IngredientDetails.PropType = {
-  component: ingredientPropType.isRequired,
 };
 
 export default IngredientDetails;

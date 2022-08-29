@@ -1,4 +1,4 @@
-import { TWSFeed } from "../types/data";
+import { TWSFeed, TWSFeedOrder } from "../types/data";
 
 export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
@@ -26,7 +26,7 @@ export interface IWsConnectionClosedAction {
 
 export interface IWsGetMessageAction {
     readonly type: typeof WS_GET_MESSAGE;
-    readonly message: TWSFeed,
+    payload: TWSFeedOrder
 }
 
 export interface IWsSendMessageAction {

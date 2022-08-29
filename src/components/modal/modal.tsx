@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./modal.module.css";
@@ -7,7 +7,12 @@ import PropTypes from "prop-types";
 
 const modalRoot = document.getElementById("react-modals")!;
 
-const Modal = ({ onClick, children }) => {
+type TModal = {
+  onClick: () => void;
+  children?: ReactNode;
+}
+
+const Modal: FunctionComponent<TModal> = ({ onClick, children }) => {
   const escCloseModal = (event) => {
     event.key === "Escape" && onClick();
   };

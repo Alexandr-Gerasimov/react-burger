@@ -1,4 +1,4 @@
-import { useContext, useState, createContext } from "react";
+import { useContext, useState, createContext, ReactNode } from "react";
 import { deleteCookie, getCookie, setCookie } from "./utils";
 import {
   loginRequest,
@@ -7,16 +7,30 @@ import {
   patchUserRequest,
   refreshRequest,
 } from "./api";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "./store";
 import { GET_USER_PROFILE_SUCCESS } from "./actions/profile";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useLocation, RouteProps } from "react-router-dom";
 import { getResponseData } from "./api";
+import { FC } from "react";
+
+export type TError = {
+  res: {
+     success: boolean
+     message: string
+  }
+}
 
 const AuthContext = createContext(undefined);
 
-export function ProvideAuth({ children }) {
-  const auth = useProvideAuth();
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+type TProps = { children: ReactNode } & RouteProps
+
+export const ProvideAuth: FC<TProps> = ({ children }) => {
+  const auth: any = useProvideAuth();
+  return (
+    <AuthContext.Provider value={auth}>
+    {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
@@ -25,19 +39,20 @@ export function useAuth() {
 
 export function useProvideAuth() {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
-  const token = getCookie('token')
+  const [user, setUser] = useState<string | null | undefined>(null);
+  const token: string | undefined = getCookie('token')
   const location = useLocation();
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
 
   const getUser = async () => {
     try {
       const res = await getUserRequest();
-      const data = await getResponseData(res);
+      const data: any = await getResponseData(res);
       return setUser(data.user);
     } catch (err) {
-      if (err.message === "jwt expired") {
-        const refreshData = await refreshRequest();
+      const { res } = err as TError
+      if (res.message === "jwt expired") {
+        const refreshData: any = await refreshRequest(token as string);
         if (!refreshData.success) {
           return Promise.reject(refreshData);
         }
@@ -48,7 +63,7 @@ export function useProvideAuth() {
           setCookie("refreshToken", refreshData.refreshToken);
         }
         const res = await getUserRequest();
-        const data = await getResponseData(res);
+        const data: any = await getResponseData(res);
         return setUser(data.user);
       } else {
         return (
@@ -61,19 +76,19 @@ export function useProvideAuth() {
     }
   };
 
-  const refreshUser = async (name, email) => {
+  const refreshUser = async (name: string, email: string) => {
     return await patchUserRequest(name, email)
       .then(getResponseData)
-      .then((data) => {
+      .then((data: any) => {
         return data.success;
       })
       .catch((err) => console.log(err));
   };
 
-  const signIn = async (form) => {
-    return await loginRequest(form)
+  const signIn = async (email: string, password: string) => {
+    return await loginRequest(email, password)
       .then(getResponseData)
-      .then((data) => {
+      .then((data: any) => {
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
           data,
@@ -92,7 +107,7 @@ export function useProvideAuth() {
   };
 
   const signOut = async () => {
-    await logoutRequest(token);
+    await logoutRequest();
     setUser(null);
     deleteCookie("token");
   };

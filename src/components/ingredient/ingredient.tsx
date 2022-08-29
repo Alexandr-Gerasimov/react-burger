@@ -6,10 +6,15 @@ import {
 import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
-import { setCookie } from "../../services/utils";
-import { useSelector } from "react-redux";
+import { TIngredient } from "../../services/types/data";
+import { FC } from "react";
 
-export const Ingredient = ({ set, onClick }) => {
+type TIngred = {
+  set: TIngredient;
+  onClick: () => void;
+}
+
+export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
   const ingredientCount = set.__v;
   const [{ opacity }, dragRef] = useDrag({
     type: "bun",
@@ -18,11 +23,6 @@ export const Ingredient = ({ set, onClick }) => {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
-
-  const constructorBuns = useSelector(
-    (store) => store.fillings.constructorBuns
-  );
-
 
   return (
     <>
@@ -35,7 +35,7 @@ export const Ingredient = ({ set, onClick }) => {
         {ingredientCount !== 0 ? (
           <Counter count={ingredientCount} size="small" />
         ) : (
-          <Counter count={null} size="undefined" />
+          <Counter count={0} size={undefined} />
         )}
         <img src={set.image} className={styles.positionImage} />
         <div className={styles.positionPrice}>
@@ -46,9 +46,4 @@ export const Ingredient = ({ set, onClick }) => {
       </li>
     </>
   );
-};
-
-Ingredient.PropType = {
-  set: PropTypes.arrayOf(ingredientPropType).isRequired,
-  onClick: PropTypes.func.isRequired,
 };

@@ -1,11 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { ReactNode } from "react";
 import { nanoid } from "nanoid";
 import styles from "../burger-ingredients/burger-ingredients.module.css";
 import { Ingredient } from "../ingredient/ingredient";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, RouteProps } from "react-router-dom";
+import { TIngredientsCategory } from "../../services/types/data";
+import { FC } from "react";
+import { useSelector } from "../../services/store";
 
-export const IngredientsCategory = React.forwardRef((props, ref) => {
+
+export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
+  const ref = React.useRef<HTMLHeadingElement>(null);
   const location = useLocation();
   const ingredients = useSelector((store) => store.fillings.ingredients);
   const { title, id, ingredientType, onClick } = props;
@@ -17,7 +21,7 @@ export const IngredientsCategory = React.forwardRef((props, ref) => {
       <ul className={styles.list}>
         {ingredients
           .filter((obj) => obj.type === `${ingredientType}`)
-          .map((obj) => {
+          .map((obj: any) => {
             return (
               <React.Fragment key={(obj.id = nanoid())}>
                 <Link
@@ -27,7 +31,7 @@ export const IngredientsCategory = React.forwardRef((props, ref) => {
                     state: { background: location },
                   }}
                 >
-                  <Ingredient set={obj} onClick={() => onClick(obj)} />
+                  <Ingredient set={obj} onClick={() => onClick()} />
                 </Link>
               </React.Fragment>
             );
@@ -35,4 +39,4 @@ export const IngredientsCategory = React.forwardRef((props, ref) => {
       </ul>
     </>
   );
-});
+};

@@ -1,12 +1,12 @@
 import { useAuth } from '../../services/auth';
-import { Redirect, Route, useLocation, useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { FC, useEffect, useState, ReactNode } from 'react';
 
-export function ProtectedRoute({ children, ...rest }) {
-  const { getUser, ...auth } = useAuth();
-  const location = useLocation();
-  const history = useHistory()
-  const [isUserLoaded, setUserLoaded] = useState(false);
+type TProps = { children: ReactNode } & RouteProps
+
+export const ProtectedRoute: FC<TProps> = ({ children, ...rest }) => {
+  const { getUser, ...auth } = useAuth() as any;
+  const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
   const init = async () => {
     await getUser();

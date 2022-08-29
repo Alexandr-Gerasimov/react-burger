@@ -1,14 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, FC } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrop, useDrag } from "react-dnd";
+import { numberLiteralTypeAnnotation } from "@babel/types";
+import { TIngredient } from '../../services/types/data'
 
-export const ConstructorCard = ({ components, index, moveCard, onDelete }) => {
+type TConstructorCard = {
+  components: TIngredient; 
+  index: number;
+  moveCard: (from: any, to: any) => void
+  onDelete: (components: TIngredient) => void;
+}
+
+export const ConstructorCard: FC<TConstructorCard> = ({ components, index, moveCard, onDelete }) => {
   const id = components.id;
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null)
   const [{ handlerId }, drop] = useDrop({
     accept: "fillings",
     collect(monitor) {
@@ -16,7 +25,7 @@ export const ConstructorCard = ({ components, index, moveCard, onDelete }) => {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -29,7 +38,7 @@ export const ConstructorCard = ({ components, index, moveCard, onDelete }) => {
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
@@ -59,7 +68,6 @@ export const ConstructorCard = ({ components, index, moveCard, onDelete }) => {
         <div className={styles.ingredient}>
           <ConstructorElement
             isLocked={false}
-            index={index}
             text={components.name}
             price={components.price}
             thumbnail={components.image}

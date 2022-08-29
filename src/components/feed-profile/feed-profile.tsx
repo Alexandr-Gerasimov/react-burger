@@ -1,5 +1,4 @@
 import { ingredientPropType } from "../../utils/prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { Loader } from "../../ui/loader/loader";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,15 +6,15 @@ import { useMemo, useEffect } from "react";
 import { WS_FEED_CONNECTION_START, WS_FEED_CONNECTION_CLOSED } from "../../services/actions/wsFeedAction";
 import { nanoid } from "nanoid";
 import BurgerDetailsOrder from "../burger-deteils/burger-details-order";
+import { useSelector } from "../../services/store";
+import { useDispatch } from "../../services/store";
 
 const FeedProfile = () => {
   const location = useLocation();
-  const params = useParams();
-  const background = location.state?.background;
 
   const wsConnected = useSelector(
     (store) => store.socketFeed.messages
-  )[0];
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {

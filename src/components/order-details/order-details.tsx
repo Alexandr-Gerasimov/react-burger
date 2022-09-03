@@ -2,17 +2,14 @@ import styles from "./order-details.module.css";
 import orderLogo from "../../images/done.svg";
 import PropTypes from "prop-types";
 import { FC } from "react";
-import { TOrderDetails } from "../../services/types/data";
+import { TOrder, TOrderDetails } from "../../services/types/data";
 import { RouteProps }  from 'react-router-dom';
 
-type TOrderDet ={
-  orderNumber: TOrderDetails
-} & RouteProps
 
-const OrderDetails: FC<TOrderDet> = ({ orderNumber }) => {
+const OrderDetails = ({ orderNumber }) => {
   return (
     <div className={styles.orderDetails}>
-      <h1 className={styles.orderTitle}>{orderNumber.order.number}</h1>
+      <h1 className={styles.orderTitle}>{orderNumber}</h1>
       <p className={styles.orderMainText}>идентификатор заказа</p>
       <img className={styles.orderImage} src={orderLogo} />
       <p className={styles.orderText}>Ваш заказ начали готовить</p>
@@ -24,7 +21,7 @@ const OrderDetails: FC<TOrderDet> = ({ orderNumber }) => {
 };
 
 OrderDetails.propTypes = {
-  orderNumber: PropTypes.object.isRequired,
+  orderNumber: PropTypes.string.isRequired,
 };
 
 export default OrderDetails;

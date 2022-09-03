@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, FC } from "react";
 import styles from "./burger-constructor.module.css";
 import { nanoid } from "nanoid";
 import {
@@ -16,8 +16,17 @@ import {
 } from "../../services/actions";
 import { ConstructorCard } from "./constructor-card";
 import { useSelector, useDispatch } from "../../services/store";
+import { TIngredient } from "../../services/types/data";
 
-export default function BurgerConstructor({ onClick }) {
+type TBurgerConstructor = {
+  onClick: (ingredientsId: string[]) => void;
+}
+
+type TDrop ={
+  set: TIngredient
+}
+
+export const BurgerConstructor: FC<TBurgerConstructor> = ({ onClick }) => {
 
   const constructorBuns = useSelector(
     (store) => store.fillings.constructorBuns
@@ -37,26 +46,27 @@ export default function BurgerConstructor({ onClick }) {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(set) {
+    drop(set: TDrop) {
+      console.log(set);
       moveIngredient(set.set);
     },
   });
 
-  const moveIngredient = (set) => {
+  const moveIngredient = (set: TIngredient) => {
     dispatch({
       type: ADD_ITEM,
       ingredient: set,
     });
   };
 
-  const onDelete = (components) => {
+  const onDelete = (components: TIngredient) => {
     dispatch({
       type: DELETE_ITEM,
       ingredient: components,
     });
   };
 
-  const refreshFillings = (from, to) => {
+  const refreshFillings = (from: number, to: number) => {
     dispatch({
       type: REFRESH_FILLINGS,
       to,
@@ -150,7 +160,6 @@ export default function BurgerConstructor({ onClick }) {
   );
 }
 
-BurgerConstructor.PropType = {
-  components: PropTypes.arrayOf(ingredientPropType).isRequired,
+BurgerConstructor.propTypes = {
   onClick: PropTypes.func.isRequired,
 };

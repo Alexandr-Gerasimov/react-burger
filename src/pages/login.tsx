@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, ChangeEvent } from "react";
 import { Redirect, Link, useLocation } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -7,12 +7,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
+import { TLocationState, TLog } from "../services/types/data";
 
 export function LoginPage() {
-  const location = useLocation();
-  const auth = useAuth();
-  const [log, setValue] = React.useState({ email: "", password: "" });
+  const location: any = useLocation();
+  const auth: any = useAuth();
+  const [log, setValue] = React.useState<TLog>({ email: "", password: "" });
   const inputRef = React.useRef(null);
+  console.log(location)
 
   let login = useCallback(
     (e) => {
@@ -28,7 +30,7 @@ export function LoginPage() {
       />)
   }
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...log, [e.target.name]: e.target.value });
   };
   return (

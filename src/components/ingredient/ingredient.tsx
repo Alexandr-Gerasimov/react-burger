@@ -11,7 +11,7 @@ import { FC } from "react";
 
 type TIngred = {
   set: TIngredient;
-  onClick: () => void;
+  onClick: (component: string[]) => void;
 }
 
 export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
@@ -30,7 +30,7 @@ export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
         ref={dragRef}
         className={styles.position}
         style={{ opacity }}
-        onClick={onClick}
+        onClick={() => onClick}
       >
         {ingredientCount !== 0 ? (
           <Counter count={ingredientCount} size="small" />

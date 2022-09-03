@@ -41,6 +41,7 @@ export type TInitialState = {
   ingredient: TIngredient | {};
 
   orderDetails: TOrderDetails | {};
+  orderNumber: string,
   orderDetailsModal: boolean;
   orderDetailsRequest: boolean;
   orderDetailsFailed: boolean;
@@ -64,6 +65,7 @@ const initialState: TInitialState = {
   ingredient: {},
 
   orderDetails: {},
+  orderNumber: '',
   orderDetailsModal: false,
   orderDetailsRequest: false,
   orderDetailsFailed: false,
@@ -110,6 +112,7 @@ export const ingredientReducer = (state = initialState, action: TIndexActions): 
         orderDetails: action.orderDetails,
         orderDetailsRequest: false,
         orderDetailsFailed: false,
+        orderNumber: action.orderNumber
       };
     case GET_ORDER_NUMBER_FAILED:
       return {

@@ -4,6 +4,7 @@ import { WS_CONNECTION_START } from "./wsOrdersAction";
 import { WS_FEED_CONNECTION_START } from "./wsFeedAction";
 import { getCookie } from "../utils";
 import { AppDispatch, AppThunk, TIngredient } from "../types/data";
+import { TOrderDetails } from "../types/data";
 
 export const GET_INGREDIENT_LIST_REQUEST: "GET_INGREDIENT_LIST_REQUEST" = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS: "GET_INGREDIENT_LIST_SUCCESS" = "GET_INGREDIENT_LIST_SUCCESS";
@@ -55,6 +56,7 @@ export interface IGetOrderNumberRequestAction {
 export interface IGetOrderNumberSuccessAction {
   readonly type: typeof GET_ORDER_NUMBER_SUCCESS;
   readonly orderDetails: TIngredient;
+  readonly orderNumber: string
 }
 
 export interface IGetOrderNumberFailedAction {
@@ -150,6 +152,14 @@ export const onIngredientClick = (ingredient: string[]): IIngredientDescriptionO
   ingredient
 });
 
+const createOrderSuccess = (data: TOrderDetails | unknown) => {
+  return {
+    type: GET_ORDER_NUMBER_SUCCESS,
+    orderNumber: (data as TOrderDetails).order.number,
+    orderDetails: data
+  };
+};
+
 export function postOrderNumber(ingredientsId: string) {
   console.log(ingredientsId)
   return function (dispatch) {
@@ -169,11 +179,7 @@ export function postOrderNumber(ingredientsId: string) {
     })
       .then(getResponseData)
       .then((data) => {
-        console.log(data)
-        dispatch({
-          type: GET_ORDER_NUMBER_SUCCESS,
-          orderDetails: data,
-        });
+        dispatch(createOrderSuccess(data))
         dispatch({
           type: ORDER_DETAILS_OPENED,
           payload: true,

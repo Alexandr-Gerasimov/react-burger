@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, ChangeEvent, useCallback } from "react";
 import { Redirect, Link } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -7,14 +7,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetRequest } from "../services/api";
 import { useAuth } from "../services/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../services/store";
 import { EMAIL_SENDING } from "../services/actions/profile";
 import { getResponseData } from "../services/api";
 
+type TForgot = {
+  email: string
+}
+
 export function ForgotPage() {
-  const auth = useAuth();
-  const [reset, setReset] = React.useState(false);
-  const [value, setValue] = React.useState({ email: "" });
+  const auth: any = useAuth();
+  const [reset, setReset] = React.useState<boolean>(false);
+  const [value, setValue] = React.useState<TForgot>({ email: "" });
   console.log(value);
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -37,10 +41,10 @@ export function ForgotPage() {
     );
   }
 
-  const postEmail = async (email) => {
+  const postEmail = async (email: string) => {
     return await resetRequest(email)
       .then(getResponseData)
-      .then((res) => {
+      .then((res: any) => {
         if (res.success) {
           console.log(res)
           dispatch({
@@ -64,7 +68,7 @@ export function ForgotPage() {
     );
   }
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 

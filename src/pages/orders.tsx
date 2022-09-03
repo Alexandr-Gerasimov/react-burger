@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { nanoid } from "nanoid";
 import styles from "./login.module.css";
 import OrderItems from "../components/order-items/order-items";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/store";
 import {
   WS_FEED_CONNECTION_START,
   WS_FEED_CONNECTION_CLOSED,

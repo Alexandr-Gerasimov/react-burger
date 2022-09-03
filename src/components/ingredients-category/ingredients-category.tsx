@@ -9,13 +9,12 @@ import { useSelector } from "../../services/store";
 
 
 export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
-  const ref = React.useRef<HTMLHeadingElement>(null);
   const location = useLocation();
   const ingredients = useSelector((store) => store.fillings.ingredients);
   const { title, id, ingredientType, onClick } = props;
   return (
     <>
-      <h2 className={styles.headline} id={id} ref={ref}>
+      <h2 className={styles.headline} id={id}>
         {title}
       </h2>
       <ul className={styles.list}>
@@ -31,7 +30,7 @@ export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
                     state: { background: location },
                   }}
                 >
-                  <Ingredient set={obj} onClick={() => onClick()} />
+                  <Ingredient set={obj} onClick={() => onClick(obj)} />
                 </Link>
               </React.Fragment>
             );

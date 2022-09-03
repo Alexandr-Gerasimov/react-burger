@@ -3,10 +3,9 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./main.module.css";
 import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
 import { useMemo, useState } from "react";
 import {
   onIngredientClick,
@@ -16,11 +15,14 @@ import {
 import { Loader } from "../../ui/loader/loader";
 import { useAuth } from "../../services/auth";
 import { getCookie } from "../../services/utils";
+import { useSelector, useDispatch } from "../../services/store";
+import { TIngredient, TOrderDetails } from "../../services/types/data";
 
 const Main = () => {
   const ingredients = useSelector((store) => store.fillings.ingredients);
-  const auth = useAuth();
-  const orderDetails = useSelector((store) => store.fillings.orderDetails);
+  const auth: any = useAuth();
+  const orderNumber = useSelector<string>((store) => store.fillings.orderNumber);
+  console.log(orderNumber)
   const orderDetailsModal = useSelector(
     (store) => store.fillings.orderDetailsModal
   );
@@ -37,12 +39,11 @@ const Main = () => {
   );
 
   const orderIngredients = [ constructorBuns, ...constructorFillings ]
-console.log(orderIngredients)
 
   
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState<boolean>(false);
 
-  const componentClick = (component) => {
+  const componentClick = (component: string[]) => {
     dispatch(onIngredientClick(component));
     localStorage.setItem("ingredient", JSON.stringify(component));
   };
@@ -56,14 +57,15 @@ console.log(orderIngredients)
       <Loader size="large" />
     ) : (
       <Modal onClick={closeOrderModals}>
-        <OrderDetails orderNumber={orderDetails} />
+        <OrderDetails orderNumber={orderNumber} />
       </Modal>
     );
-  }, [orderDetailsRequest, orderDetails]);
+  }, [orderDetailsRequest, orderNumber]);
 
   const OrderButtonClick = () => {
-    const ingredientsId = orderIngredients.map((ingredient) => ingredient._id);
-    if (auth.user) {
+    const ingredientsId: any = orderIngredients.map((ingredient) => ingredient!._id);
+    console.log(ingredientsId)
+    if (auth!.user) {
       dispatch(postOrderNumber(ingredientsId));
     } else {
       setLogin(true);
@@ -87,7 +89,7 @@ console.log(orderIngredients)
           <BurgerIngredients onClick={componentClick} />
           <BurgerConstructor onClick={OrderButtonClick} />
         </main>
-        {orderDetailsModal? content : <Loader />}
+        {orderDetailsModal? content : <Loader  size={24}/>}
       </DndProvider>
     </div>
   );

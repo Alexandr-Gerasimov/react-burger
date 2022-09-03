@@ -1,4 +1,5 @@
-import { Redirect, Link, NavLink } from "react-router-dom";
+import React, { FC, ReactNode } from "react";
+import { Redirect, Link, NavLink, RouteProps } from "react-router-dom";
 import {
   BurgerIcon,
   ListIcon,
@@ -7,8 +8,10 @@ import {
 import styles from "./app-header.module.css";
 import burgerLogo from "../../images/logo.svg";
 
+type TProp = { props: ReactNode } & RouteProps
+
 export default function AppHeader() {
-  const Header = (props) => {
+  const Header: FC<TProp> = (props) => {
     return <header className={styles.header}>{props.children}</header>;
   };
 
@@ -65,7 +68,7 @@ export default function AppHeader() {
 
   return (
     <>
-      <Header>
+      <Header props={undefined}>
         <Menu />
         <Logotype />
         <MenuItem />

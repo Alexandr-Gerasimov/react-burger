@@ -6,11 +6,12 @@ import { useMemo } from "react";
 import { nanoid } from "nanoid";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useSelector, useDispatch } from "../../services/store";
+import { TParams, TLocation, TState, TBackground} from '../../services/types/data'
 
 function BurgerDetailsNext() {
-  const params = useParams();
-  const location = useLocation();
-  const background = location.state?.background;
+  const params = useParams<TParams>();
+  const location = useLocation<TLocation>();
+  const background = location.state.background
 
   const orders = useSelector((store) => store.socket.orders);
 

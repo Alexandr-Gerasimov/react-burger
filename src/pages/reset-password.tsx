@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -8,13 +8,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { resetPasswordRequest } from "../services/api";
 import { useAuth } from "../services/auth";
-import { useSelector } from "react-redux";
 import { getResponseData } from "../services/api";
+import { useSelector, useDispatch } from "../services/store";
+import { StringLiteralLike } from "typescript";
+
+type TForm = {
+  password: string;
+  code: string;
+}
 
 export function ResetPage() {
-  const auth = useAuth();
-  const [form, setValue] = useState({ password: "", code: "" });
-  const [success, setSuccess] = React.useState();
+  const auth: any = useAuth();
+  const [form, setValue] = useState<TForm>({ password: "", code: "" });
+  const [success, setSuccess] = React.useState<boolean>();
   const inputRef = React.useRef(null);
   const emailSending = useSelector((store) => store.profile.emailSending);
 
@@ -38,10 +44,10 @@ export function ResetPage() {
     );
   }
 
-  const resetPassword = async (password, token) => {
+  const resetPassword = async (password: string, token: string) => {
     return await resetPasswordRequest(password, token)
       .then(getResponseData)
-      .then((res) => {
+      .then((res: any) => {
         if (res.success) {
           return setSuccess(true);
         }
@@ -59,7 +65,7 @@ export function ResetPage() {
     );
   }
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
   return (

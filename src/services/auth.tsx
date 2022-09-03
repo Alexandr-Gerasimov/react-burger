@@ -45,19 +45,23 @@ export function useProvideAuth() {
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
 
   const getUser = async () => {
+    
     try {
       const res = await getUserRequest();
+      console.log(1)
       const data: any = await getResponseData(res);
       return setUser(data.user);
-    } catch (err) {
-      const { res } = err as TError
-      if (res.message === "jwt expired") {
+    } catch (err: any) {
+      if (err.message === "jwt expired") {
         const refreshData: any = await refreshRequest(token as string);
+        console.log(refreshData)
         if (!refreshData.success) {
+          debugger
           return Promise.reject(refreshData);
         }
         let authToken;
         authToken = refreshData.accessToken.split("Bearer ")[1];
+        console.log(3)
         if (authToken) {
           setCookie("token", authToken);
           setCookie("refreshToken", refreshData.refreshToken);

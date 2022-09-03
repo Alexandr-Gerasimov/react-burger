@@ -10,8 +10,6 @@ import { useSelector, useDispatch } from "../../services/store";
 
 const FeedOrder = () => {
   const location = useLocation();
-  const params = useParams();
-  const background = location.state?.background;
 
   const wsConnected = useSelector(
     (store) => store.socket.messages

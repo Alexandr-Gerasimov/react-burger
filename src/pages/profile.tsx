@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { FC, useCallback, FormEventHandler, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory, Redirect } from "react-router-dom";
 import styles from "./login.module.css";
@@ -9,10 +9,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
 import { WS_FEED_CONNECTION_START } from "../services/actions/wsFeedAction";
+import { TProfile } from "../services/types/data";
 
 export function ProfilePage() {
-  const auth = useAuth();
-  const [reg, setValue] = React.useState({
+  const auth: any = useAuth();
+  const [reg, setValue] = React.useState<TProfile>({
     name: auth.user.name,
     email: auth.user.email,
   });
@@ -27,19 +28,19 @@ export function ProfilePage() {
     });
   }, [auth, history]);
 
-  const cancelChanges = (e) => {
-    e.preventDefault();
+  const cancelChanges = () => {
     setValue({ name: auth.user.name, email: auth.user.email });
   };
 
-  const refreshUs = (name, email) => {
-    auth.refreshUser(name, email);
+  const refreshUs: FormEventHandler = (e): void => {
+    e.preventDefault();
+    return auth.refreshUser(reg.name, reg.email);
   };
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
-  const onChangePassword = (e) => {
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
@@ -76,7 +77,7 @@ export function ProfilePage() {
         <div className={styles.redAccount}>
           <form
             className={styles.navForm}
-            onSubmit={refreshUs(reg.name, reg.email)}
+            onSubmit={refreshUs}
           >
             <Input
               type={"text"}

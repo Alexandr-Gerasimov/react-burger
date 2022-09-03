@@ -6,10 +6,11 @@ import { useMemo } from "react";
 import { nanoid } from "nanoid";
 import { Loader } from "../../ui/loader/loader";
 import { useSelector, useDispatch } from "../../services/store";
+import { TParams, TLocation, TState, TBackground} from '../../services/types/data'
 
 function BurgerDetailsOrderNext() {
-  const params = useParams();
-  const location = useLocation();
+  const params = useParams<TParams>();
+  const location = useLocation<TLocation>();
   const background = location.state?.background;
 
   const orders = useSelector((store) => store.socket.orders);

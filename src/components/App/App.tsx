@@ -15,15 +15,17 @@ import { ProvideAuth, useAuth } from "../../services/auth";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import IngredientDetails from "../ingredient-details/ingredietn-details";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "../../services/store";
 import Modal from "../modal/modal";
 import { getAllItems } from "../../services/actions";
 import AppHeader from "../app-header/app-header";
+import { TLocationState } from "../../services/types/data";
 
 export default function App() {
   const location = useLocation();
-  const background = location.state?.background;
+  
   const history = useHistory();
+  const background = (location.state as TLocationState)?.background;
   const auth = useAuth()
   const dispatch = useDispatch();
   useEffect(() => {

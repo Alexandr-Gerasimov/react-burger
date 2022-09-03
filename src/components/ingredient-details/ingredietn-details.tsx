@@ -3,15 +3,15 @@ import { ingredientPropType } from "../../utils/prop-types";
 import { useSelector } from "../../services/store";
 import { useParams, useLocation } from "react-router-dom";
 import { Loader } from "../../ui/loader/loader";
+import { TParams, TLocation, TState, TBackground} from '../../services/types/data'
 
 const IngredientDetails = () => {
-  const { id } = useParams()
+  const params = useParams<TParams>();
+  const location = useLocation<TLocation>();
   const ingredients = useSelector((store) => store.fillings.ingredients);
-
-  const location = useLocation();
   const background = location.state?.background;
 
-  const ingredient = ingredients.find((el) => el._id === id);
+  const ingredient = ingredients.find((el) => el._id === params.id);
   if(!ingredient) {
     return <Loader size="large" />
   } else {

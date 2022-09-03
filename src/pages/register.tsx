@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, ChangeEvent, FunctionComponent } from "react";
 import { Redirect, Link } from "react-router-dom";
 import styles from "./login.module.css";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/store";
 import {
   Input,
   PasswordInput,
@@ -12,36 +12,39 @@ import { newUserRequest } from "../services/api";
 import { setCookie } from "../services/utils";
 import { useAuth } from "../services/auth";
 import { getResponseData } from "../services/api";
+import { AppThunk, TReg } from "../services/types/data";
 
-export function RegisterPage() {
-  const auth = useAuth();
-  const [reg, setValue] = React.useState({ name: "", email: "", password: "" });
+type TRegPage = {
+  user: TReg;
+  accessToken: string;
+  refreshToken: string;
+  success: boolean;
+}
+
+export const RegisterPage: FunctionComponent = () => {
+  const auth: any = useAuth();
+  const [reg, setValue] = React.useState<TReg>({ name: "", email: "", password: "" });
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
-
-  const newUser = (data) => {
-    dispatch({
-      type: GET_USER_PROFILE_SUCCESS,
-      data,
-    });
-  };
   
-  const postEmail = async (name, email, password) => {
+  const postEmail = async (name: string, email: string, password: string) => {
     return await newUserRequest(name, email, password)
       .then(getResponseData)
-      .then((res) => {
-        let authToken;
-        res.headers.forEach((header) => {
+      .then((res: any) => {
+        let authToken: string;
+        res.headers.forEach((header: string) => {
           if (header.indexOf("Bearer") === 0) {
             authToken = header.split("Bearer")[1];
+            setCookie("token", authToken);
           }
         });
-        if (authToken) {
-          setCookie("token", authToken);
-        }
         return res.json();
       })
-      .then((data) => newUser(data))
+      .then((data) => 
+      dispatch({
+        type: GET_USER_PROFILE_SUCCESS,
+        data,
+      }))
       .catch((err) => console.log(err));
   };
 
@@ -55,7 +58,7 @@ export function RegisterPage() {
     );
   }
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...reg, [e.target.name]: e.target.value });
   };
 

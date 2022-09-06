@@ -6,9 +6,9 @@ import {
   EMAIL_SENDING,
 } from "../actions/profile";
 import { TProfileActions } from "../actions/profile";
-import { TProfile } from "../types/data";
+import { TGetProfile, TProfile } from "../types/data";
 
-export type TInitialState = {
+export type TProfileInitialState = {
   registrationSuccess: boolean;
   userProfile: TProfile | {};
   accessToken: string;
@@ -19,7 +19,7 @@ export type TInitialState = {
   emailSending: boolean;
 };
 
-const initialState: TInitialState = {
+const initialState: TProfileInitialState = {
   registrationSuccess: false,
   userProfile: {},
   accessToken: "",
@@ -31,16 +31,16 @@ const initialState: TInitialState = {
 };
 
 
-export const profileReducer = (state = initialState, action: TProfileActions): TInitialState => {
+export const profileReducer = (state = initialState, action: TProfileActions): TProfileInitialState => {
   switch (action.type) {
     case GET_USER_PROFILE_SUCCESS:
       console.log(action.data);
       return {
         ...state,
-        userProfile: action.data.user,
-        accessToken: action.data.accessToken,
-        refreshToken: action.data.refreshToken,
-        registrationSuccess: action.data.success,
+        userProfile: (action.data as TGetProfile).user,
+        accessToken: (action.data as TGetProfile).accessToken,
+        refreshToken: (action.data as TGetProfile).refreshToken,
+        registrationSuccess: (action.data as TGetProfile).success,
       };
     case GET_USER_PROFILE_FAILED:
       return {

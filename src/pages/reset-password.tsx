@@ -11,6 +11,7 @@ import { useAuth } from "../services/auth";
 import { getResponseData } from "../services/api";
 import { useSelector, useDispatch } from "../services/store";
 import { StringLiteralLike } from "typescript";
+import { AppThunk, TGet, TAuth, TGetProfile } from "../services/types/data";
 
 type TForm = {
   password: string;
@@ -18,7 +19,7 @@ type TForm = {
 }
 
 export function ResetPage() {
-  const auth: any = useAuth();
+  const auth: TAuth | undefined = useAuth();
   const [form, setValue] = useState<TForm>({ password: "", code: "" });
   const [success, setSuccess] = React.useState<boolean>();
   const inputRef = React.useRef(null);
@@ -34,7 +35,7 @@ export function ResetPage() {
     );
   }
 
-  if (auth.user) {
+  if (auth!.user) {
     return (
       <Redirect
         to={{
@@ -47,8 +48,8 @@ export function ResetPage() {
   const resetPassword = async (password: string, token: string) => {
     return await resetPasswordRequest(password, token)
       .then(getResponseData)
-      .then((res: any) => {
-        if (res.success) {
+      .then((res: TGet | unknown) => {
+        if ((res as TGet).success) {
           return setSuccess(true);
         }
       })

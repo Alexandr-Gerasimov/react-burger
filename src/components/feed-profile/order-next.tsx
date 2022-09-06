@@ -6,15 +6,15 @@ import OrderItems from "../order-items/order-items";
 import { Loader } from "../../ui/loader/loader";
 import { useAuth } from "../../services/auth";
 import { useSelector } from "../../services/store";
-import { TWSFeed, TWSFeedOrder } from "../../services/types/data";
+import { TWSFeed, TWSFeedOrder, TAuth } from "../../services/types/data";
 
 export function ProfileOrdersPageNext() {
-  const auth: any = useAuth();
+  const auth: TAuth | undefined = useAuth();
   const history = useHistory();
   const orders = useSelector((store) => store.socket.orders);
 
   const logout = useCallback(() => {
-    auth.signOut().then(() => {
+    auth!.signOut().then(() => {
       history.replace({ pathname: "/login" });
     });
   }, [auth, history]);

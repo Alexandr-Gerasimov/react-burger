@@ -1,6 +1,6 @@
 import { config } from "../api";
 import { getResponseData } from "../api";
-import { TGetProfile } from "../types/data";
+import { AppDispatch, AppThunk, TGetProfile } from "../types/data";
 
 export const GET_USER_PROFILE_REQUEST: "REGISTRATION_REQUEST" = "REGISTRATION_REQUEST";
 export const GET_USER_PROFILE_SUCCESS: "GET_USER_PROFILE_SUCCESS" = "GET_USER_PROFILE_SUCCESS";
@@ -17,7 +17,7 @@ export interface IGetUserProfileRequestAction {
 
 export interface IGetUserProfileSuccessAction {
   readonly type: typeof GET_USER_PROFILE_SUCCESS;
-  readonly data: TGetProfile;
+  readonly data: TGetProfile | unknown;
 }
 
 export interface IGetUserProfileFailedAction {
@@ -47,7 +47,11 @@ export type TProfileActions =
 | IAuthCheckedAction
 | IEmailSendingAction
 
-export function useAllItems() {
+type TProf = {
+  data: TGetProfile
+}
+
+export function useAllItems(): AppThunk {
 
   return function (dispatch) {
     dispatch({
@@ -58,10 +62,10 @@ export function useAllItems() {
       headers: config.headers,
     })
       .then(getResponseData)
-      .then((res: any) => {
+      .then((res: TProf | unknown) => {
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
-          payload: res.data,
+          data: (res as TProf).data,
         });
       })
       .catch((err) => console.log(err));

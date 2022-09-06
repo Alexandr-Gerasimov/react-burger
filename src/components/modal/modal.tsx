@@ -13,7 +13,7 @@ type TModal = {
 }
 
 const Modal: FunctionComponent<TModal> = ({ onClick, children }) => {
-  const escCloseModal = (event) => {
+  const escCloseModal = (event: KeyboardEvent) => {
     event.key === "Escape" && onClick();
   };
   React.useEffect(() => {

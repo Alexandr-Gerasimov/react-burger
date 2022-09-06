@@ -12,7 +12,7 @@ import { newUserRequest } from "../services/api";
 import { setCookie } from "../services/utils";
 import { useAuth } from "../services/auth";
 import { getResponseData } from "../services/api";
-import { AppThunk, TReg } from "../services/types/data";
+import { AppThunk, TReg, TAuth, TGetProfile } from "../services/types/data";
 
 type TRegPage = {
   user: TReg;
@@ -22,7 +22,7 @@ type TRegPage = {
 }
 
 export const RegisterPage: FunctionComponent = () => {
-  const auth: any = useAuth();
+  const auth: TAuth | undefined = useAuth();
   const [reg, setValue] = React.useState<TReg>({ name: "", email: "", password: "" });
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ export const RegisterPage: FunctionComponent = () => {
         });
         return res.json();
       })
-      .then((data) => 
+      .then((data: TGetProfile) => 
       dispatch({
         type: GET_USER_PROFILE_SUCCESS,
         data,
@@ -48,7 +48,7 @@ export const RegisterPage: FunctionComponent = () => {
       .catch((err) => console.log(err));
   };
 
-  if (auth.user) {
+  if (auth!.user) {
     return (
       <Redirect
         to={{

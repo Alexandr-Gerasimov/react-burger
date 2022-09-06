@@ -26,14 +26,12 @@ export default function App() {
   
   const history = useHistory();
   const background = (location.state as TLocationState)?.background;
-  const auth = useAuth()
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllItems());
   }, []);
 
   const ingredient = useSelector((store) => store.fillings.ingredient);
-  const orders = useSelector((store) => store.socket.orders);
 
   const closeIngredientModal = () => {
     history.goBack();

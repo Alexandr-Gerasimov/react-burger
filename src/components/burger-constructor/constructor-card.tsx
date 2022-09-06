@@ -11,8 +11,13 @@ import { TIngredient } from '../../services/types/data'
 type TConstructorCard = {
   components: TIngredient; 
   index: number;
-  moveCard: (from: any, to: any) => void
+  moveCard: (from: number, to: number) => void
   onDelete: (components: TIngredient) => void;
+}
+
+type THover = {
+  id: string;
+  index: number;
 }
 
 export const ConstructorCard: FC<TConstructorCard> = ({ components, index, moveCard, onDelete }) => {
@@ -25,7 +30,8 @@ export const ConstructorCard: FC<TConstructorCard> = ({ components, index, moveC
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item: any, monitor) {
+    hover(item: THover, monitor) {
+      console.log(item)
       if (!ref.current) {
         return;
       }

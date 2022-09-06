@@ -9,13 +9,13 @@ import {
 import { TWsFeedActions } from "../actions/wsFeedAction";
 import { TWSFeed, TWSFeedOrder, TOrder } from "../types/data";
 
-export type TInitialState = {
+export type TFeedInitialState = {
   wsConnected: boolean,
   messages: TWSFeedOrder | null,
   orders: Array<TOrder>
 };
 
-const initialState: TInitialState = {
+const initialState: TFeedInitialState = {
   wsConnected: false,
   messages: null,
   orders: []
@@ -23,7 +23,7 @@ const initialState: TInitialState = {
 
 
 
-export const wsFeedReducer = (state = initialState, action: TWsFeedActions): TInitialState => {
+export const wsFeedReducer = (state = initialState, action: TWsFeedActions): TFeedInitialState => {
   switch (action.type) {
     case WS_FEED_CONNECTION_SUCCESS:
       return {

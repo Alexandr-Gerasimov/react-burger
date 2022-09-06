@@ -11,7 +11,7 @@ import { useSelector } from "../../services/store";
 export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
   const location = useLocation();
   const ingredients = useSelector((store) => store.fillings.ingredients);
-  const { title, id, ingredientType, onClick } = props;
+  const { title, id, ingredientType} = props;
   return (
     <>
       <h2 className={styles.headline} id={id}>
@@ -20,7 +20,7 @@ export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
       <ul className={styles.list}>
         {ingredients
           .filter((obj) => obj.type === `${ingredientType}`)
-          .map((obj: any) => {
+          .map((obj) => {
             return (
               <React.Fragment key={(obj.id = nanoid())}>
                 <Link
@@ -30,7 +30,7 @@ export const IngredientsCategory: FC<TIngredientsCategory> = (props) => {
                     state: { background: location },
                   }}
                 >
-                  <Ingredient set={obj} onClick={() => onClick(obj)} />
+                  <Ingredient set={obj}/>
                 </Link>
               </React.Fragment>
             );

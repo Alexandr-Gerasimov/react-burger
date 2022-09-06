@@ -5,6 +5,8 @@ import { WS_FEED_CONNECTION_START } from "./wsFeedAction";
 import { getCookie } from "../utils";
 import { AppDispatch, AppThunk, TIngredient } from "../types/data";
 import { TOrderDetails } from "../types/data";
+import { ThunkDispatch } from "redux-thunk";
+import { type } from "os";
 
 export const GET_INGREDIENT_LIST_REQUEST: "GET_INGREDIENT_LIST_REQUEST" = "GET_INGREDIENT_LIST_REQUEST";
 export const GET_INGREDIENT_LIST_SUCCESS: "GET_INGREDIENT_LIST_SUCCESS" = "GET_INGREDIENT_LIST_SUCCESS";
@@ -55,8 +57,8 @@ export interface IGetOrderNumberRequestAction {
 
 export interface IGetOrderNumberSuccessAction {
   readonly type: typeof GET_ORDER_NUMBER_SUCCESS;
-  readonly orderDetails: TIngredient;
-  readonly orderNumber: string
+  orderDetails: TIngredient | unknown;
+  orderNumber: number
 }
 
 export interface IGetOrderNumberFailedAction {
@@ -113,7 +115,11 @@ export type TIndexActions =
 | IRefreshFillingsAction
 | INewOrderAction
 
-export function getAllItems() {
+type TIngred = {
+  data: ReadonlyArray<TIngredient>
+}
+
+export function getAllItems(): AppThunk {
   return function (dispatch) {
     dispatch({
       type: GET_INGREDIENT_LIST_REQUEST,
@@ -123,10 +129,10 @@ export function getAllItems() {
       headers: config.headers,
     })
       .then(getResponseData)
-      .then((res: any) => {
+      .then((res: TIngred | unknown) => {
         dispatch({
           type: GET_INGREDIENT_LIST_SUCCESS,
-          ingredients: res.data,
+          ingredients: (res as TIngred).data,
         });
       })
       .catch((err) => console.log(err));
@@ -152,17 +158,9 @@ export const onIngredientClick = (ingredient: string[]): IIngredientDescriptionO
   ingredient
 });
 
-const createOrderSuccess = (data: TOrderDetails | unknown) => {
-  return {
-    type: GET_ORDER_NUMBER_SUCCESS,
-    orderNumber: (data as TOrderDetails).order.number,
-    orderDetails: data
-  };
-};
-
-export function postOrderNumber(ingredientsId: string) {
+export function postOrderNumber(ingredientsId: string[]): AppThunk {
   console.log(ingredientsId)
-  return function (dispatch) {
+  return function (dispatch)  {
     dispatch({
       type: GET_ORDER_NUMBER_REQUEST,
       payload: true,
@@ -178,11 +176,15 @@ export function postOrderNumber(ingredientsId: string) {
       }),
     })
       .then(getResponseData)
-      .then((data) => {
-        dispatch(createOrderSuccess(data))
+      .then((data: TOrderDetails | unknown) => {
+        dispatch({
+          type: GET_ORDER_NUMBER_SUCCESS,
+          orderNumber: (data as TOrderDetails).order.number,
+          orderDetails: data as TOrderDetails
+        })
         dispatch({
           type: ORDER_DETAILS_OPENED,
-          payload: true,
+          orderDetailsModal: true,
         });
         dispatch({
           type: NEW_ORDER,

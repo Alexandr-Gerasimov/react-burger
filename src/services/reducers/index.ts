@@ -23,7 +23,7 @@ import { TIngredient } from "../types/data";
 import { TIndexActions } from "../actions";
 import { TOrderDetails } from "../types/data";
 
-export type TInitialState = {
+export type TIndexInitialState = {
   ingredients: ReadonlyArray<TIngredient>;
   ingredientsRequest: boolean;
   ingredientsFailed: boolean;
@@ -40,14 +40,14 @@ export type TInitialState = {
   ingredientsModal: boolean;
   ingredient: TIngredient | {};
 
-  orderDetails: TOrderDetails | {};
-  orderNumber: string,
+  orderDetails: TOrderDetails | {} | unknown;
+  orderNumber: number | undefined,
   orderDetailsModal: boolean;
   orderDetailsRequest: boolean;
   orderDetailsFailed: boolean;
 };
 
-const initialState: TInitialState = {
+const initialState: TIndexInitialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -65,7 +65,7 @@ const initialState: TInitialState = {
   ingredient: {},
 
   orderDetails: {},
-  orderNumber: '',
+  orderNumber: undefined,
   orderDetailsModal: false,
   orderDetailsRequest: false,
   orderDetailsFailed: false,
@@ -73,7 +73,7 @@ const initialState: TInitialState = {
 
 console.log(initialState.orderDetails)
 
-export const ingredientReducer = (state = initialState, action: TIndexActions): TInitialState => {
+export const ingredientReducer = (state = initialState, action: TIndexActions): TIndexInitialState => {
   switch (action.type) {
     
     case GET_INGREDIENT_LIST_SUCCESS:
@@ -110,8 +110,6 @@ export const ingredientReducer = (state = initialState, action: TIndexActions): 
       return {
         ...state,
         orderDetails: action.orderDetails,
-        orderDetailsRequest: false,
-        orderDetailsFailed: false,
         orderNumber: action.orderNumber
       };
     case GET_ORDER_NUMBER_FAILED:

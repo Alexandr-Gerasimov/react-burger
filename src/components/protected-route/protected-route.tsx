@@ -1,11 +1,12 @@
 import { useAuth } from '../../services/auth';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { FC, useEffect, useState, ReactNode } from 'react';
+import { TAuth, TProfile } from '../../services/types/data'
 
 type TProps = { children: ReactNode } & RouteProps
 
 export const ProtectedRoute: FC<TProps> = ({ children, ...rest }) => {
-  const { getUser, ...auth } = useAuth() as any;
+  const { getUser, ...auth } = useAuth() as any
   const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
   const init = async () => {

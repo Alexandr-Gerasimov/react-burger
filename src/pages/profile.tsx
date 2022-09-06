@@ -1,5 +1,5 @@
-import React, { FC, useCallback, FormEventHandler, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import React, { FC, useCallback, FormEvent, ChangeEvent } from "react";
+import { useDispatch } from "../services/store";
 import { NavLink, useHistory, Redirect } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -9,13 +9,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
 import { WS_FEED_CONNECTION_START } from "../services/actions/wsFeedAction";
-import { TProfile } from "../services/types/data";
+import { TProfile, TAuth } from "../services/types/data";
 
 export function ProfilePage() {
-  const auth: any = useAuth();
+  const auth: TAuth | undefined = useAuth();
+  console.log(auth)
   const [reg, setValue] = React.useState<TProfile>({
-    name: auth.user.name,
-    email: auth.user.email,
+    name: auth!.user!.name,
+    email: auth!.user!.email,
   });
   const dispatch = useDispatch();
 
@@ -23,18 +24,18 @@ export function ProfilePage() {
   const inputRef = React.useRef(null);
   const history = useHistory();
   const logout = useCallback(() => {
-    auth.signOut().then(() => {
+    auth!.signOut().then(() => {
       history.replace({ pathname: "/login" });
     });
   }, [auth, history]);
 
   const cancelChanges = () => {
-    setValue({ name: auth.user.name, email: auth.user.email });
+    setValue({ name: auth!.user!.name, email: auth!.user!.email });
   };
 
-  const refreshUs: FormEventHandler = (e): void => {
+  const refreshUs = (e: FormEvent): void => {
     e.preventDefault();
-    return auth.refreshUser(reg.name, reg.email);
+    return auth!.refreshUser(reg.name, reg.email);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +45,7 @@ export function ProfilePage() {
     setPassword(e.target.value);
   };
 
-  if (!auth.user) {
+  if (!auth!.user) {
     return <Redirect to="/login" />;
   }
 

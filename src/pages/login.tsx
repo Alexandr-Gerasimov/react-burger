@@ -1,4 +1,4 @@
-import React, { useCallback, ChangeEvent } from "react";
+import React, { useCallback, ChangeEvent, FormEvent } from "react";
 import { Redirect, Link, useLocation } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -7,24 +7,30 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAuth } from "../services/auth";
-import { TLocationState, TLog } from "../services/types/data";
+import { TLocationState, TLog, TAuth } from "../services/types/data";
+
+export interface ILocation {
+  from?: Location;
+  background?: Location;
+  pathname?: string;
+}
 
 export function LoginPage() {
-  const location: any = useLocation();
-  const auth: any = useAuth();
+  const location = useLocation<ILocation>();
+  const auth: TAuth | undefined = useAuth();
   const [log, setValue] = React.useState<TLog>({ email: "", password: "" });
   const inputRef = React.useRef(null);
   console.log(location)
 
-  let login = useCallback(
-    (e) => {
+  const login = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      auth.signIn(log.email, log.password);
+      auth!.signIn(log.email, log.password);
     },
     [auth, log]
   );
   
-  if (auth.user) {
+  if (auth!.user) {
     return (<Redirect
         to={location?.state?.from || '/'}
       />)

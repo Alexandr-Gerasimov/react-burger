@@ -6,8 +6,13 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useAuth } from "../../services/auth";
 import { Loader } from "../../ui/loader/loader";
 import { useSelector } from "../../services/store";
+import { TOrder } from "../../services/types/data";
 
-const OrderItems = (data) => {
+type TItems = {
+  data: TOrder;
+}
+
+const OrderItems = (data: TItems) => {
   const location = useLocation();
 
   const allIngredients = useSelector((store) => store.fillings.ingredients);
@@ -36,13 +41,15 @@ const OrderItems = (data) => {
   const price = useMemo(() => {
     return (
       (!constructorBuns ? 0 : constructorBuns.price * 2) +
-      constructorFillings.reduce((s, v) => s + v.price, 0)
+      constructorFillings.reduce((s, v) => s + v!.price, 0)
     );
   }, [constructorBuns, constructorFillings]);
 
-  const getDate = (order) => {
+  const getDate = (order: TOrder) => {
     const currentDate: any = new Date();
     const orderDate: any = new Date(order.createdAt);
+    console.log(currentDate)
+    console.log(orderDate)
     let dateDiff =  (Math.floor((currentDate - orderDate)/(1000*60*60*24)));
     if (plusDay(currentDate, orderDate)) {
       dateDiff += 1;
@@ -102,7 +109,7 @@ const OrderItems = (data) => {
               (ingredients.map((ingredient, index) => (
                 <li key={index} style={{
                   zIndex: ingredients.length + 1 - index,
-                  backgroundImage: `url(${ingredient.image})` 
+                  backgroundImage: `url(${ingredient!.image})` 
                   }}
                   className={styles.ingredient}>
                 </li>
@@ -112,7 +119,7 @@ const OrderItems = (data) => {
                     return (
                       <li key={index} style={{
                         zIndex: 6 - index,
-                        backgroundImage: `url(${ingredient.image})` 
+                        backgroundImage: `url(${ingredient!.image})` 
                         }}
                         className={styles.ingredient}>
                       </li>
@@ -120,7 +127,7 @@ const OrderItems = (data) => {
                   } else if (index === 5) {
                     return (
                       <li key={index} style={{
-                        backgroundImage: `url(${ingredient.image})` 
+                        backgroundImage: `url(${ingredient!.image})` 
                         }}
                         className={styles.ingredientLast}>
                           <span className={styles.ingredientPlus}>+{ingredients.length - 6}</span>

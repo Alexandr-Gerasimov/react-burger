@@ -3,10 +3,10 @@ import { useInView } from "react-intersection-observer";
 import InView from "@mpth/react-in-view";
 import styles from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import { getAllItems } from "../../services/actions";
+import { useDispatch } from "../../services/store";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsCategory } from "../ingredients-category/ingredients-category";
+import { TAuth } from "../../services/types/data";
 
 declare global {
   namespace JSX {
@@ -23,7 +23,6 @@ type TBurgerIngredients = {
 }
 
 export const BurgerIngredients: FC<TBurgerIngredients> = ({ onClick }) => {
-  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("bun");
   const bunRef = useRef<any>("bun");
   const sauseRef = useRef<any>("sauce");

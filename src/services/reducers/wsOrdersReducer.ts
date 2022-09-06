@@ -8,13 +8,13 @@ import {
   import { TWsOrdersActions } from '../actions/wsOrdersAction';
   import { TWSFeed, TWSFeedOrder, TOrder } from "../types/data";
   
-  export type TInitialState = {
+  export type TOrderInitialState = {
     wsConnected: boolean,
     messages: TWSFeedOrder | null,
     orders: Array<TOrder>
   };
   
-  const initialState: TInitialState = {
+  const initialState: TOrderInitialState = {
     wsConnected: false,
     messages: null,
     orders: []
@@ -22,7 +22,7 @@ import {
 
   
   
-  export const wsReducer = (state = initialState, action: TWsOrdersActions): TInitialState => {
+  export const wsReducer = (state = initialState, action: TWsOrdersActions): TOrderInitialState => {
     console.log(initialState)
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:

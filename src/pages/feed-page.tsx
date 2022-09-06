@@ -1,8 +1,4 @@
 import React, { useEffect } from "react";
-import { nanoid } from "nanoid";
-import styles from "./login.module.css";
-import OrderItems from "../components/order-items/order-items";
-import { Loader } from "../ui/loader/loader";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,

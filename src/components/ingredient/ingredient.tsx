@@ -11,10 +11,9 @@ import { FC } from "react";
 
 type TIngred = {
   set: TIngredient;
-  onClick: (component: string[]) => void;
 }
 
-export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
+export const Ingredient: FC<TIngred> = ({ set}) => {
   const ingredientCount = set.__v;
   const [{ opacity }, dragRef] = useDrag({
     type: "bun",
@@ -25,12 +24,10 @@ export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
   });
 
   return (
-    <>
       <li
         ref={dragRef}
         className={styles.position}
         style={{ opacity }}
-        onClick={() => onClick}
       >
         {ingredientCount !== 0 ? (
           <Counter count={ingredientCount} size="small" />
@@ -44,6 +41,5 @@ export const Ingredient: FC<TIngred> = ({ set, onClick }) => {
         </div>
         <p className={styles.positionText}>{set.name}</p>
       </li>
-    </>
   );
 };

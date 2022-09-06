@@ -6,7 +6,6 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ingredientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 import { useDrop } from "react-dnd";
 import {

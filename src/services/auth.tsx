@@ -12,12 +12,12 @@ import { GET_USER_PROFILE_SUCCESS } from "./actions/profile";
 import { Redirect, useLocation, RouteProps } from "react-router-dom";
 import { getResponseData } from "./api";
 import { FC } from "react";
+import { AppThunk } from "./types/data";
+import { TAuth, TGetProfile, TProfile, TGet } from "./types/data";
 
 export type TError = {
-  res: {
      success: boolean
      message: string
-  }
 }
 
 const AuthContext = createContext(undefined);
@@ -25,7 +25,9 @@ const AuthContext = createContext(undefined);
 type TProps = { children: ReactNode } & RouteProps
 
 export const ProvideAuth: FC<TProps> = ({ children }) => {
+  
   const auth: any = useProvideAuth();
+  console.log(auth)
   return (
     <AuthContext.Provider value={auth}>
     {children}
@@ -39,7 +41,7 @@ export function useAuth() {
 
 export function useProvideAuth() {
   const dispatch = useDispatch();
-  const [user, setUser] = useState<string | null | undefined>(null);
+  const [user, setUser] = useState<TProfile | null | undefined>(null);
   const token: string | undefined = getCookie('token')
   const location = useLocation();
   localStorage.setItem("lastAddress", JSON.stringify(location.state))
@@ -49,25 +51,24 @@ export function useProvideAuth() {
     try {
       const res = await getUserRequest();
       console.log(1)
-      const data: any = await getResponseData(res);
+      const data: TGetProfile = await getResponseData(res);
       return setUser(data.user);
-    } catch (err: any) {
-      if (err.message === "jwt expired") {
-        const refreshData: any = await refreshRequest(token as string);
+    } catch (err: TError | unknown) {
+      if ((err as TError).message === "jwt expired") {
+        const refreshData: unknown | TGetProfile | Response = await refreshRequest(token as string);
         console.log(refreshData)
-        if (!refreshData.success) {
-          debugger
+        if (!(refreshData as TGetProfile).success) {
           return Promise.reject(refreshData);
         }
-        let authToken;
-        authToken = refreshData.accessToken.split("Bearer ")[1];
+        let authToken: string;
+        authToken = (refreshData as TGetProfile).accessToken.split("Bearer ")[1];
         console.log(3)
         if (authToken) {
           setCookie("token", authToken);
-          setCookie("refreshToken", refreshData.refreshToken);
+          setCookie("refreshToken", (refreshData as TGetProfile).refreshToken);
         }
         const res = await getUserRequest();
-        const data: any = await getResponseData(res);
+        const data: TGetProfile = await getResponseData(res);
         return setUser(data.user);
       } else {
         return (
@@ -83,8 +84,8 @@ export function useProvideAuth() {
   const refreshUser = async (name: string, email: string) => {
     return await patchUserRequest(name, email)
       .then(getResponseData)
-      .then((data: any) => {
-        return data.success;
+      .then((data: TGet | unknown) => {
+        return (data as TGet).success;
       })
       .catch((err) => console.log(err));
   };
@@ -92,19 +93,19 @@ export function useProvideAuth() {
   const signIn = async (email: string, password: string) => {
     return await loginRequest(email, password)
       .then(getResponseData)
-      .then((data: any) => {
+      .then((data: TGetProfile | unknown) => {
         dispatch({
           type: GET_USER_PROFILE_SUCCESS,
-          data,
+          data: data as TGetProfile,
         });
-        let authToken;
-        authToken = data.accessToken.split("Bearer ")[1];
+        let authToken: string;
+        authToken = (data as TGetProfile).accessToken.split("Bearer ")[1];
         if (authToken) {
           setCookie("token", authToken);
-          setCookie("refreshToken", data.refreshToken);
+          setCookie("refreshToken", (data as TGetProfile).refreshToken);
         }
-        if (data.success) {
-          setUser(data.user);
+        if ((data as TGetProfile).success) {
+          setUser((data as TGetProfile).user);
         }
       })
       .catch((err) => console.log(err));

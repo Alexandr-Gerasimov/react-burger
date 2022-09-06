@@ -16,13 +16,11 @@ import { Loader } from "../../ui/loader/loader";
 import { useAuth } from "../../services/auth";
 import { getCookie } from "../../services/utils";
 import { useSelector, useDispatch } from "../../services/store";
-import { TIngredient, TOrderDetails } from "../../services/types/data";
+import { TIngredient, TOrderDetails, TAuth } from "../../services/types/data";
 
 const Main = () => {
-  const ingredients = useSelector((store) => store.fillings.ingredients);
-  const auth: any = useAuth();
-  const orderNumber = useSelector<string>((store) => store.fillings.orderNumber);
-  console.log(orderNumber)
+  const auth: TAuth | undefined = useAuth();
+  const orderNumber = useSelector<number | undefined>((store) => store.fillings.orderNumber);
   const orderDetailsModal = useSelector(
     (store) => store.fillings.orderDetailsModal
   );
@@ -57,13 +55,13 @@ const Main = () => {
       <Loader size="large" />
     ) : (
       <Modal onClick={closeOrderModals}>
-        <OrderDetails orderNumber={orderNumber} />
+        <OrderDetails orderNumber={orderNumber as number} />
       </Modal>
     );
   }, [orderDetailsRequest, orderNumber]);
 
   const OrderButtonClick = () => {
-    const ingredientsId: any = orderIngredients.map((ingredient) => ingredient!._id);
+    const ingredientsId: string[] = orderIngredients.map((ingredient) => ingredient!._id);
     console.log(ingredientsId)
     if (auth!.user) {
       dispatch(postOrderNumber(ingredientsId));

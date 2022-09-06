@@ -10,7 +10,6 @@ import { useSelector } from "../../services/store";
 import { useDispatch } from "../../services/store";
 
 const FeedProfile = () => {
-  const location = useLocation();
 
   const wsConnected = useSelector(
     (store) => store.socketFeed.messages

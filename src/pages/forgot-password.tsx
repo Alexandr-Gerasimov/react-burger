@@ -1,4 +1,4 @@
-import React, { useEffect, ChangeEvent, useCallback } from "react";
+import React, { useEffect, ChangeEvent, useCallback, FormEvent } from "react";
 import { Redirect, Link } from "react-router-dom";
 import styles from "./login.module.css";
 import {
@@ -10,13 +10,14 @@ import { useAuth } from "../services/auth";
 import { useDispatch } from "../services/store";
 import { EMAIL_SENDING } from "../services/actions/profile";
 import { getResponseData } from "../services/api";
+import { AppThunk, TGet, TAuth, TGetProfile } from "../services/types/data";
 
 type TForgot = {
   email: string
 }
 
 export function ForgotPage() {
-  const auth: any = useAuth();
+  const auth: TAuth | undefined = useAuth();
   const [reset, setReset] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<TForgot>({ email: "" });
   console.log(value);
@@ -24,14 +25,14 @@ export function ForgotPage() {
   const dispatch = useDispatch();
 
   let post = useCallback(
-    (e) => {
+    (e: FormEvent) => {
       e.preventDefault();
       postEmail(value.email);
     },
     [value.email]
   );
 
-  if (auth.user) {
+  if (auth!.user) {
     return (
       <Redirect
         to={{
@@ -44,8 +45,8 @@ export function ForgotPage() {
   const postEmail = async (email: string) => {
     return await resetRequest(email)
       .then(getResponseData)
-      .then((res: any) => {
-        if (res.success) {
+      .then((res: TGet | unknown) => {
+        if ((res as TGet).success) {
           console.log(res)
           dispatch({
             type: EMAIL_SENDING,

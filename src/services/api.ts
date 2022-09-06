@@ -17,12 +17,16 @@ export const getAllIngredients = async () => {
     })
   }
 
+type TGet = {
+  success: boolean
+}
+
 export const getIngredients = async () => {
     return await getAllIngredients()
       .then(res => getResponseData(res))
-      .then((data: any) => {
+      .then((data: TGet | unknown) => {
         console.log(data)
-        return data.success;
+        return (data as TGet).success;
       })
       .catch((err) => console.log(err));
 };

@@ -70,6 +70,10 @@ export type TOrderDetails = {
   success: boolean,
 };
 
+export type TGet = {
+  success: boolean
+}
+
 export type TGetProfile = {
   user: TProfile;
   accessToken: string;
@@ -118,6 +122,14 @@ export type TBackground = {
   pathname: string,
   search: string,
   state: null
+}
+
+export type TAuth = {
+  getUser: () => Promise<void | JSX.Element>
+refreshUser: (name: string, email: string) => void
+signIn: (email: string, password: string) => Promise<boolean | void>
+signOut: () => Promise<boolean | void>
+user: TProfile | null | undefined
 }
 
 

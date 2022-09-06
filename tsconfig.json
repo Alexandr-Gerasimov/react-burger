@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "lib": [
+      "es5",
+      "es6",
       "dom",
       "dom.iterable",
       "esnext"
@@ -17,6 +19,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noImplicitAny": false,
+    "downlevelIteration": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
